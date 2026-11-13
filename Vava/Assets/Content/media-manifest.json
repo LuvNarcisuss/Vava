@@ -1,0 +1,72 @@
+{
+  "ravne.mp4": {
+    "mime": "video/mp4",
+    "sha256": "fba21b8f4159dc6d185d628670103472e5d6789a6822ea586918d922699ca7f3",
+    "bytes": 6043903
+  },
+  "ravne.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "53941b61a915033a1ca23964d264452e30398f047acf71cc14733524594a0fe7",
+    "bytes": 27220
+  },
+  "netherlands-china.mp4": {
+    "mime": "video/mp4",
+    "sha256": "e79f8a7462d7dc1e2dc34738908557449a89732e38718345fcbc02769b9904f2",
+    "bytes": 4375526
+  },
+  "netherlands-china.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "84db2b41920bdea4798132869f32370a0b907dcb384c6183203872f1424dd141",
+    "bytes": 10948
+  },
+  "club-rally.mp4": {
+    "mime": "video/mp4",
+    "sha256": "551e7bc7dfed3b1ca1c8e885403b74ef887967c76bc59703d55d146c1a397fb2",
+    "bytes": 20068065
+  },
+  "club-rally.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "5d2bc9463e513c72d2fe6d187f3400593438aee3ff22a2b6edd305b8e70ea3ba",
+    "bytes": 138651
+  },
+  "open-rally.mp4": {
+    "mime": "video/mp4",
+    "sha256": "1d14d30bebe51a4f63a652a6a700c876e5db2247e994335d847e9a456075046d",
+    "bytes": 5659453
+  },
+  "open-rally.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "75b19a202ef69c093444067a5838545c4baeaf3d39bfe8b56cfd04491787f22c",
+    "bytes": 44529
+  },
+  "singapore-2026-final.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "54534ccd406a5a4bf5880c73f9ffa9c5972b1d1d96670a740088daabaf2e6829",
+    "bytes": 19492
+  },
+  "macao-2025-final.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "eff3baa4bd22e54899d0ff4d2d702d2a361cf3a270effefedc036446b57fb967",
+    "bytes": 33312
+  },
+  "doha-2026-semifinal.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "4c6664a45ca5147a6835f11f419665923274b8a521c2477312f5e536d4859a4b",
+    "bytes": 34118
+  },
+  "london-2025-semifinal.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "f341c1157967662845def5f0e6c03d07e6c07332273c33bea279ac940ff8bf69",
+    "bytes": 32893
+  },
+  "ljubljana-2025-final.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "370be095040411bb90097e33329d1abe1dc0d133a2eded8e4af91bcb3f6ee132",
+    "bytes": 35597
+  },
+  "sao-jose-2026-final.jpg": {
+    "mime": "image/jpeg",
+    "sha256": "e9c7a3347b73ca554f8c2af2e362fb46b2040db66deccf2e4462c84f040b1028",
+    "bytes": 20481
+  }
+}

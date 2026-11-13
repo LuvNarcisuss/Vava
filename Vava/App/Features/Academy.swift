@@ -1,0 +1,215 @@
+import UIKit
+
+@MainActor final class AcademyScreen: ListScreen {
+    private var category = "All topics"
+    private var pricing = "All prices"
+    private let search = Theme.field("Search lessons")
+    private var showSearch = false
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        heading.text = "Academy"
+        toolbar.addArrangedSubview(
+            Theme.icon("search", label: "Search lessons") { [weak self] in self?.toggleSearch() })
+        let filter = Theme.icon("filter", label: "Filter lessons") {}
+        filter.showsMenuAsPrimaryAction = true
+        toolbar.addArrangedSubview(filter)
+        search.addAction(UIAction { [weak self] _ in self?.draw() }, for: .editingChanged)
+        draw()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        draw()
+    }
+
+    override func refreshContent() async throws {
+        try context.reload()
+        draw()
+    }
+
+    private func toggleSearch() {
+        showSearch.toggle()
+        if !showSearch {
+            search.resignFirstResponder()
+            search.text = ""
+        }
+        draw()
+        if showSearch { search.becomeFirstResponder() }
+    }
+
+    private func draw() {
+        let topics = ["All topics", "Saved"] + Set(context.catalog.courses.map(\.category)).sorted()
+        let prices = ["All prices", "Free", "Coin unlock"]
+        func menu(_ values: [String], selection: String, select: @escaping (String) -> Void) -> UIMenu {
+            UIMenu(
+                options: .displayInline,
+                children: values.map { value in
+                    UIAction(title: value, state: value == selection ? .on : .off) { _ in select(value) }
+                })
+        }
+        (toolbar.arrangedSubviews.last as? UIButton)?.menu = UIMenu(children: [
+            menu(topics, selection: category) { [weak self] in
+                self?.category = $0
+                self?.draw()
+            },
+            menu(prices, selection: pricing) { [weak self] in
+                self?.pricing = $0
+                self?.draw()
+            },
+        ])
+        let term = search.text?.trimmed ?? ""
+        let items = context.catalog.courses.filter {
+            let topicMatches =
+                category == "All topics" || $0.category == category
+                || (category == "Saved" && context.state.saves.contains($0.id))
+            let priceMatches =
+                pricing == "All prices" || ($0.price == 0 ? pricing == "Free" : pricing == "Coin unlock")
+            let textMatches =
+                term.isEmpty || "\($0.title) \($0.category) \($0.detail)".localizedCaseInsensitiveContains(term)
+            return topicMatches && priceMatches && textMatches
+        }
+        let rows = items.map { course -> UIView in
+            let image = Theme.photo(ratio: 0.46)
+            PictureLoader.shared.load(context.asset(course.cover), into: image)
+            let unlocked = context.wallet.ledger.owned.contains(course.id)
+            let price = course.price == 0 ? "Free" : unlocked ? "Unlocked" : "\(course.price) coins"
+            let header = Theme.label(
+                "\(course.category.uppercased())  /  \(course.minutes) MIN", size: 13, color: Theme.lime)
+            let title = Theme.label(course.title, size: 25, display: true)
+            let open = Theme.button(price) { [weak self] in
+                guard let self else { return }
+                self.push(CourseScreen(self.context, course: course))
+            }
+            open.accessibilityLabel = "\(course.title), \(price)"
+            return Theme.card([image, header, title, Theme.label(course.detail, color: Theme.secondary), open])
+        }
+        let views: [UIView] =
+            [Theme.label("Build a better point.", size: 20, color: Theme.secondary)]
+            + (rows.isEmpty ? [Theme.card([Theme.label("No matching lessons.")])] : rows)
+        if showSearch, search.superview === body {
+            for view in body.arrangedSubviews where view !== search {
+                body.removeArrangedSubview(view)
+                view.removeFromSuperview()
+            }
+            views.forEach(body.addArrangedSubview)
+        } else {
+            render((showSearch ? [search as UIView] : []) + views)
+        }
+    }
+}
+
+@MainActor final class CourseScreen: ListScreen {
+    private let course: Course
+    private var writing = false
+    private var unlocked: Bool { course.price == 0 || context.wallet.ledger.owned.contains(course.id) }
+
+    init(_ context: AppContext, course: Course) {
+        self.course = course
+        super.init(context)
+    }
+
+    required init?(coder: NSCoder) { nil }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        heading.text = course.title
+        draw()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        draw()
+    }
+
+    override func refreshContent() async throws {
+        try context.reloadState()
+        draw()
+    }
+
+    private func draw() {
+        let image = Theme.photo()
+        PictureLoader.shared.load(context.asset(course.cover), into: image)
+        let saved = context.state.saves.contains(course.id)
+        let save = Theme.button(saved ? "Remove from saved" : "Save lesson") { [weak self] in
+            guard let self else { return }
+            self.perform {
+                try self.context.change(self.course.id, kind: .save, enabled: !saved)
+                self.draw()
+            }
+        }
+        var views: [UIView] = [
+            image, Theme.label("\(course.level)  /  \(course.minutes) min", color: Theme.lime),
+            Theme.label(course.detail, size: 20), save,
+        ]
+        if unlocked {
+            let completed = Set(context.state.practice[course.id] ?? [])
+            if let steps = course.steps {
+                views.append(
+                    Theme.label("Practice  \(completed.count)/\(steps.count)", size: 23, display: true))
+                for (index, step) in steps.enumerated() {
+                    let title = completed.contains(index) ? "Completed" : "Mark complete"
+                    let button = Theme.button(title, primary: completed.contains(index)) { [weak self] in
+                        guard let self, !self.writing else { return }
+                        self.writing = true
+                        self.perform {
+                            defer { self.writing = false }
+                            try self.context.library.markPractice(
+                                course: self.course.id, step: index, completed: !completed.contains(index))
+                            try self.context.reloadState()
+                            self.draw()
+                        }
+                    }
+                    views.append(
+                        Theme.card([
+                            Theme.label("Drill \(index + 1)", size: 16, display: true, color: Theme.lime),
+                            Theme.label(step), button,
+                        ]))
+                }
+            } else {
+                views.append(Theme.label("Practice steps are unavailable."))
+            }
+        } else {
+            views.append(
+                Theme.card([
+                    Theme.label("Unlock the practice plan", size: 24, display: true),
+                    Theme.label("A one-time unlock for this account on this device."),
+                    Theme.button("Unlock for \(course.price) coins", primary: true) { [weak self] in
+                        self?.requestUnlock()
+                    },
+                ]))
+        }
+        views.append(
+            Theme.card([
+                Theme.label("Coaching reference", size: 20, display: true),
+                Theme.button(course.referenceName) { [weak self] in
+                    guard let self else { return }
+                    self.open(self.course.reference)
+                },
+            ]))
+        render(views)
+    }
+
+    private func requestUnlock() {
+        if context.wallet.ledger.balance < course.price {
+            confirm(
+                "More coins needed", message: "Your balance is \(context.wallet.ledger.balance) coins.",
+                action: "Open wallet"
+            ) { [weak self] in
+                guard let self else { return }
+                self.push(WalletScreen(self.context))
+            }
+        } else {
+            confirm(
+                "Unlock this course?", message: "Spend \(course.price) coins on \(course.title).",
+                action: "Unlock"
+            ) { [weak self] in
+                guard let self else { return }
+                self.perform {
+                    try self.context.wallet.unlock(self.course)
+                    self.draw()
+                }
+            }
+        }
+    }
+}

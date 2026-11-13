@@ -1,0 +1,57 @@
+name: Vava
+options:
+  deploymentTarget:
+    iOS: "16.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    TARGETED_DEVICE_FAMILY: "1"
+    SUPPORTS_MACCATALYST: NO
+    SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+    SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+fileGroups:
+  - Configuration
+  - Assets/Design
+  - Assets/AgreementSources
+targets:
+  Vava:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+        excludes:
+          - Info.plist
+      - path: Configuration
+        includes:
+          - "coin-products.json"
+        buildPhase: resources
+      - path: Assets/Assets.xcassets
+      - path: Assets/Fonts
+        buildPhase: resources
+      - path: Assets/Agreements
+        buildPhase: resources
+      - path: Assets/Content/catalog.json
+        buildPhase: resources
+      - path: Assets/Content/Media
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_NAME: Vava
+        PRODUCT_BUNDLE_IDENTIFIER: com.vava.pingpong
+        INFOPLIST_FILE: App/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+schemes:
+  Vava:
+    build:
+      targets:
+        Vava: all
+    run:
+      config: Debug
+    archive:
+      config: Release

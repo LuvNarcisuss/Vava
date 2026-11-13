@@ -1,0 +1,211 @@
+{
+  "shorts": [
+    {
+      "id": "ravne",
+      "title": "Ravne league final",
+      "detail": "A stretch of the 2015 Slovenian women's national league final.",
+      "publisher": "Televizija Uršlja",
+      "source": "https://commons.wikimedia.org/wiki/File:2_tekma_finale_dr%C5%BEavne_%C5%BEenske_lige_v_namiznem_tenisu_Ravne_2015.webm",
+      "license": "CC BY 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by/3.0/",
+      "media": "ravne.mp4",
+      "cover": "ravne.jpg",
+      "duration": 38
+    },
+    {
+      "id": "netherlands-china",
+      "title": "Netherlands vs China",
+      "detail": "A 1977 international match in Heerjansdam, preserved in Dutch newsreel footage.",
+      "publisher": "Netherlands Institute for Sound & Vision",
+      "source": "https://commons.wikimedia.org/wiki/File:Tafeltennis-interland_Nederland-China_Weeknummer,_77-52_-_Open_Beelden_-_8926.ogv",
+      "license": "CC BY-SA 3.0 NL",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/nl/deed.en",
+      "media": "netherlands-china.mp4",
+      "cover": "netherlands-china.jpg",
+      "duration": 57
+    },
+    {
+      "id": "club-rally",
+      "title": "A game between brothers",
+      "detail": "A courtside view of a real game recorded in a covered courtyard.",
+      "publisher": "Anumodu favour Amarachi",
+      "source": "https://commons.wikimedia.org/wiki/File:Table_tennis_game.webm",
+      "license": "CC BY-SA 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "media": "club-rally.mp4",
+      "cover": "club-rally.jpg",
+      "duration": 22
+    },
+    {
+      "id": "open-rally",
+      "title": "Table tennis outdoors",
+      "detail": "Players trade shots on an improvised outdoor table.",
+      "publisher": "Evworo",
+      "source": "https://commons.wikimedia.org/wiki/File:Table_tennis.webm",
+      "license": "CC BY-SA 3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "media": "open-rally.mp4",
+      "cover": "open-rally.jpg",
+      "duration": 23
+    }
+  ],
+  "courses": [
+    {
+      "id": "ready-stance",
+      "title": "Find your ready position",
+      "category": "Fundamentals",
+      "level": "Beginner",
+      "detail": "Reset between shots and find a stance you can move from.",
+      "price": 0,
+      "minutes": 8,
+      "cover": "club-rally.jpg",
+      "reference": "https://www.tabletenniscoach.me.uk/what-should-beginner-table-tennis-players-learn-first/",
+      "referenceName": "Tom Lodziak · Getting started",
+      "steps": [
+        "Stand a short step behind the end line. Hold the paddle in front and bend your knees until a small side step feels easy.",
+        "Have a partner hold up a hand to signal left or right. Move a half step in that direction and return to the middle. Switch roles after ten signals.",
+        "Ask for ten gentle feeds. After each stroke, check that the paddle returns in front of your body before the next ball arrives."
+      ]
+    },
+    {
+      "id": "forehand-drive",
+      "title": "Build a repeatable forehand",
+      "category": "Technique",
+      "level": "Beginner",
+      "detail": "Work on contact timing and recovery before adding pace.",
+      "price": 45,
+      "minutes": 14,
+      "cover": "ravne.jpg",
+      "reference": "https://www.tabletenniscoach.me.uk/lesson/forehand-drive/",
+      "referenceName": "Tom Lodziak · Forehand drive",
+      "steps": [
+        "Start with ten drop feeds to your forehand. Use a compact swing and contact the ball in front of your body near the top of its bounce.",
+        "Ask a partner to block your cross-court drive. Pick a broad target and play two rounds of ten at a speed you can repeat.",
+        "Play another ten feeds. Pause if you miss twice in a row and check whether your feet or your swing started late.",
+        "Increase pace for three balls only after landing seven out of ten. Return to the original rhythm if the ball starts flying long."
+      ]
+    },
+    {
+      "id": "backhand-push",
+      "title": "Keep the backhand push low",
+      "category": "Technique",
+      "level": "Beginner",
+      "detail": "Develop a reliable return against a short backspin feed.",
+      "price": 55,
+      "minutes": 15,
+      "cover": "netherlands-china.jpg",
+      "reference": "https://www.tabletenniscoach.me.uk/lesson/backhand-push/",
+      "referenceName": "Tom Lodziak · Backhand push",
+      "steps": [
+        "Have a partner feed slow backspin to your backhand. Step toward the ball with the paddle in front of you.",
+        "Angle the face open and brush underneath the ball with a compact motion. Start cross-court, where the target is wider.",
+        "Alternate a shorter touch and a deeper push in pairs. Ask your partner to call out whether the second bounce would land on the table.",
+        "Repeat ten feeds and count only returns that cross low and land in your chosen zone."
+      ]
+    },
+    {
+      "id": "side-step",
+      "title": "Move and recover",
+      "category": "Footwork",
+      "level": "Intermediate",
+      "detail": "Keep your balance while moving between two forehand positions.",
+      "price": 65,
+      "minutes": 18,
+      "cover": "ravne.jpg",
+      "reference": "https://newsarchive.tabletennisengland.co.uk/news/archived/footworkdrills-regular-and-irregular/",
+      "referenceName": "Table Tennis England · Footwork drills",
+      "steps": [
+        "Mark two comfortable forehand positions a short step apart. Shadow a compact swing in each spot for 30 seconds.",
+        "Ask for alternating feeds to the two spots. Keep your weight balanced and arrive before you begin each stroke.",
+        "Have your partner feed twice to one spot before switching. Recover after every ball so the change does not catch you leaning.",
+        "Do three rounds of 40 seconds with a rest between rounds. Record the longest streak in which you stayed balanced."
+      ]
+    },
+    {
+      "id": "short-serve",
+      "title": "Place the short serve",
+      "category": "Fundamentals",
+      "level": "Intermediate",
+      "detail": "Control the length of a backspin serve and plan your next shot.",
+      "price": 75,
+      "minutes": 20,
+      "cover": "club-rally.jpg",
+      "reference": "https://www.butterflyonline.com/WCTTA/videos.html",
+      "referenceName": "Butterfly North America · Service technique",
+      "steps": [
+        "Practice a legal toss from an open palm. Keep the ball visible to the receiver throughout the motion.",
+        "Brush beneath the ball and watch where the first bounce lands on your side. Vary only that placement over two sets of five.",
+        "Leave the return alone and count how many serves would bounce twice on the far side. Choose a target where you can repeat the result.",
+        "Ask a partner to return five serves. Reset your feet immediately after each serve and prepare for a short return."
+      ]
+    },
+    {
+      "id": "read-the-serve",
+      "title": "Read length before spin",
+      "category": "Tactics",
+      "level": "Intermediate",
+      "detail": "Choose a balanced first response before the rally accelerates.",
+      "price": 85,
+      "minutes": 22,
+      "cover": "netherlands-china.jpg",
+      "reference": "https://www.tabletenniscoach.me.uk/how-to-return-any-table-tennis-serve/",
+      "referenceName": "Tom Lodziak · Returning serve",
+      "steps": [
+        "Ask a partner to alternate an obvious short serve and a deep serve. Call the length as soon as you can judge the bounce.",
+        "Add a gentle push for short backspin and a compact drive for a long topspin feed. Aim for a broad target to establish control.",
+        "Let your partner choose the order. Track which serves you read correctly before scoring the quality of the return.",
+        "Play six practice points. After each point, name the cue that led to your choice and change only one thing for the next return."
+      ]
+    }
+  ],
+  "replays": [
+    {
+      "id": "singapore-2026-final",
+      "title": "Sun Yingsha vs Wang Manyu",
+      "event": "Singapore Smash 2026",
+      "publisher": "World Table Tennis",
+      "source": "https://www.youtube.com/watch?v=vYsJLPTEIaI",
+      "cover": "singapore-2026-final.jpg"
+    },
+    {
+      "id": "macao-2025-final",
+      "title": "Sun Yingsha vs Wang Manyu",
+      "event": "WTT Champions Macao 2025",
+      "publisher": "World Table Tennis",
+      "source": "https://www.youtube.com/watch?v=ejaBGEXD3f4",
+      "cover": "macao-2025-final.jpg"
+    },
+    {
+      "id": "doha-2026-semifinal",
+      "title": "Tomokazu Harimoto vs Lin Yun-Ju",
+      "event": "WTT Champions Doha 2026",
+      "publisher": "World Table Tennis",
+      "source": "https://www.youtube.com/watch?v=m8DybsKawQs",
+      "cover": "doha-2026-semifinal.jpg"
+    },
+    {
+      "id": "london-2025-semifinal",
+      "title": "Tomokazu Harimoto vs Lin Yun-Ju",
+      "event": "WTT Star Contender London 2025",
+      "publisher": "World Table Tennis",
+      "source": "https://www.youtube.com/watch?v=H9cx_Aogs4s",
+      "cover": "london-2025-semifinal.jpg"
+    },
+    {
+      "id": "ljubljana-2025-final",
+      "title": "Hugo Calderano vs Felix Lebrun",
+      "event": "WTT Star Contender Ljubljana 2025",
+      "publisher": "World Table Tennis",
+      "source": "https://www.youtube.com/watch?v=PI8vcoGA4Fk",
+      "cover": "ljubljana-2025-final.jpg"
+    },
+    {
+      "id": "sao-jose-2026-final",
+      "title": "Hugo Calderano vs Alexis Lebrun",
+      "event": "WTT Star Contender São José 2026",
+      "publisher": "World Table Tennis",
+      "source": "https://www.youtube.com/watch?v=4aF-v5W2vNc",
+      "cover": "sao-jose-2026-final.jpg"
+    }
+  ]
+}

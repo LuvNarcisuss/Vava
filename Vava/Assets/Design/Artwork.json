@@ -1,0 +1,227 @@
+[
+  {
+    "name": "icon-shorts",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single upright play triangle with a short trailing ball streak integrated into its silhouette.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/shorts.png",
+    "sourceSHA256": "610aeae44e046d02d612c54b93966554b216f53eccf4588b695c651a971193db",
+    "asset": "Assets/Assets.xcassets/icon-shorts.imageset/image.png",
+    "assetSHA256": "e90b37a11213bf917a23e9641b0d73b5dbd20eb802c42e6adb993c01241a8ab2"
+  },
+  {
+    "name": "icon-academy",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is an open coaching notebook with a simple court-line motif inside.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/academy.png",
+    "sourceSHA256": "da00fd319ee20dc41e2121fcc37e227f5c7d131fb1aa6aa96f5e9e1e85207341",
+    "asset": "Assets/Assets.xcassets/icon-academy.imageset/image.png",
+    "assetSHA256": "7e314db3910f5325c4ee4d281fc4680685eb949b197292ae229a1975e76edda1"
+  },
+  {
+    "name": "icon-watch",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a compact table tennis table from a clear side view with a raised net and a ball.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/watch.png",
+    "sourceSHA256": "2986c7d94f1c6d4df105386af5d930a49cc99c8258480f27bf93c4c208c9a05b",
+    "asset": "Assets/Assets.xcassets/icon-watch.imageset/image.png",
+    "assetSHA256": "c2c28c2d067462fbbc379e69f9264039d43155b0d372baa4d0de695304962f69"
+  },
+  {
+    "name": "icon-chats",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is two overlapping speech bubbles with no internal text.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/chats.png",
+    "sourceSHA256": "8db720c38fe3016c448dbfc678a4cb93ab8606bc935e27e8cb86e8f5afb461e9",
+    "asset": "Assets/Assets.xcassets/icon-chats.imageset/image.png",
+    "assetSHA256": "1dee4d8c2b43bc79e2fef8a1e0f9a5cbe65aa1fb75f18acf9ee80fa7b5b8ab37"
+  },
+  {
+    "name": "icon-me",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a circular head and shoulder athlete profile silhouette.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/me.png",
+    "sourceSHA256": "d06c947dafab58c67e59064cf9c6c6c221b7f0d03e8572b9c212e5829f5bd688",
+    "asset": "Assets/Assets.xcassets/icon-me.imageset/image.png",
+    "assetSHA256": "15a998c52075a05e7e84b5e1fc0141627b7ccb3b24a02947b57dbb15096996f0"
+  },
+  {
+    "name": "icon-search",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a clean circular magnifier with a diagonal short handle.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/search.png",
+    "sourceSHA256": "578f17c7e5e66ab83c4639f8097c503108559b214a0d39b9fe92e30c86fb9128",
+    "asset": "Assets/Assets.xcassets/icon-search.imageset/image.png",
+    "assetSHA256": "520a85f62a2563e6b97af58acd2074d2d2cffb561e36fbcaf9238d5d3e97a1b0"
+  },
+  {
+    "name": "icon-filter",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is three equal horizontal tracks, each with a single round slider knob at staggered positions.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/filter.png",
+    "sourceSHA256": "b953dc94d9a5473a6ae9ff445214612c36576bd1312c79721b481ba49ddc157b",
+    "asset": "Assets/Assets.xcassets/icon-filter.imageset/image.png",
+    "assetSHA256": "118adc0a76f49f48d7f99d7291651a6c82321aeee4b248203d60101c787add09"
+  },
+  {
+    "name": "icon-add",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single centered plus mark with rounded square ends.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/add.png",
+    "sourceSHA256": "397d7afa68e1eb8fcfa3b491ff1747ee19189072ca2b692914c3dc0adcbbae28",
+    "asset": "Assets/Assets.xcassets/icon-add.imageset/image.png",
+    "assetSHA256": "9b8b92711231d29d22d07dc386cd6b4664e68d02ddec505bf6cf414c481881de"
+  },
+  {
+    "name": "icon-like",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single clearly recognizable broad heart.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/like.png",
+    "sourceSHA256": "7910f62ba66aa425b3a0314f2e71c60a5b3f27878980025e93bcee801d763512",
+    "asset": "Assets/Assets.xcassets/icon-like.imageset/image.png",
+    "assetSHA256": "4683c842523ca4370d074a3e9ee55c9c67d6f1147c05d31b854bba55b6bc968c"
+  },
+  {
+    "name": "icon-save",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single upright bookmark ribbon with a clear notch.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/save.png",
+    "sourceSHA256": "c28919fb3c5fd7a9f6405f5da4306a01d5f208d150bc9359d87c904195320165",
+    "asset": "Assets/Assets.xcassets/icon-save.imageset/image.png",
+    "assetSHA256": "25e3f480bcb0ee2323be02f993ea743e8390ef91fc636ff432d6100009446ae5"
+  },
+  {
+    "name": "icon-share",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single upward bent arrow with a bold arrowhead.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/share.png",
+    "sourceSHA256": "9c4c2a4ba9b6085fee99a5715cf819dba4196a891b9660eff2df09ce466b44d7",
+    "asset": "Assets/Assets.xcassets/icon-share.imageset/image.png",
+    "assetSHA256": "21f085d35844e3965222aa523a8a191b945eda0d974d03ab68f4382fc11f6ca3"
+  },
+  {
+    "name": "icon-more",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is three equally sized horizontal dots.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/more.png",
+    "sourceSHA256": "680ed5ac6d7f6eccd893f8334804868e9e4f27949cc87bbb4e9ee36dc6ca6798",
+    "asset": "Assets/Assets.xcassets/icon-more.imageset/image.png",
+    "assetSHA256": "24d2a6d15a858e9a36dbd83d7119aa506b73a4409f921f635f7aa036a18fdbb5"
+  },
+  {
+    "name": "icon-settings",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single mechanical gear with six teeth and a circular opening.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/settings.png",
+    "sourceSHA256": "86f39932c79bcd76b5c190a031e2afc1e9b9011aa979c804c840e74b18c93908",
+    "asset": "Assets/Assets.xcassets/icon-settings.imageset/image.png",
+    "assetSHA256": "18951294ee74eedcd903b3c17c24d91d7afca93caa01dd988606086a29cf6643"
+  },
+  {
+    "name": "icon-back",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is one thick rounded left-facing chevron.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/back.png",
+    "sourceSHA256": "bf944cb3f9cd7e7acf2078983b08655d257c758221dead562da72b740aff67c2",
+    "asset": "Assets/Assets.xcassets/icon-back.imageset/image.png",
+    "assetSHA256": "982210bfeddfbab2e03d274bc87e211a0648605f89a1c5a95ec5579d9ab91ef8"
+  },
+  {
+    "name": "icon-coin",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single angled gold coin with a small recessed table tennis ball mark.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/coin.png",
+    "sourceSHA256": "18f68acd000ffa97408be3851aab040bbf328081065caa7b9c721b4afe46471a",
+    "asset": "Assets/Assets.xcassets/icon-coin.imageset/image.png",
+    "assetSHA256": "f9e37d0a8950ac6630ec0145fa988f7798a02964fb8057881d749593712cdc42"
+  },
+  {
+    "name": "icon-comment",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single rounded speech bubble with three dark dots.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/comment.png",
+    "sourceSHA256": "b9c20f5d3c3c64abf2fc550cd8b2bb111cd107fd27014c435657f30f87d1c679",
+    "asset": "Assets/Assets.xcassets/icon-comment.imageset/image.png",
+    "assetSHA256": "66637d0bd2b081324320e75e27b1a0642d41d97dc47d113ef07a804d48695ae5"
+  },
+  {
+    "name": "icon-play",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single right-facing triangular playback glyph.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/play.png",
+    "sourceSHA256": "ee9b8341e8a039f338777ce9af8c982f3cba35a0f5499c5bf50d3144b18432a8",
+    "asset": "Assets/Assets.xcassets/icon-play.imageset/image.png",
+    "assetSHA256": "1442df782cf52d5febcdbc8c379f18830ce71507163db0423f9fb922d0552cef"
+  },
+  {
+    "name": "icon-pause",
+    "prompt": "Create a single isolated transparent UI pause glyph for a dark evergreen table tennis iPhone app: two identical parallel upright ivory rounded rectangular bars with a thin emerald outline, centered together on a square canvas. Solid crisp silhouette, sized to fill 64 percent of the canvas, narrow empty gap. True alpha outside the bars and in the gap, every background pixel fully transparent. No shadow, glow, lighting, texture, plate, tile or other objects.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/pause.png",
+    "sourceSHA256": "da645fde07ad7f15e389c1ccf1ee980a18c519ed55c2b160a11b9630182ea0a5",
+    "asset": "Assets/Assets.xcassets/icon-pause.imageset/image.png",
+    "assetSHA256": "46b9552c05c35f8f26d02c3744aa43adb451021883cee666a0231a7c8aeb4154"
+  },
+  {
+    "name": "icon-sound",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is an upright speaker silhouette with a single sound wave.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/sound.png",
+    "sourceSHA256": "61713d6acc22079c66a5f48717b56eedf990c5b8418f9f9f9feac153926460fc",
+    "asset": "Assets/Assets.xcassets/icon-sound.imageset/image.png",
+    "assetSHA256": "21c19f7c23a33ddf5b9e5612799fb44fc1de4cd8fe0e44a7fdfa173d9f945cd7"
+  },
+  {
+    "name": "icon-muted",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is an upright speaker silhouette with a diagonal strike.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/muted.png",
+    "sourceSHA256": "f69475bd42e6edf6c76562cdd89b8902d7595949df070e1a8244f75ae3cfd2a1",
+    "asset": "Assets/Assets.xcassets/icon-muted.imageset/image.png",
+    "assetSHA256": "04fb723543bf2f3d78ab5c4f656ff9f62caa9eddb21ddb422e238ecd6ff513ca"
+  },
+  {
+    "name": "icon-close",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single centered diagonal cross with chunky rounded endpoints.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/close.png",
+    "sourceSHA256": "73076ba2912724b3c8644c7d89a8a38cb28331cca16d6f7b5c6f8d8f03ee78aa",
+    "asset": "Assets/Assets.xcassets/icon-close.imageset/image.png",
+    "assetSHA256": "c671323f249d5467334d70a1d3a2c655c199a4fed911b09fdced655602990e92"
+  },
+  {
+    "name": "icon-check",
+    "prompt": "Single transparent iOS raster control icon, one glyph only. Distinct premium table tennis editorial style, flat enamel silhouette with a pale warm ivory face, emerald edge accents and fine dark evergreen rim for strong contrast on dark or ivory, no shadows outside the silhouette, clear 18% margins, centered on square canvas, crisp optically thick shapes readable at 24 points. No letters, words, numerals, tile, plate, border or backdrop. Output genuine alpha. The single glyph is a single bold upright check mark.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/check.png",
+    "sourceSHA256": "a6a0e5bd04089ad8aa192c2ae1a8195c9b953fd3876ad9e3c4617c9d0c36d8c8",
+    "asset": "Assets/Assets.xcassets/icon-check.imageset/image.png",
+    "assetSHA256": "e5ae0f7d308d4a7e7d9d7f1002292964cc4e4450dc5e82a8bd615da911ff8fe6"
+  },
+  {
+    "name": "background",
+    "prompt": "Portrait iPhone edge-to-edge decorative background for a premium table tennis sports journal. Close-up low-angle photographic view of a dark forest green matte table tennis table surface. A faint warm-ivory sideline and a subtle seam in the lower right edge, soft studio shadows and quiet paper-grain finish. Almost entirely deep evergreen, with rich dark charcoal at top, unobtrusive tonal composition and vast calm negative space for cream UI text, no objects in upper 65%, no text, numbers or branding.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/background.png",
+    "sourceSHA256": "771a52a2f5671f24de67227f1108d772db6b259f1a06c0332e08b3e6e02e31a0",
+    "asset": "Assets/Assets.xcassets/background.imageset/image.png",
+    "assetSHA256": "0fd10e623bcce2e7fa923c9846f96b276a3cf4d63448f28d9bd7b81a541fe1b3"
+  },
+  {
+    "name": "welcome",
+    "prompt": "Portrait sports editorial cover photograph for a premium table tennis iPhone app. Extreme close-up on a scarlet rubber table tennis paddle with a walnut handle and one white ball on a dark evergreen table under hard side light, diagonal cream boundary line, documentary product photography, precise real sports equipment, restrained red/ivory/forest palette. Artwork fills canvas with comfortable negative space in lower third. No text, logos or graphics.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/welcome.png",
+    "sourceSHA256": "3501e0e998b9507918c69e0ee868d528d30174880fef7e90b81665388f8f2f11",
+    "asset": "Assets/Assets.xcassets/welcome.imageset/image.png",
+    "assetSHA256": "80f4fd40ec375468f3a5700b9005855988e554e7068cd3a683ad85c798aab24d"
+  },
+  {
+    "name": "AppIcon",
+    "prompt": "One iOS launcher icon with opaque full-bleed square dark emerald background. One vermilion table tennis paddle and one ivory ball with a short cream motion trail. Crisp centered sports editorial enamel emblem, thick simple silhouette, slight tactile printing detail, highly legible at tiny sizes, safe margins. No lettering, borders, words or extra objects.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/launcher.png",
+    "sourceSHA256": "01610698a363198a930ad6dfbbe3acc2ee5b653e939de538c6c03e7410475acc",
+    "asset": "Assets/Assets.xcassets/AppIcon.appiconset/image.png",
+    "assetSHA256": "9534893d44d7e4af581e10e99ae34a24ed487b18073c81388f62fddbae34cc95"
+  }
+]
