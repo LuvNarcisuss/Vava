@@ -32,3 +32,11 @@ The follow-up source changes clear the consent warning when the checkbox is sele
 Apple sandbox and production checkout, a configured Mail compose flow, external replay playback, and VoiceOver were outside the observed coverage. The test exercised one successful local coin pack transaction and loaded prices for all nine. It did not exercise the purchase failure injection path or repeat delivery of the same transaction.
 
 The static verifier passed 536 checks. Strict Swift format lint and plist validation passed. Both build configurations emitted existing warnings for actor isolation, AVAssetExportSession sendability and deprecated button insets.
+
+## Course title and copy regression
+
+Workspace revision `52f23b6` built in Debug and Release for the simulator. The Debug app launched on Vava UI Acceptance, iPhone 17 Pro, iOS 26.0.1. The isolated UI suite passed 11 standard-size cases and one Accessibility Medium case with zero failures. The simulator's original text size was restored.
+
+The paid lesson title appeared on one left-aligned line below the Back and More controls and above the cover. The consent warning cleared on selection, Tutorials displayed “1 drill complete,” and the Watch confirmation used replay-specific copy.
+
+Local StoreKit returned all nine offers. Canceled, pending, and declined purchases left the wallet empty. The successful test purchase credited 400 coins, the lesson unlock spent 45, and the single purchase entry and 355-coin balance persisted after restart. The 536 static checks, strict Swift format lint, and plist validation passed again. Apple sandbox and production checkout remained outside this run.
