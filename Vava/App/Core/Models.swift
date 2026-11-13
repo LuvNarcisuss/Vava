@@ -20,12 +20,33 @@ struct Clip: Codable, Identifiable {
     let title: String
     let detail: String
     let publisher: String
-    let source: URL
+    let source: URL?
     let license: String
-    let licenseURL: URL
+    let licenseURL: URL?
     let media: String
     let cover: String
     let duration: Int
+    let publisherID: String
+    let engagement: ClipEngagementEstimates
+    let editorialComments: [EditorialComment]
+    let submissionID: UUID?
+
+    var author: Publisher {
+        Publisher(id: publisherID, name: publisher, avatar: nil, website: nil)
+    }
+}
+
+struct ClipEngagementEstimates: Codable {
+    let likes: Int
+    let saves: Int
+    let shares: Int
+}
+
+struct ClipEngagement {
+    let likes: Int
+    let comments: Int
+    let saves: Int
+    let shares: Int
 }
 
 struct Course: Codable, Identifiable {
@@ -40,6 +61,27 @@ struct Course: Codable, Identifiable {
     let steps: [String]?
     let reference: URL
     let referenceName: String
+    let author: Publisher
+}
+
+struct Publisher: Codable, Identifiable {
+    let id: String
+    let name: String
+    let avatar: String?
+    let website: URL?
+}
+
+enum ReportReason: String, CaseIterable, Codable {
+    case harassment = "Harassment or hate"
+    case inappropriate = "Inappropriate content"
+    case misleading = "Misleading information"
+    case rights = "Rights concern"
+    case other = "Something else"
+}
+
+struct ContentReport: Codable {
+    let reason: ReportReason
+    let recordedAt: Date
 }
 
 struct Replay: Codable, Identifiable {
@@ -55,6 +97,20 @@ struct Player: Codable, Identifiable {
     let id: UUID
     let name: String
     let bio: String
+    let avatarJPEG: Data?
+
+    init(id: UUID, name: String, bio: String, avatarJPEG: Data? = nil) {
+        self.id = id
+        self.name = name
+        self.bio = bio
+        self.avatarJPEG = avatarJPEG
+    }
+}
+
+struct ChatContact: Codable, Identifiable {
+    let id: String
+    let name: String
+    let address: String?
 }
 
 enum Activity { case like, save, hide }
@@ -65,6 +121,42 @@ struct PersonalState {
     let saves: Set<String>
     let hidden: Set<String>
     let practice: [String: Set<Int>]
+    let following: Set<String>
+    let blocked: Set<String>
+    let commentsByClip: [String: [Discussion]]
+    let shareCounts: [String: Int]
+
+    func discussion(for clip: Clip) -> ClipDiscussion {
+        ClipDiscussion(local: commentsByClip[clip.id] ?? [], editorial: clip.editorialComments)
+    }
+
+    func engagement(for clip: Clip) -> ClipEngagement {
+        ClipEngagement(
+            likes: clip.engagement.likes + (likes.contains(clip.id) ? 1 : 0),
+            comments: discussion(for: clip).count,
+            saves: clip.engagement.saves + (saves.contains(clip.id) ? 1 : 0),
+            shares: clip.engagement.shares + (shareCounts[clip.id] ?? 0))
+    }
+
+    func totals(for clips: [Clip]) -> (likes: Int, saves: Int) {
+        clips.reduce(into: (likes: 0, saves: 0)) { total, clip in
+            let counts = engagement(for: clip)
+            total.likes += counts.likes
+            total.saves += counts.saves
+        }
+    }
+
+    func canShow(_ clip: Clip) -> Bool {
+        canShow(clip.id, by: clip.publisherID)
+    }
+
+    func canShow(_ course: Course) -> Bool {
+        canShow(course.id, by: course.author.id)
+    }
+
+    private func canShow(_ id: String, by publisherID: String) -> Bool {
+        !hidden.contains(id) && !blocked.contains(publisherID)
+    }
 }
 
 struct Discussion: Codable, Identifiable {
@@ -72,6 +164,24 @@ struct Discussion: Codable, Identifiable {
     let author: Player
     let body: String
     let replyTo: UUID?
+    let postedAt: Date?
+}
+
+struct EditorialComment: Codable, Identifiable {
+    let id: UUID
+    let body: String
+}
+
+struct ClipDiscussion {
+    let local: [Discussion]
+    let editorial: [EditorialComment]
+
+    var count: Int { local.count + editorial.count }
+
+    func author(for id: UUID) -> String? {
+        if let author = local.first(where: { $0.id == id })?.author.name { return author }
+        return editorial.contains { $0.id == id } ? "Vava Editorial" : nil
+    }
 }
 
 struct Submission: Codable, Identifiable {
@@ -83,6 +193,16 @@ struct AppFailure: LocalizedError {
     let message: String
     init(_ message: String) { self.message = message }
     var errorDescription: String? { message }
+}
+
+extension Array {
+    func rotated(by offset: Int) -> [Element] {
+        guard count > 1 else { return self }
+        let remainder = offset % count
+        let index = remainder < 0 ? remainder + count : remainder
+        guard index != 0 else { return self }
+        return Array(self[index...]) + Array(self[..<index])
+    }
 }
 
 extension String {

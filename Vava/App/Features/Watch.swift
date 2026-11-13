@@ -52,18 +52,27 @@ import UIKit
                 && (query.isEmpty || "\($0.title) \($0.event)".localizedCaseInsensitiveContains(query))
         }
         var views: [UIView] = [Theme.label("Match replays", size: 20, color: Theme.secondary)]
-        for replay in replays {
+        for replay in replays.rotated(by: refreshOrder) {
             let cover = Theme.photo()
             PictureLoader.shared.load(context.asset(replay.cover), into: cover)
             let card = Theme.card([
                 cover, Theme.label(replay.event.uppercased(), size: 13, color: Theme.lime),
                 Theme.label(replay.title, size: 24, display: true),
-                Theme.button("View replay") { [weak self] in
+                Theme.label("View replay", display: true, color: Theme.lime),
+            ])
+            card.isUserInteractionEnabled = false
+            card.accessibilityElementsHidden = true
+            let open = UIButton(type: .custom)
+            open.accessibilityLabel = replay.title
+            open.accessibilityHint = "Opens the replay"
+            open.accessibilityValue = replay.event
+            open.addAction(
+                UIAction { [weak self] _ in
                     guard let self else { return }
                     self.push(ReplayScreen(self.context, replay: replay))
-                },
-            ])
-            views.append(card)
+                }, for: .touchUpInside)
+            card.pin(to: open)
+            views.append(open)
         }
         if replays.isEmpty { views.append(Theme.card([Theme.label("No replays match these filters.")])) }
         if searching, search.superview === body {
@@ -95,7 +104,7 @@ import UIKit
     }
 
     override func refreshContent() async throws {
-        try context.reloadState()
+        try context.reload()
         draw()
     }
 

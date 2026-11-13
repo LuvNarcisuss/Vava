@@ -1,8 +1,11 @@
 [
-  {"coins": 100, "productID": ""},
-  {"coins": 250, "productID": ""},
-  {"coins": 550, "productID": ""},
-  {"coins": 1200, "productID": ""},
-  {"coins": 2500, "productID": ""},
-  {"coins": 5500, "productID": ""}
+  {"referenceUSD": "0.99", "coins": 400, "productID": "ampqtftkneoumheh"},
+  {"referenceUSD": "1.99", "coins": 800, "productID": "xtvhwdsgjloktbwl"},
+  {"referenceUSD": "4.99", "coins": 2450, "productID": "ofodmhntljhmyqmu"},
+  {"referenceUSD": "9.99", "coins": 5150, "productID": "kngnkmkillhkjekc"},
+  {"referenceUSD": "19.99", "coins": 10800, "productID": "wmiafabmsrgzdnfy"},
+  {"referenceUSD": "29.99", "coins": 16800, "productID": "oeryktujrjycpirn"},
+  {"referenceUSD": "49.99", "coins": 29400, "productID": "abnkqxwpzttscctn"},
+  {"referenceUSD": "69.99", "coins": 42600, "productID": "tocftlpnavpjddox"},
+  {"referenceUSD": "99.99", "coins": 63700, "productID": "bxmlhefhtmbillwb"}
 ]

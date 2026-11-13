@@ -66,10 +66,12 @@ import UIKit
             let priceMatches =
                 pricing == "All prices" || ($0.price == 0 ? pricing == "Free" : pricing == "Coin unlock")
             let textMatches =
-                term.isEmpty || "\($0.title) \($0.category) \($0.detail)".localizedCaseInsensitiveContains(term)
-            return topicMatches && priceMatches && textMatches
+                term.isEmpty
+                || "\($0.title) \($0.category) \($0.detail) \($0.author.name)".localizedCaseInsensitiveContains(
+                    term)
+            return context.state.canShow($0) && topicMatches && priceMatches && textMatches
         }
-        let rows = items.map { course -> UIView in
+        let rows = items.rotated(by: refreshOrder).map { course -> UIView in
             let image = Theme.photo(ratio: 0.46)
             PictureLoader.shared.load(context.asset(course.cover), into: image)
             let unlocked = context.wallet.ledger.owned.contains(course.id)
@@ -77,12 +79,27 @@ import UIKit
             let header = Theme.label(
                 "\(course.category.uppercased())  /  \(course.minutes) MIN", size: 13, color: Theme.lime)
             let title = Theme.label(course.title, size: 25, display: true)
-            let open = Theme.button(price) { [weak self] in
-                guard let self else { return }
-                self.push(CourseScreen(self.context, course: course))
-            }
+            let priceLabel = Theme.label(price, display: true, color: Theme.lime)
+            let details = Theme.stack(
+                [image, header, title, Theme.label(course.detail, color: Theme.secondary), priceLabel],
+                spacing: 8)
+            details.isUserInteractionEnabled = false
+            details.accessibilityElementsHidden = true
+
+            let open = UIButton(type: .custom)
             open.accessibilityLabel = "\(course.title), \(price)"
-            return Theme.card([image, header, title, Theme.label(course.detail, color: Theme.secondary), open])
+            open.accessibilityValue = "\(course.category), \(course.minutes) min. \(course.detail)"
+            open.addAction(
+                UIAction { [weak self] _ in
+                    guard let self else { return }
+                    self.push(CourseScreen(self.context, course: course))
+                }, for: .touchUpInside)
+            details.pin(to: open)
+            let author = courseAuthorButton(course)
+            let more = courseActions(course) { [weak self] in self?.draw() }
+            let attribution = Theme.stack([author, more], spacing: 8, axis: .horizontal)
+            attribution.alignment = .center
+            return Theme.card([open, attribution])
         }
         let views: [UIView] =
             [Theme.label("Build a better point.", size: 20, color: Theme.secondary)]
@@ -114,6 +131,10 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         heading.text = course.title
+        toolbar.addArrangedSubview(
+            courseActions(course) { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
         draw()
     }
 
@@ -123,11 +144,17 @@ import UIKit
     }
 
     override func refreshContent() async throws {
-        try context.reloadState()
+        try context.reload()
         draw()
     }
 
     private func draw() {
+        guard context.state.canShow(course) else {
+            render([Theme.label("This lesson is hidden from your lists.", color: Theme.secondary)])
+            toolbar.isHidden = true
+            return
+        }
+        toolbar.isHidden = false
         let image = Theme.photo()
         PictureLoader.shared.load(context.asset(course.cover), into: image)
         let saved = context.state.saves.contains(course.id)
@@ -139,7 +166,8 @@ import UIKit
             }
         }
         var views: [UIView] = [
-            image, Theme.label("\(course.level)  /  \(course.minutes) min", color: Theme.lime),
+            image, courseAuthorButton(course),
+            Theme.label("\(course.level)  /  \(course.minutes) min", color: Theme.lime),
             Theme.label(course.detail, size: 20), save,
         ]
         if unlocked {
@@ -173,7 +201,7 @@ import UIKit
             views.append(
                 Theme.card([
                     Theme.label("Unlock the practice plan", size: 24, display: true),
-                    Theme.label("A one-time unlock for this account on this device."),
+                    Theme.label("Unlock once to access the practice plan."),
                     Theme.button("Unlock for \(course.price) coins", primary: true) { [weak self] in
                         self?.requestUnlock()
                     },
@@ -211,5 +239,43 @@ import UIKit
                 }
             }
         }
+    }
+}
+
+extension Screen {
+    fileprivate func courseAuthorButton(_ course: Course) -> UIButton {
+        let button = UIButton(type: .custom)
+        button.accessibilityLabel = course.author.name
+        button.accessibilityHint = "Opens the coaching source profile"
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+        let avatar = Theme.avatar(40, source: context.portrait(for: course.author))
+        let name = Theme.label(course.author.name, size: 16, display: true)
+        let credit = Theme.label("Coaching reference", size: 13, color: Theme.secondary)
+        let row = Theme.stack(
+            [avatar, Theme.stack([name, credit], spacing: 1)], spacing: 8, axis: .horizontal)
+        row.alignment = .center
+        row.isUserInteractionEnabled = false
+        row.accessibilityElementsHidden = true
+        row.pin(to: button, top: 2, bottom: 2)
+        button.addAction(
+            UIAction { [weak self] _ in
+                guard let self else { return }
+                self.push(PublisherProfileScreen(self.context, publisher: course.author, openTutorials: true))
+            }, for: .touchUpInside)
+        return button
+    }
+
+    fileprivate func courseActions(_ course: Course, onChange: @escaping () -> Void) -> UIButton {
+        let more = Theme.icon("more", label: "More lesson actions") {}
+        more.showsMenuAsPrimaryAction = true
+        more.menu = UIMenu(children: [
+            UIAction(title: "Report lesson", attributes: .destructive) { [weak self] _ in
+                self?.reportContent(course.id, title: "Report lesson", onChange: onChange)
+            },
+            UIAction(title: "Block publisher", attributes: .destructive) { [weak self] _ in
+                self?.blockPublisher(course.author, onChange: onChange)
+            },
+        ])
+        return more
     }
 }

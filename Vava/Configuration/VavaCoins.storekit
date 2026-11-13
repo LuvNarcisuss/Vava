@@ -1,0 +1,151 @@
+{
+  "identifier": "VavaCoins",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "0.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins400",
+      "localizations": [
+        {
+          "description": "Add 400 coins to your Vava wallet.",
+          "displayName": "400 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "ampqtftkneoumheh",
+      "referenceName": "400 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins800",
+      "localizations": [
+        {
+          "description": "Add 800 coins to your Vava wallet.",
+          "displayName": "800 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "xtvhwdsgjloktbwl",
+      "referenceName": "800 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "4.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins2450",
+      "localizations": [
+        {
+          "description": "Add 2,450 coins to your Vava wallet.",
+          "displayName": "2,450 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "ofodmhntljhmyqmu",
+      "referenceName": "2,450 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "9.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins5150",
+      "localizations": [
+        {
+          "description": "Add 5,150 coins to your Vava wallet.",
+          "displayName": "5,150 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "kngnkmkillhkjekc",
+      "referenceName": "5,150 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "19.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins10800",
+      "localizations": [
+        {
+          "description": "Add 10,800 coins to your Vava wallet.",
+          "displayName": "10,800 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "wmiafabmsrgzdnfy",
+      "referenceName": "10,800 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "29.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins16800",
+      "localizations": [
+        {
+          "description": "Add 16,800 coins to your Vava wallet.",
+          "displayName": "16,800 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "oeryktujrjycpirn",
+      "referenceName": "16,800 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "49.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins29400",
+      "localizations": [
+        {
+          "description": "Add 29,400 coins to your Vava wallet.",
+          "displayName": "29,400 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "abnkqxwpzttscctn",
+      "referenceName": "29,400 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "69.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins42600",
+      "localizations": [
+        {
+          "description": "Add 42,600 coins to your Vava wallet.",
+          "displayName": "42,600 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "tocftlpnavpjddox",
+      "referenceName": "42,600 Coins",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "99.99",
+      "familyShareable": false,
+      "internalID": "VavaCoins63700",
+      "localizations": [
+        {
+          "description": "Add 63,700 coins to your Vava wallet.",
+          "displayName": "63,700 Coins",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "bxmlhefhtmbillwb",
+      "referenceName": "63,700 Coins",
+      "type": "Consumable"
+    }
+  ],
+  "settings": {
+    "_failTransactionsEnabled": false,
+    "_locale": "en_US",
+    "_storefront": "USA"
+  },
+  "subscriptionGroups": [],
+  "version": {
+    "major": 3,
+    "minor": 0
+  }
+}

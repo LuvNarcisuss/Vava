@@ -13,9 +13,7 @@
 		103B6943EF38D6F2192D1E72 /* Media in Resources */ = {isa = PBXBuildFile; fileRef = E072667ED506E35B33214B05 /* Media */; };
 		285F3E77A7CBCB419CB172EA /* Academy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C6531CBECBD3608CD325 /* Academy.swift */; };
 		35C77D3EDDC6F4FD61C3CD8F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B098906FE34BCF792B197BD /* Models.swift */; };
-		3939A6E9A43E5D51DCECD2DC /* terms.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 35D5FA7588F37D295C342C11 /* terms.pdf */; };
 		4B4E0D5A18AD48367DD6E762 /* ComicNeue-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F26F1AC99F26234192B0E704 /* ComicNeue-OFL.txt */; };
-		61C1ECF1EBB08A724987AE03 /* privacy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8CBCEE99ACA8F77C528D023C /* privacy.pdf */; };
 		64A9BE40096D3CDBD807FD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CF0C2CD8B3BB805996A0661 /* Assets.xcassets */; };
 		64BC9442EF46E711B789E343 /* catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = FB7F3582C23229C9C8EBE0B2 /* catalog.json */; };
 		8956D74D426979439776DE18 /* ComicNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 295E6E6A3081BE7BBF63FD46 /* ComicNeue-Regular.ttf */; };
@@ -38,6 +36,7 @@
 		1412B10A34B572E93B1E83E0 /* VavaApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VavaApplication.swift; sourceTree = "<group>"; };
 		15BDC8DFC3E25EE4731D9EF4 /* netherlands-china-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "netherlands-china-review.jpg"; sourceTree = "<group>"; };
 		1B098906FE34BCF792B197BD /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		1BC7EFC3E0DA3654A8742950 /* like-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like-selected.png"; sourceTree = "<group>"; };
 		203BE2C60F73F7F2670D9A89 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		295E6E6A3081BE7BBF63FD46 /* ComicNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ComicNeue-Regular.ttf"; sourceTree = "<group>"; };
 		2CFC401C9F5C9149A2A56A79 /* Vava.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vava.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,7 +45,9 @@
 		3744B1A1B42B6ABE66535F17 /* ravne-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ravne-review.jpg"; sourceTree = "<group>"; };
 		39E426CCDDB51CD8D13E2A3E /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		3CCBF7A36475CF2E801CD882 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		48986339B811BEFD16E0A8C0 /* like-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like-outline.png"; sourceTree = "<group>"; };
 		4C741FB69FFBEA2DC31378CD /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		52AF9E999DFA57972CD2E0A2 /* save-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-selected.png"; sourceTree = "<group>"; };
 		54061B57F502DE7EE9D95F87 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
 		557AF13CD3296B60F9A22F2B /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5861667AE559D1C86FF592CF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -64,6 +65,8 @@
 		8383499EDE019843605903DA /* launcher.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launcher.png; sourceTree = "<group>"; };
 		8CBCEE99ACA8F77C528D023C /* privacy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = privacy.pdf; sourceTree = "<group>"; };
 		8CEEBF60819BAF4D1FF05278 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
+		936F60034675AE39D39942CB /* save-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-outline.png"; sourceTree = "<group>"; };
+		9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */ = {isa = PBXFileReference; path = VavaCoins.storekit; sourceTree = "<group>"; };
 		A360E8AEE33F388355E93F02 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
 		A66122F570BA93EE04B20125 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		A6BC829B21087D4844916BF0 /* watch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watch.png; sourceTree = "<group>"; };
@@ -105,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				E5824A3D49C2B224DB276A11 /* coin-products.json */,
+				9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -123,12 +127,16 @@
 				FC1E3059F4D630797BF1FF0B /* comment.png */,
 				B9F38807A6B53A9BA684DB29 /* filter.png */,
 				8383499EDE019843605903DA /* launcher.png */,
+				48986339B811BEFD16E0A8C0 /* like-outline.png */,
+				1BC7EFC3E0DA3654A8742950 /* like-selected.png */,
 				8CEEBF60819BAF4D1FF05278 /* like.png */,
 				B24FEBA32566A21B1D466B7E /* me.png */,
 				E7F2E3827600C4AA1F35A2E1 /* more.png */,
 				772863D41AA8AA59381CBEC6 /* muted.png */,
 				A66122F570BA93EE04B20125 /* pause.png */,
 				6BFA9EF6EAB25A47F8F8B8C3 /* play.png */,
+				936F60034675AE39D39942CB /* save-outline.png */,
+				52AF9E999DFA57972CD2E0A2 /* save-selected.png */,
 				A360E8AEE33F388355E93F02 /* save.png */,
 				B946E2B2757444C0D35A4EAE /* search.png */,
 				3CCBF7A36475CF2E801CD882 /* settings.png */,
@@ -290,6 +298,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					94589A7DCAC575AF8E4A7A9D = {
+						DevelopmentTeam = JPTS6M4T5B;
+					};
 				};
 			};
 			buildConfigurationList = 32CDE79E9E9FA293BAA579BB /* Build configuration list for PBXProject "Vava" */;
@@ -324,8 +335,6 @@
 				103B6943EF38D6F2192D1E72 /* Media in Resources */,
 				64BC9442EF46E711B789E343 /* catalog.json in Resources */,
 				A05865AD13A0B5AB3EAFF4D4 /* coin-products.json in Resources */,
-				61C1ECF1EBB08A724987AE03 /* privacy.pdf in Resources */,
-				3939A6E9A43E5D51DCECD2DC /* terms.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,16 +431,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = JPTS6M4T5B;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.vava.pingpong;
+				PRODUCT_BUNDLE_IDENTIFIER = im.seex.sao2;
 				PRODUCT_NAME = Vava;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -440,6 +451,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = JPTS6M4T5B;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -449,7 +461,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.vava.pingpong;
 				PRODUCT_NAME = Vava;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -40,3 +40,21 @@ The current source built and ran on the dedicated iPhone 17 Pro simulator. See [
 - Extracted both revised one-page PDFs, matched their text against the editable sources, and inspected their rendered layouts.
 - Ran 147 static checks, plist parsing and strict Swift syntax lint. No app build, launch, payment or runtime test was performed for this cutover.
 - Permanent deletion was not verified. See Integration.md for the dashboard access blocker.
+
+## Nine-tier StoreKit catalog
+
+- Ran `Scripts/verify_static.py` with 525 checks. The nine product IDs, reference USD prices, and coin quantities match the integration table and display order. The two new tiers have rates between their neighboring packs.
+- Ran strict Swift source lint on `Wallet.swift` and `WalletScreen.swift`, parsed the project and app plists, and checked the shared scheme's Apple catalog setting.
+- Build, on-device layout, local StoreKit Test, Apple sandbox, and production purchases were not run. App Store Connect catalog setup and signing are pending verification.
+
+## Local StoreKit availability repair
+
+- The reported wallet state corresponded to an empty eligible product catalog. The shared scheme had no local StoreKit configuration, and transaction delivery excluded `.xcode`.
+- Regenerated the project and shared scheme. The static verifier confirmed all nine local consumables match the wallet mapping, the fixture stays outside app resources, Debug Run selects the isolated wallet, and Release uses the Apple transaction policy. Ran strict Swift source lint on the wallet and screen.
+- Build, installation, Simulator launch, and StoreKit purchase runs were outside the granted scope. App Store Connect product status, Apple sandbox, and production purchases remain unverified.
+
+## Debug signing and Bundle ID
+
+- Regenerated the project with `im.seex.sao2` for Debug and `com.vava.pingpong` for Release. The configured Yu Sun team ID is `JPTS6M4T5B`.
+- Passed 536 static checks. Built Debug using Xcode 26.0.1 and verified `im.seex.sao2` in the built Info.plist. The simulator artifact uses ad-hoc signing.
+- Xcode launched Debug on `Vava UI Acceptance`, iPhone 17 Pro, iOS 26.0. First launch reached the agreement screen.

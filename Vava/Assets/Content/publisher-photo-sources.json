@@ -1,0 +1,26 @@
+{
+  "coach-lodziak.jpg": {
+    "subject": "Tom Lodziak",
+    "source": "https://www.tabletenniscoach.me.uk/about-tom/",
+    "original": "https://www.tabletenniscoach.me.uk/wp-content/uploads/2026/01/tom-tibhar-bribar-v2.jpg",
+    "credit": "Published by Tom Lodziak. No reuse license listed.",
+    "changes": "Square crop and resize. Source metadata removed.",
+    "sha256": "9ceed0721d1d807ef502f7792e2cea44ed495d742ead900c421d60062810857e"
+  },
+  "coach-feth.jpg": {
+    "subject": "Stefan Feth",
+    "source": "https://www.butterfly-global.com/en/sponsoring/detail/feth-stefan.html",
+    "original": "https://www.butterfly-global.com/en/sponsoring/item/feth-stefan.jpg",
+    "credit": "Published by Butterfly. No reuse license listed.",
+    "changes": "Square crop and resize. Source metadata removed.",
+    "sha256": "cb4906bb0b1632d16dcfccf6ec157c910a2a8eec2fac51a6c26e9634cd266feb"
+  },
+  "coach-england.jpg": {
+    "subject": "Tin-Tin Ho representing England",
+    "source": "https://commons.wikimedia.org/wiki/File:20220814_ECM22_Table_Tennis_8658.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/d/de/20220814_ECM22_Table_Tennis_8658.jpg",
+    "credit": "Ailura · CC BY-SA 3.0 AT",
+    "changes": "Square crop and resize. Source metadata removed.",
+    "sha256": "bf10baea9f55bb5556676a9b20a6cfa7feb364c01d6051811d5ad5aaae18ca83"
+  }
+}

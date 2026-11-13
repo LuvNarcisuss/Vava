@@ -223,5 +223,41 @@
     "sourceSHA256": "01610698a363198a930ad6dfbbe3acc2ee5b653e939de538c6c03e7410475acc",
     "asset": "Assets/Assets.xcassets/AppIcon.appiconset/image.png",
     "assetSHA256": "9534893d44d7e4af581e10e99ae34a24ed487b18073c81388f62fddbae34cc95"
+  },
+  {
+    "name": "icon-like-outline",
+    "prompt": "Exactly one Vava table tennis iOS UI icon, single classic two-lobed heart, pointed lower tip. OUTLINE ONLY, draw as a bold uniform warm ivory ink contour with a subtle evergreen edge, hollow transparent interior showing through to the app background. Both inside the symbol and outside its perimeter must be actual transparent alpha. Single flat monoline glyph with no fill, no glow, no outline box, no background, no words or letters, no shadow. Center upright with good margins, strong readable 24-point size, on a square transparent canvas.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/like-outline.png",
+    "sourceSHA256": "2727b0f832870af45612fe979df4fda43c18feeab7f7fe5ce9ea49cde7ab1c20",
+    "asset": "Assets/Assets.xcassets/icon-like-outline.imageset/image.png",
+    "assetSHA256": "cf9b69f2390f9889329152a0b4709a0b62aee9a9d9dfbf4242eab510841a6c67"
+  },
+  {
+    "name": "icon-save-outline",
+    "prompt": "Exactly one Vava table tennis iOS UI icon, single upright simple bookmark with flat rounded top corners and a pointed inverted V notch at the bottom. OUTLINE ONLY, draw as a bold uniform warm ivory ink contour with a subtle evergreen edge, hollow transparent interior showing through to the app background. Both inside the symbol and outside its perimeter must be actual transparent alpha. Single flat monoline glyph with no fill, no glow, no outline box, no background, no words or letters, no shadow. Center upright with good margins, strong readable 24-point size, on a square transparent canvas.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/save-outline.png",
+    "sourceSHA256": "630bb5da20d599b522ff771a8f739917a59abeb46e4b15fb323aac347489a46d",
+    "asset": "Assets/Assets.xcassets/icon-save-outline.imageset/image.png",
+    "assetSHA256": "9bc4ef1b7a31ae5e616723d982410e0b0ae2be643e4f6bbb3cfe033b66c3950c"
+  },
+  {
+    "name": "icon-like-selected",
+    "prompt": "Create exactly one transparent raster iOS control icon for Vava table tennis. One filled heart, compact classic two rounded lobes and pointed lower tip, vermilion coral solid fill and tiny warm ivory keyline. Match a calm vintage evergreen and ivory sports editorial interface, hand-inked silhouette with clean high contrast, no shading outside glyph, no gloss. Pure transparent alpha background, no tile, no ground, no glow, no letters, no text, no outer decorations. Upright, perfectly centered, large with 12 percent margins, readable at 24 points. Square canvas.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/like-selected.png",
+    "sourceSHA256": "3ba96af5b6b97a67a47745cd96ed01407697ca02d0c7acecd25ec58e5fc546ed",
+    "asset": "Assets/Assets.xcassets/icon-like-selected.imageset/image.png",
+    "assetSHA256": "705284c86220222005f2c20cb99309c75dea71f5638f9b0fb2f667199cc8c07b"
+  },
+  {
+    "name": "icon-save-selected",
+    "prompt": "Create exactly one transparent raster iOS control icon for Vava table tennis. One solid vertical bookmark ribbon, flat top with softly rounded corners and crisp inverted V bottom notch, lime chartreuse solid fill and a very fine ivory keyline. Match a calm vintage evergreen and ivory sports editorial interface, hand-inked silhouette with clean high contrast, no shading outside glyph, no gloss. Pure transparent alpha background, no tile, no ground, no glow, no letters, no text, no outer decorations. Upright, perfectly centered, large with 12 percent margins, readable at 24 points. Square canvas.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/save-selected.png",
+    "sourceSHA256": "88447c811963a51fee5abe1817bebef90741cd9db97f8e1ac103bd7c50a47e21",
+    "asset": "Assets/Assets.xcassets/icon-save-selected.imageset/image.png",
+    "assetSHA256": "e95cf697aae92a7cbf5e957a9f9eab9bb01eccb7af8b54c38e21065fb9d1afd8"
   }
 ]

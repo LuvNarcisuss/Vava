@@ -1,8 +1,9 @@
 import Foundation
+import OSLog
 import StoreKit
 
 struct CoinPack: Decodable, Identifiable {
-    var id: Int { coins }
+    var id: String { productID }
     let coins: Int
     let productID: String
 
@@ -22,7 +23,6 @@ struct WalletLedger: Codable {
     var owned: Set<String> = []
 
     mutating func credit(id: String, amount: Int) throws {
-        guard !entries.contains(where: { $0.id == id }) else { return }
         let (total, overflow) = balance.addingReportingOverflow(amount)
         guard amount > 0, !overflow else { throw AppFailure("The coin amount could not be saved.") }
         balance = total
@@ -42,27 +42,40 @@ struct WalletLedger: Codable {
 }
 
 @MainActor final class Wallet {
+    private static let log = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "Vava", category: "InAppPurchase")
     private let account: UUID
-    private let file: URL
+    private let appleFile: URL
+    private let localFile: URL
+    private let localStoreKit: Bool
+    private var file: URL { localStoreKit ? localFile : appleFile }
     private var observer: Task<Void, Never>?
     private var recovery: Task<Void, Never>?
     private var products: [String: Product] = [:]
-    private var catalogRequest: Task<[Product], Error>?
+    private var catalogRequest: Task<Void, Error>?
     private(set) var ledger: WalletLedger
     private(set) var busy = false
     private(set) var active = true
 
     init(account: UUID) throws {
         self.account = account
-        let folder = try FileManager.default.url(
+        #if DEBUG
+            localStoreKit = ProcessInfo.processInfo.environment["VAVA_LOCAL_STOREKIT"] == "1"
+        #else
+            localStoreKit = false
+        #endif
+        let support = try FileManager.default.url(
             for: .applicationSupportDirectory, in: .userDomainMask,
             appropriateFor: nil, create: true
         )
-        .appendingPathComponent("Wallets", isDirectory: true)
-        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        file = folder.appendingPathComponent(account.uuidString + ".json")
-        if FileManager.default.fileExists(atPath: file.path) {
-            ledger = try JSONDecoder().decode(WalletLedger.self, from: Data(contentsOf: file))
+        let (appleFile, localFile) = Self.ledgerFiles(for: account, in: support)
+        self.appleFile = appleFile
+        self.localFile = localFile
+        let ledgerFile = localStoreKit ? localFile : appleFile
+        try FileManager.default.createDirectory(
+            at: ledgerFile.deletingLastPathComponent(), withIntermediateDirectories: true)
+        if FileManager.default.fileExists(atPath: ledgerFile.path) {
+            ledger = try JSONDecoder().decode(WalletLedger.self, from: Data(contentsOf: ledgerFile))
         } else {
             ledger = WalletLedger()
         }
@@ -87,9 +100,22 @@ struct WalletLedger: Codable {
         catalogRequest?.cancel()
     }
 
-    func purge() throws {
-        stop()
-        if FileManager.default.fileExists(atPath: file.path) { try FileManager.default.removeItem(at: file) }
+    private static func ledgerFiles(for account: UUID, in support: URL) -> (URL, URL) {
+        let filename = account.uuidString + ".json"
+        return (
+            support.appendingPathComponent("Wallets", isDirectory: true).appendingPathComponent(filename),
+            support.appendingPathComponent("LocalStoreKitWallets", isDirectory: true).appendingPathComponent(
+                filename)
+        )
+    }
+
+    static func removeLedgers(for account: UUID, in support: URL) throws {
+        let (appleFile, localFile) = ledgerFiles(for: account, in: support)
+        for ledgerFile in [appleFile, localFile] {
+            do { try FileManager.default.removeItem(at: ledgerFile) } catch let error as CocoaError
+                where error.code == .fileNoSuchFile || error.code == .fileReadNoSuchFile
+            { continue }
+        }
     }
 
     func refresh() async throws {
@@ -98,22 +124,34 @@ struct WalletLedger: Codable {
             products = [:]
             return
         }
-        if let catalogRequest {
-            _ = try await catalogRequest.value
-            return
+        if let catalogRequest { return try await catalogRequest.value }
+        let request = Task<Void, Error> { [weak self] in
+            guard let self else { throw CancellationError() }
+            defer { self.catalogRequest = nil }
+            do {
+                let mode = self.localStoreKit ? "Xcode" : "App Store"
+                let canPay = self.paymentsAllowed
+                Self.log.info(
+                    "Loading \(ids.count) products in \(mode, privacy: .public). Payments allowed: \(canPay).")
+                let loaded = try await Product.products(for: ids)
+                guard self.active, !Task.isCancelled else { throw CancellationError() }
+                self.products = Dictionary(
+                    uniqueKeysWithValues: loaded.filter { ids.contains($0.id) && $0.type == .consumable }
+                        .map { ($0.id, $0) })
+                let missing = ids.subtracting(self.products.keys).sorted().joined(separator: ", ")
+                if !missing.isEmpty {
+                    Self.log.notice(
+                        "StoreKit did not return eligible consumables for: \(missing, privacy: .public).")
+                }
+            } catch {
+                self.products = [:]
+                let failure = error as NSError
+                Self.log.error("Product load ended with \(failure.domain, privacy: .public) \(failure.code).")
+                throw error
+            }
         }
-        let request = Task { try await Product.products(for: ids) }
         catalogRequest = request
-        defer { catalogRequest = nil }
-        do {
-            let loaded = try await request.value
-            guard active else { throw CancellationError() }
-            products = Dictionary(
-                uniqueKeysWithValues: loaded.filter { $0.type == .consumable }.map { ($0.id, $0) })
-        } catch {
-            products = [:]
-            throw error
-        }
+        try await request.value
     }
 
     func price(for pack: CoinPack) -> String? { products[pack.productID]?.displayPrice }
@@ -147,19 +185,26 @@ struct WalletLedger: Codable {
 
     private func deliver(_ result: VerificationResult<Transaction>) async throws {
         guard active, case .verified(let transaction) = result,
-            transaction.environment == .sandbox || transaction.environment == .production,
+            accepts(transaction.environment),
             transaction.appAccountToken == account, transaction.revocationDate == nil,
             transaction.productType == .consumable,
             let pack = CoinPack.all.first(where: {
                 !$0.productID.isEmpty && $0.productID == transaction.productID
             })
         else { throw AppFailure("This transaction could not be credited to your wallet.") }
-        let (amount, overflow) = pack.coins.multipliedReportingOverflow(by: transaction.purchasedQuantity)
-        guard !overflow else { throw AppFailure("The coin amount could not be saved.") }
-        var next = ledger
-        try next.credit(id: "apple:\(transaction.id)", amount: amount)
-        try persist(next)
+        let id = "apple:\(transaction.id)"
+        if !ledger.entries.contains(where: { $0.id == id }) {
+            let (amount, overflow) = pack.coins.multipliedReportingOverflow(by: transaction.purchasedQuantity)
+            guard !overflow else { throw AppFailure("The coin amount could not be saved.") }
+            var next = ledger
+            try next.credit(id: id, amount: amount)
+            try persist(next)
+        }
         await transaction.finish()
+    }
+
+    private func accepts(_ environment: AppStore.Environment) -> Bool {
+        localStoreKit ? environment == .xcode : environment == .sandbox || environment == .production
     }
 
     private func persist(_ next: WalletLedger) throws {

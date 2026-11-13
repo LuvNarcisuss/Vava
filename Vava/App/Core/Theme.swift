@@ -90,6 +90,22 @@ import UIKit
         return field
     }
 
+    static func avatar(_ size: CGFloat, photo: UIImage? = nil, source: URL? = nil) -> UIImageView {
+        let avatar = UIImageView(image: photo ?? UIImage(named: "icon-me"))
+        avatar.backgroundColor = ink
+        avatar.contentMode = photo == nil && source == nil ? .scaleAspectFit : .scaleAspectFill
+        avatar.clipsToBounds = true
+        avatar.layer.cornerRadius = size / 2
+        avatar.isAccessibilityElement = false
+        avatar.isUserInteractionEnabled = false
+        NSLayoutConstraint.activate([
+            avatar.widthAnchor.constraint(equalToConstant: size),
+            avatar.heightAnchor.constraint(equalTo: avatar.widthAnchor),
+        ])
+        PictureLoader.shared.load(source, into: avatar)
+        return avatar
+    }
+
     static func photo(_ name: String? = nil, ratio: CGFloat = 0.52) -> UIImageView {
         let photo = UIImageView(image: name.flatMap { UIImage(named: $0) })
         photo.contentMode = .scaleAspectFill
@@ -133,8 +149,45 @@ extension UIView {
     }
 }
 
+@MainActor final class RefreshFeedback {
+    private let label = Theme.label("", size: 15, display: true, color: Theme.ink)
+    private var dismissTask: Task<Void, Never>?
+
+    func show(in view: UIView, message: String = "Updated") {
+        if label.superview == nil {
+            label.textAlignment = .center
+            label.backgroundColor = Theme.lime
+            label.layer.cornerRadius = 12
+            label.clipsToBounds = true
+            label.isUserInteractionEnabled = false
+            label.isAccessibilityElement = false
+            view.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            let safe = view.safeAreaLayoutGuide
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+                label.topAnchor.constraint(equalTo: safe.topAnchor, constant: 58),
+                label.leadingAnchor.constraint(greaterThanOrEqualTo: safe.leadingAnchor, constant: 16),
+                label.trailingAnchor.constraint(lessThanOrEqualTo: safe.trailingAnchor, constant: -16),
+                label.heightAnchor.constraint(greaterThanOrEqualToConstant: 30),
+                label.widthAnchor.constraint(greaterThanOrEqualToConstant: 110),
+            ])
+        }
+        label.text = "  \(message)  "
+        view.bringSubviewToFront(label)
+        label.isHidden = false
+        UIAccessibility.post(notification: .announcement, argument: message)
+        dismissTask?.cancel()
+        dismissTask = Task { [weak self] in
+            do { try await Task.sleep(nanoseconds: 1_500_000_000) } catch { return }
+            self?.label.isHidden = true
+        }
+    }
+}
+
 @MainActor class Screen: UIViewController {
     let context: AppContext
+    let refreshFeedback = RefreshFeedback()
 
     init(_ context: AppContext) {
         self.context = context
@@ -170,10 +223,45 @@ extension UIView {
         present(alert, animated: true)
     }
 
+    func reportContent(_ id: String, title: String, onChange: @escaping () -> Void) {
+        guard presentedViewController == nil else { return }
+        let reasons = UIAlertController(
+            title: title,
+            message:
+                "Your reason is saved and the content is hidden from your lists. Report review is unavailable.",
+            preferredStyle: .actionSheet)
+        for reason in ReportReason.allCases {
+            reasons.addAction(
+                UIAlertAction(title: reason.rawValue, style: .default) { [weak self] _ in
+                    guard let self else { return }
+                    self.perform {
+                        try self.context.report(id, reason: reason)
+                        onChange()
+                    }
+                })
+        }
+        reasons.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(reasons, animated: true)
+    }
+
+    func blockPublisher(_ publisher: Publisher, onChange: @escaping () -> Void) {
+        confirm(
+            "Block \(publisher.name)?", message: "Their works will be hidden from your feed and lists.",
+            action: "Block", destructive: true
+        ) { [weak self] in
+            guard let self else { return }
+            self.perform {
+                try self.context.setBlocked(publisher, enabled: true)
+                onChange()
+            }
+        }
+    }
+
     func perform(_ action: @escaping () async throws -> Void) {
         Task { [weak self] in
             do { try await action() } catch is CancellationError {} catch {
-                self?.show("Please try again", message: error.localizedDescription)
+                self?.show(
+                    "Please try again", message: (error as? AppFailure)?.message ?? "Something went wrong.")
             }
         }
     }
@@ -197,6 +285,7 @@ extension UIView {
     let body = Theme.stack(spacing: 12)
     private let refresh = UIRefreshControl()
     private var refreshing = false
+    private(set) var refreshOrder = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -256,13 +345,26 @@ extension UIView {
                 self.refreshing = false
                 self.refresh.endRefreshing()
             }
-            do { try await self.refreshContent() } catch {
-                self.show("Could not refresh", message: error.localizedDescription)
+            let previousOrder = self.refreshOrder
+            self.refreshOrder += 1
+            do {
+                try await self.refreshContent()
+                if let message = self.refreshCompletionMessage {
+                    self.refreshFeedback.show(in: self.view, message: message)
+                }
+            } catch is CancellationError {
+                self.refreshOrder = previousOrder
+            } catch {
+                self.refreshOrder = previousOrder
+                self.show(
+                    "Could not refresh", message: (error as? AppFailure)?.message ?? "Pull down to try again.")
             }
         }
     }
 
-    func refreshContent() async throws {}
+    var refreshCompletionMessage: String? { "Updated" }
+
+    func refreshContent() async throws { try context.reload() }
     func render(_ views: [UIView]) {
         for view in body.arrangedSubviews {
             body.removeArrangedSubview(view)

@@ -1,112 +1,213 @@
 import UIKit
 
-@MainActor final class DiscussionScreen: ListScreen {
+@MainActor final class DiscussionSheet: Screen {
     private let clip: Clip
-    private var comments: [Discussion] = []
-    private let text = Theme.field("Add a private note")
+    private let onChange: () -> Void
+    private let onClose: () -> Void
+    private let panel = UIView()
+    private let rows = Theme.stack(spacing: 8)
+    private let scroll = UIScrollView()
+    private let field = Theme.field("Add a private comment")
     private let replyLabel = Theme.label("", color: Theme.lime)
-    private var reply: Discussion?
-    private var loading = false
-    private var canPage = true
-    private var sending = false
-    private var attempt: (id: UUID, body: String, reply: UUID?)?
+    private let titleLabel = Theme.label("", size: 25, display: true)
+    private let composer = Theme.stack(spacing: 6)
+    private var reply: (id: UUID, author: String)?
+    private let pageSize = 30
+    private var visibleCount = 30
+    private var closing = false
+    private let refresh = UIRefreshControl()
+    private var editorialOrder = 0
 
-    init(_ context: AppContext, clip: Clip) {
+    init(_ context: AppContext, clip: Clip, onChange: @escaping () -> Void, onClose: @escaping () -> Void) {
         self.clip = clip
+        self.onChange = onChange
+        self.onClose = onClose
         super.init(context)
+        modalPresentationStyle = .overFullScreen
     }
 
     required init?(coder: NSCoder) { nil }
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-        heading.text = "Clip notes"
+        view.backgroundColor = .clear
+        view.accessibilityViewIsModal = true
+        let backdrop = UIControl()
+        backdrop.backgroundColor = UIColor.black.withAlphaComponent(0.16)
+        backdrop.pin(to: view)
+        backdrop.addAction(UIAction { [weak self] _ in self?.close() }, for: .touchUpInside)
+
+        panel.backgroundColor = Theme.ink
+        panel.layer.cornerRadius = 24
+        panel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        panel.clipsToBounds = true
+        view.addSubview(panel)
+        panel.translatesAutoresizingMaskIntoConstraints = false
+        let midpoint = view.centerYAnchor
+        let half = panel.topAnchor.constraint(equalTo: midpoint)
+        half.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            panel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            panel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            panel.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor),
+            panel.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+            panel.heightAnchor.constraint(greaterThanOrEqualToConstant: 190),
+            half,
+        ])
+
+        titleLabel.accessibilityTraits.insert(.header)
+        let heading = Theme.stack(
+            [
+                titleLabel,
+                Theme.icon("close", label: "Close comments") { [weak self] in self?.close() },
+            ], spacing: 8, axis: .horizontal)
+        heading.alignment = .center
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(close))
+        swipe.direction = .down
+        heading.addGestureRecognizer(swipe)
+
+        let save = Theme.button("Save", primary: true) { [weak self] in self?.send() }
+        save.setContentHuggingPriority(.required, for: .horizontal)
+        save.setContentCompressionResistancePriority(.required, for: .horizontal)
+        save.widthAnchor.constraint(greaterThanOrEqualToConstant: 64).isActive = true
+        field.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        let entry = Theme.stack([field, save], spacing: 8, axis: .horizontal)
+        entry.alignment = .center
+        composer.addArrangedSubview(entry)
+        scroll.keyboardDismissMode = .onDrag
+        scroll.alwaysBounceVertical = true
+        refresh.tintColor = Theme.lime
+        refresh.addTarget(self, action: #selector(refreshComments), for: .valueChanged)
+        scroll.refreshControl = refresh
+        rows.pin(to: scroll, bottom: 8)
+        rows.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor).isActive = true
+        let content = Theme.stack([heading, scroll, composer], spacing: 6)
+        content.pin(to: panel, top: 6, left: 18, bottom: 10, right: 18)
+        scroll.heightAnchor.constraint(greaterThanOrEqualToConstant: 32).isActive = true
         draw()
-        perform { try await self.refreshContent() }
     }
 
-    override func refreshContent() async throws { try await load(older: false) }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        view.layoutIfNeeded()
+        guard !UIAccessibility.isReduceMotionEnabled else { return }
+        panel.transform = CGAffineTransform(
+            translationX: 0, y: panel.bounds.height + view.safeAreaInsets.bottom)
+        UIView.animate(withDuration: 0.26) { self.panel.transform = .identity }
+    }
 
-    private func load(older: Bool) async throws {
-        guard !loading else { return }
-        loading = true
-        defer { loading = false }
-        let result = try context.library.comments(for: clip.id, before: older ? comments.last?.id : nil)
-        canPage = result.count == 50
-        if older { comments += result } else { comments = result }
-        draw()
+    override func accessibilityPerformEscape() -> Bool {
+        close()
+        return true
+    }
+
+    @objc private func close() {
+        guard !closing else { return }
+        closing = true
+        view.endEditing(true)
+        let duration = UIAccessibility.isReduceMotionEnabled ? 0.0 : 0.22
+        UIView.animate(
+            withDuration: duration,
+            animations: {
+                self.panel.transform = CGAffineTransform(translationX: 0, y: self.view.bounds.height)
+                self.view.alpha = 0
+            }, completion: { _ in self.dismiss(animated: false, completion: self.onClose) })
+    }
+
+    @objc private func refreshComments() {
+        defer { refresh.endRefreshing() }
+        do {
+            try context.reload()
+            editorialOrder += 1
+            draw()
+            onChange()
+            refreshFeedback.show(in: panel, message: "Comments updated")
+        } catch {
+            show("Could not refresh comments", message: "Pull down to try again.")
+        }
     }
 
     private func draw() {
-        let input = Theme.stack(
-            [text, Theme.button("Save", primary: true) { [weak self] in self?.send() }], spacing: 7,
-            axis: .horizontal)
-        var views: [UIView] = [Theme.label(clip.title, color: Theme.secondary)]
-        if let reply {
-            replyLabel.text = "Replying to \(reply.author.name)"
-            views.append(
-                Theme.stack(
-                    [
-                        replyLabel,
-                        Theme.icon("close", label: "Cancel reply") { [weak self] in
-                            self?.reply = nil
-                            self?.draw()
-                        },
-                    ], axis: .horizontal))
+        let discussion = context.state.discussion(for: clip)
+        let total = discussion.count
+        titleLabel.text = total == 1 ? "1 comment" : "\(total.formatted()) comments"
+        for row in rows.arrangedSubviews { row.removeFromSuperview() }
+
+        if total == 0 {
+            rows.addArrangedSubview(
+                Theme.label(
+                    "No comments yet. Add a private comment.", size: 14, color: Theme.secondary))
+        } else if !discussion.editorial.isEmpty {
+            rows.addArrangedSubview(
+                Theme.label(
+                    "Vava’s notes follow the footage. Comments you add are private.", size: 14,
+                    color: Theme.secondary))
         }
-        views.append(input)
-        if comments.isEmpty {
-            views.append(Theme.label("Your notes are saved on this device.", color: Theme.secondary))
+        let local = discussion.local.prefix(visibleCount)
+        for comment in local {
+            let parent = comment.replyTo.flatMap { discussion.author(for: $0) }
+            let status = parent.map { "Private · Reply to \($0)" } ?? "Private comment"
+            let date = comment.postedAt?.formatted(date: .abbreviated, time: .shortened)
+            let detail = [status, date].compactMap { $0 }.joined(separator: " · ")
+            rows.addArrangedSubview(
+                commentCard(id: comment.id, author: comment.author.name, body: comment.body, detail: detail))
         }
-        for comment in comments {
-            var content: [UIView] = [
-                Theme.label(comment.author.name, display: true),
-                Theme.label(comment.body),
-            ]
-            if let parent = comment.replyTo {
-                let name = comments.first { $0.id == parent }?.author.name
-                content.insert(
-                    Theme.label(name.map { "In reply to \($0)" } ?? "Reply", size: 14, color: Theme.secondary),
-                    at: 1)
-            }
-            let row = Theme.stack(axis: .horizontal)
-            row.addArrangedSubview(
-                Theme.button("Reply") { [weak self] in
-                    self?.reply = comment
-                    self?.draw()
-                    self?.text.becomeFirstResponder()
-                })
-            content.append(row)
-            views.append(Theme.card(content))
+        for note in discussion.editorial.rotated(by: editorialOrder).prefix(visibleCount - local.count) {
+            rows.addArrangedSubview(commentCard(id: note.id, author: "Vava Editorial", body: note.body))
         }
-        if canPage, !comments.isEmpty {
-            views.append(
-                Theme.button("Earlier notes") { [weak self] in
+        if visibleCount < total {
+            rows.addArrangedSubview(
+                Theme.button("More comments") { [weak self] in
                     guard let self else { return }
-                    self.perform { try await self.load(older: true) }
+                    self.visibleCount += self.pageSize
+                    self.draw()
                 })
         }
-        render(views)
+    }
+
+    private func commentCard(id: UUID, author: String, body: String, detail: String? = nil) -> UIView {
+        let replyButton = Theme.button("Reply") { [weak self] in
+            self?.setReply((id, author))
+            self?.field.becomeFirstResponder()
+        }
+        var content: [UIView] = [Theme.label(author, size: 16, display: true)]
+        if let detail {
+            content.append(Theme.label(detail, size: 13, color: Theme.lime))
+        }
+        content.append(contentsOf: [Theme.label(body, size: 16), replyButton])
+        return Theme.card(content, spacing: 4)
+    }
+
+    private func setReply(_ comment: (id: UUID, author: String)?) {
+        reply = comment
+        if composer.arrangedSubviews.count > 1 {
+            composer.arrangedSubviews.first?.removeFromSuperview()
+        }
+        guard let comment else { return }
+        replyLabel.text = "Replying to \(comment.author)"
+        let row = Theme.stack(
+            [
+                replyLabel, Theme.icon("close", label: "Cancel reply") { [weak self] in self?.setReply(nil) },
+            ], axis: .horizontal)
+        composer.insertArrangedSubview(row, at: 0)
     }
 
     private func send() {
-        let body = text.text?.trimmed ?? ""
-        guard !sending, !body.isEmpty else { return }
+        let body = field.text?.trimmed ?? ""
+        guard !body.isEmpty else { return }
         guard body.count <= 200 else {
-            show("Note is too long", message: "Use 200 characters or fewer.")
+            show("Comment is too long", message: "Use 200 characters or fewer.")
             return
         }
-        let replyID = reply?.id
-        let id = attempt.flatMap { $0.body == body && $0.reply == replyID ? $0.id : nil } ?? UUID()
-        attempt = (id, body, replyID)
-        sending = true
-        perform {
-            defer { self.sending = false }
-            try self.context.library.post(clip: self.clip.id, id: id, body: body, replyTo: replyID)
-            self.attempt = nil
-            if self.text.text?.trimmed == body { self.text.text = nil }
-            if self.reply?.id == replyID { self.reply = nil }
-            try await self.refreshContent()
+        do {
+            try context.library.post(clip: clip.id, id: UUID(), body: body, replyTo: reply?.id)
+            try context.reloadState()
+            field.text = nil
+            setReply(nil)
+            draw()
+            scroll.setContentOffset(.zero, animated: true)
+            onChange()
+        } catch {
+            show("Could not save the comment", message: "Try saving your comment again.")
         }
     }
 }
@@ -127,7 +228,7 @@ import UIKit
         super.viewDidLoad()
         heading.text = "Hide this video"
         render([
-            Theme.label("This removes the video from your lists on this device."),
+            Theme.label("This hides the video from your lists."),
             Theme.button("Hide video", primary: true) { [weak self] in
                 guard let self else { return }
                 self.perform {

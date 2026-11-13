@@ -39,7 +39,7 @@ import UniformTypeIdentifiers
         submit.isEnabled = !saving && !preparing && consent && source != nil
         videoTitle.isEnabled = !saving
         render([
-            Theme.label("Save a table tennis clip up to three minutes long on this device."),
+            Theme.label("Choose a table tennis video up to three minutes long."),
             videoTitle, selection, choose, rights, submit,
         ])
     }
@@ -84,7 +84,7 @@ import UniformTypeIdentifiers
                     self.attemptID = UUID()
                     self.selection.text = "Video selected"
                 } catch {
-                    self.show("Video unavailable", message: error.localizedDescription)
+                    self.show("Video unavailable", message: "Choose another video from Photos.")
                 }
             }
         }
