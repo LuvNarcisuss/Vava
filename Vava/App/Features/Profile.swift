@@ -156,7 +156,8 @@ import UIKit
 
     private func courseRow(_ course: Course) -> UIView {
         let count = context.state.practice[course.id]?.count ?? 0
-        return Theme.button("\(course.title)  ·  \(count) drills complete") { [weak self] in
+        let drills = count == 1 ? "drill" : "drills"
+        return Theme.button("\(course.title)  ·  \(count) \(drills) complete") { [weak self] in
             guard let self else { return }
             self.push(CourseScreen(self.context, course: course))
         }

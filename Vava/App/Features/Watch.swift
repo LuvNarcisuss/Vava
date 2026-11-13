@@ -137,7 +137,7 @@ import UIKit
             Theme.button("Hide replay") { [weak self] in
                 guard let self else { return }
                 self.push(
-                    HideContentScreen(self.context, target: self.replay.id) { [weak self] in
+                    HideContentScreen(self.context, target: self.replay.id, kind: .replay) { [weak self] in
                         self?.navigationController?.popToRootViewController(animated: true)
                     })
             },

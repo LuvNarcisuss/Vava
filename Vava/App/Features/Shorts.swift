@@ -357,7 +357,8 @@ private final class VideoSurface: UIView {
                 UIAction(title: "Hide clip", attributes: .destructive) { [weak self] _ in
                     guard let self else { return }
                     self.push(
-                        HideContentScreen(self.context, target: clip.id) { [weak self] in self?.syncClips()
+                        HideContentScreen(self.context, target: clip.id, kind: .video) { [weak self] in
+                            self?.syncClips()
                         })
                 })
         }

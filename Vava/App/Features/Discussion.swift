@@ -213,11 +213,18 @@ import UIKit
 }
 
 @MainActor final class HideContentScreen: ListScreen {
+    enum Kind: String {
+        case video
+        case replay
+    }
+
     private let target: String
+    private let kind: Kind
     private let completed: () -> Void
 
-    init(_ context: AppContext, target: String, completed: @escaping () -> Void) {
+    init(_ context: AppContext, target: String, kind: Kind, completed: @escaping () -> Void) {
         self.target = target
+        self.kind = kind
         self.completed = completed
         super.init(context)
     }
@@ -226,10 +233,10 @@ import UIKit
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        heading.text = "Hide this video"
+        heading.text = "Hide this \(kind.rawValue)"
         render([
-            Theme.label("This hides the video from your lists."),
-            Theme.button("Hide video", primary: true) { [weak self] in
+            Theme.label("This hides the \(kind.rawValue) from your lists."),
+            Theme.button("Hide \(kind.rawValue)", primary: true) { [weak self] in
                 guard let self else { return }
                 self.perform {
                     try self.context.change(self.target, kind: .hide, enabled: true)

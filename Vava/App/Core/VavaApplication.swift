@@ -198,6 +198,8 @@ enum Agreement: String, CaseIterable {
 }
 
 @MainActor final class WelcomeScreen: UIViewController {
+    private static let consentRequiredMessage = "Accept the agreements to continue."
+
     var onContinue: ((Bool) -> Void)?
     var returning = false {
         didSet { if isViewLoaded { updateEntry() } }
@@ -213,12 +215,16 @@ enum Agreement: String, CaseIterable {
     private lazy var accept = Theme.icon("check", label: "Accept the agreements") { [weak self] in
         guard let self else { return }
         self.accepted.toggle()
+        if self.accepted, self.status.text == Self.consentRequiredMessage {
+            self.status.text = nil
+            self.status.isHidden = true
+        }
         self.updateCheckbox()
     }
     private lazy var enter = Theme.button("Continue", primary: true) { [weak self] in
         guard let self else { return }
         guard self.returning || self.accepted else {
-            self.showError("Accept the agreements to continue.")
+            self.showError(Self.consentRequiredMessage)
             return
         }
         self.onContinue?(!self.returning && self.accepted)
@@ -367,9 +373,7 @@ enum Agreement: String, CaseIterable {
                 nav.delegate = self
                 return nav
             }, animated: false)
-        if let shortsIndex = roots.firstIndex(where: { $0.1 == "shorts" }) {
-            selectedIndex = shortsIndex
-        }
+        selectedIndex = 0
         strip.axis = .horizontal
         strip.distribution = .fillEqually
         strip.backgroundColor = Theme.ink

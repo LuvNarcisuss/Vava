@@ -1,6 +1,6 @@
 # Product scope
 
-Vava follows Toli's five independent navigation stacks and its compact editorial layout. Shorts is selected when the main navigation opens. The Release Bundle ID is `com.vava.pingpong`. Debug testing uses `im.seex.sao2` with the Yu Sun team.
+Vava follows Toli's five independent navigation stacks and its compact editorial layout. The main navigation opens on its first tab, Academy. The Release Bundle ID is `com.vava.pingpong`. Debug testing uses `im.seex.sao2` with the Yu Sun team.
 
 | Screen | Behavior |
 | --- | --- |
