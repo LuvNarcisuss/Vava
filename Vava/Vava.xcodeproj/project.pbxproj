@@ -39,7 +39,7 @@
 		1BC7EFC3E0DA3654A8742950 /* like-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like-selected.png"; sourceTree = "<group>"; };
 		203BE2C60F73F7F2670D9A89 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		295E6E6A3081BE7BBF63FD46 /* ComicNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ComicNeue-Regular.ttf"; sourceTree = "<group>"; };
-		2CFC401C9F5C9149A2A56A79 /* Vava.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vava.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CFC401C9F5C9149A2A56A79 /* Vava.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vava.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33A85AABDA798C6D2505E903 /* Kalam-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kalam-Bold.ttf"; sourceTree = "<group>"; };
 		35D5FA7588F37D295C342C11 /* terms.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = terms.pdf; sourceTree = "<group>"; };
 		3744B1A1B42B6ABE66535F17 /* ravne-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ravne-review.jpg"; sourceTree = "<group>"; };
@@ -66,7 +66,7 @@
 		8CBCEE99ACA8F77C528D023C /* privacy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = privacy.pdf; sourceTree = "<group>"; };
 		8CEEBF60819BAF4D1FF05278 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
 		936F60034675AE39D39942CB /* save-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-outline.png"; sourceTree = "<group>"; };
-		9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */ = {isa = PBXFileReference; path = VavaCoins.storekit; sourceTree = "<group>"; };
+		9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = VavaCoins.storekit; sourceTree = "<group>"; };
 		A360E8AEE33F388355E93F02 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
 		A66122F570BA93EE04B20125 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		A6BC829B21087D4844916BF0 /* watch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watch.png; sourceTree = "<group>"; };
@@ -297,11 +297,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-					94589A7DCAC575AF8E4A7A9D = {
-						DevelopmentTeam = JPTS6M4T5B;
-					};
-				};
 			};
 			buildConfigurationList = 32CDE79E9E9FA293BAA579BB /* Build configuration list for PBXProject "Vava" */;
 			developmentRegion = en;

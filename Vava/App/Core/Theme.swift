@@ -287,6 +287,8 @@ extension UIView {
     private var refreshing = false
     private(set) var refreshOrder = 0
 
+    var showsHeadingInToolbar: Bool { true }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let top = Theme.stack(spacing: 8, axis: .horizontal)
@@ -299,7 +301,7 @@ extension UIView {
         }
         heading.accessibilityTraits.insert(.header)
         heading.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        top.addArrangedSubview(heading)
+        top.addArrangedSubview(showsHeadingInToolbar ? heading : UIView())
         top.addArrangedSubview(toolbar)
         let safe = view.safeAreaLayoutGuide
         for item in [top, scroll] {

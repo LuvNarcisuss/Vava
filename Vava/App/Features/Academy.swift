@@ -120,6 +120,7 @@ import UIKit
     private let course: Course
     private var writing = false
     private var unlocked: Bool { course.price == 0 || context.wallet.ledger.owned.contains(course.id) }
+    override var showsHeadingInToolbar: Bool { false }
 
     init(_ context: AppContext, course: Course) {
         self.course = course
@@ -131,6 +132,11 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         heading.text = course.title
+        heading.font = Theme.font(24, display: true)
+        heading.numberOfLines = 1
+        heading.adjustsFontSizeToFitWidth = true
+        heading.minimumScaleFactor = 0.75
+        heading.lineBreakMode = .byTruncatingTail
         toolbar.addArrangedSubview(
             courseActions(course) { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
@@ -150,7 +156,7 @@ import UIKit
 
     private func draw() {
         guard context.state.canShow(course) else {
-            render([Theme.label("This lesson is hidden from your lists.", color: Theme.secondary)])
+            render([heading, Theme.label("This lesson is hidden from your lists.", color: Theme.secondary)])
             toolbar.isHidden = true
             return
         }
@@ -166,7 +172,7 @@ import UIKit
             }
         }
         var views: [UIView] = [
-            image, courseAuthorButton(course),
+            heading, image, courseAuthorButton(course),
             Theme.label("\(course.level)  /  \(course.minutes) min", color: Theme.lime),
             Theme.label(course.detail, size: 20), save,
         ]

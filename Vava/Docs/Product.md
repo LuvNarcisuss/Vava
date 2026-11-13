@@ -4,7 +4,7 @@ Vava follows Toli's five independent navigation stacks and its compact editorial
 
 | Screen | Behavior |
 | --- | --- |
-| Academy | Search and filter training courses. Tap the lesson area to open its details or the avatar and name to open its credited coaching source. Report lessons or block a coaching source from the lesson menu. Read public coaching links. Unlock original exercises once with coins, save courses, and complete practice steps. |
+| Academy | Search and filter training courses. Tap the lesson area to open its details or the avatar and name to open its credited coaching source. The detail screen shows a single-line lesson title above the cover, below the navigation controls. Report lessons or block a coaching source from the lesson menu. Read public coaching links. Unlock original exercises once with coins, save courses, and complete practice steps. |
 | Watch | Tap anywhere on a match card to open the replay details. Filter, save, read credits, and open the publisher's original replay with internet access. |
 | Shorts | One real match recording at a time. Drag vertically to page through videos, expand search above the dimmed feed, tap the video to play or pause, double-tap to like, save, share, read Vava Editorial notes and add dated private comments or replies in half-height comments with playback underneath, visit publisher profiles, read credits, report clips, block publishers, and hide clips locally. Import videos through Photos and keep the copies on this device. |
 | Chats | Show a welcome card for an empty friend list. Save friends by name and email, open their conversations, keep drafts, and continue writing in Mail. |
