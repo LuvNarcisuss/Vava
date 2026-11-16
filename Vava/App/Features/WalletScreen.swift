@@ -45,6 +45,7 @@ import UIKit
             if let selected, context.wallet.price(for: selected) == nil { self.selected = nil }
             draw()
         }
+        await context.wallet.retryPendingPurchases()
         do {
             try await context.wallet.refresh()
         } catch is CancellationError {
@@ -55,7 +56,7 @@ import UIKit
     }
 
     override var refreshCompletionMessage: String? {
-        guard status == nil, !loadingPrices, context.wallet.paymentsAllowed,
+        guard status == nil, !loadingPrices, !context.wallet.hasPurchaseIssue, context.wallet.paymentsAllowed,
             CoinPack.all.contains(where: { context.wallet.price(for: $0) != nil })
         else { return nil }
         return "Prices updated"
@@ -72,11 +73,28 @@ import UIKit
         let summary = Theme.stack(
             [icon, Theme.stack([Theme.label("COIN BALANCE", size: 13, color: Theme.secondary), value])],
             axis: .horizontal)
-        var sections: [UIView] = [Theme.card([summary]), Theme.label("Coin packs", size: 25, display: true)]
+        var sections: [UIView] = [Theme.card([summary])]
+        if wallet.hasPurchaseIssue {
+            let retry = Theme.button(wallet.retryingPurchases ? "Checking purchases…" : "Retry purchases") {
+                [weak self] in
+                guard let self else { return }
+                self.perform { await self.context.wallet.retryPendingPurchases() }
+            }
+            retry.isEnabled = !wallet.retryingPurchases && !purchasing && !wallet.busy
+            sections.append(
+                Theme.card([
+                    Theme.label("Purchase needs attention", size: 22, display: true),
+                    Theme.label("Some purchases could not be added to your wallet. Retry to check them again."),
+                    retry,
+                ]))
+        }
+        sections.append(Theme.label("Coin packs", size: 25, display: true))
         let packs = CoinPack.all
         let availableCount = packs.filter { wallet.price(for: $0) != nil }.count
         let awaitingPrices = !started || loadingPrices
-        let canBuy = !awaitingPrices && !purchasing && !wallet.busy && wallet.paymentsAllowed
+        let canBuy =
+            !awaitingPrices && !purchasing && !wallet.busy && !wallet.retryingPurchases
+            && wallet.paymentsAllowed
         if let status {
             sections.append(Theme.label(status, color: Theme.coral))
         } else if !wallet.paymentsAllowed {

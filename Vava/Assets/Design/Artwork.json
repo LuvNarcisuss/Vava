@@ -259,5 +259,14 @@
     "sourceSHA256": "88447c811963a51fee5abe1817bebef90741cd9db97f8e1ac103bd7c50a47e21",
     "asset": "Assets/Assets.xcassets/icon-save-selected.imageset/image.png",
     "assetSHA256": "e95cf697aae92a7cbf5e957a9f9eab9bb01eccb7af8b54c38e21065fb9d1afd8"
+  },
+  {
+    "name": "icon-report",
+    "prompt": "Create a single upright report flag raster glyph for Vava's dark evergreen table-tennis iPhone interface. True transparent background. Bold, simple silhouette: flagpole at left, one gently waving rectangular pennant flowing right, rounded pole ends, warm ivory #FFF2D4 fill and a restrained deep athletic green #007845 contour like an inked retro sports icon. Keep it optically centered with about 16 percent transparent margin; medium line weight, readable at 32 points. Match the flat clean green-edged ivory icons in the existing app: no button container, no enclosing circle, no text, no exclamation mark, no drop shadow, no extra marks or checkerboard pixels.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/report.png",
+    "sourceSHA256": "9c3bf98b226fd1a2bf91f69b4b08b135729b0eba352fe08066ecc0d6888679b7",
+    "asset": "Assets/Assets.xcassets/icon-report.imageset/image.png",
+    "assetSHA256": "4bc00bc530bdd50a7212cd57657cb89ea4d01feca8cc8d9b1a15fdf7602f3b64"
   }
 ]

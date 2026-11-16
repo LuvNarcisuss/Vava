@@ -53,14 +53,22 @@ struct WalletLedger: Codable {
     private var recovery: Task<Void, Never>?
     private var products: [String: Product] = [:]
     private var catalogRequest: Task<Void, Error>?
+    private var failedTransactions: Set<UInt64> = []
     private(set) var ledger: WalletLedger
     private(set) var busy = false
     private(set) var active = true
+    private(set) var retryingPurchases = false
+    var hasPurchaseIssue: Bool { !failedTransactions.isEmpty }
 
     init(account: UUID) throws {
         self.account = account
         #if DEBUG
-            localStoreKit = ProcessInfo.processInfo.environment["VAVA_LOCAL_STOREKIT"] == "1"
+            let storeKitMode = ProcessInfo.processInfo.environment["VAVA_LOCAL_STOREKIT"]
+            #if targetEnvironment(simulator)
+                localStoreKit = storeKitMode != "0"
+            #else
+                localStoreKit = storeKitMode == "1"
+            #endif
         #else
             localStoreKit = false
         #endif
@@ -82,14 +90,42 @@ struct WalletLedger: Codable {
         observer = Task { [weak self] in
             for await result in Transaction.updates {
                 guard let self, self.active, !Task.isCancelled else { return }
-                try? await self.deliver(result)
+                await self.receive(result)
             }
         }
         recovery = Task { [weak self] in
-            for await result in Transaction.unfinished {
-                guard let self, self.active, !Task.isCancelled else { return }
-                try? await self.deliver(result)
-            }
+            await self?.retryPendingPurchases()
+        }
+    }
+
+    func retryPendingPurchases() async {
+        guard active, !retryingPurchases else { return }
+        retryingPurchases = true
+        notifyChange()
+        defer {
+            retryingPurchases = false
+            notifyChange()
+        }
+        for await result in Transaction.unfinished {
+            guard active, !Task.isCancelled else { return }
+            await receive(result)
+        }
+    }
+
+    private func receive(_ result: VerificationResult<Transaction>) async {
+        // Unverified fields only scope feedback; credit still requires full verification.
+        let transaction = result.unsafePayloadValue
+        guard active, transaction.appAccountToken == account,
+            accepts(transaction.environment), transaction.productType == .consumable
+        else { return }
+        if transaction.revocationDate != nil {
+            if failedTransactions.remove(transaction.id) != nil { notifyChange() }
+            return
+        }
+        do {
+            try await deliver(result)
+        } catch {
+            // Delivery retains the failure for the wallet's explicit retry flow.
         }
     }
 
@@ -184,6 +220,24 @@ struct WalletLedger: Codable {
     }
 
     private func deliver(_ result: VerificationResult<Transaction>) async throws {
+        let id = result.unsafePayloadValue.id
+        do {
+            try await creditVerifiedTransaction(result)
+            if failedTransactions.remove(id) != nil { notifyChange() }
+        } catch {
+            if active {
+                failedTransactions.insert(id)
+                notifyChange()
+                let failure = error as NSError
+                Self.log.error(
+                    "Purchase delivery failed with \(failure.domain, privacy: .public) \(failure.code). Retry is available."
+                )
+            }
+            throw error
+        }
+    }
+
+    private func creditVerifiedTransaction(_ result: VerificationResult<Transaction>) async throws {
         guard active, case .verified(let transaction) = result,
             accepts(transaction.environment),
             transaction.appAccountToken == account, transaction.revocationDate == nil,
@@ -211,6 +265,10 @@ struct WalletLedger: Codable {
         try JSONEncoder().encode(next).write(
             to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
         ledger = next
+        notifyChange()
+    }
+
+    private func notifyChange() {
         NotificationCenter.default.post(name: .walletChanged, object: self)
     }
 }

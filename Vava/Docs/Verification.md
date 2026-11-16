@@ -1,5 +1,17 @@
 # Verification record
 
+## November 16 wallet feedback and Tutorials repair
+
+Me now refreshes on wallet changes, failed delivery has persistent feedback and an explicit retry, and Tutorials describes learning instead of publishing. The pre-fix UI failures were reproduced. Four targeted tests and all 17 existing acceptance cases passed after the repair, including real storage-write failure and recovery, all nine local packs, and app/device restarts. The original 800-coin wallet and personal data were preserved. See [repair validation](Acceptance/2026-11-16/wallet-feedback-repair.md).
+
+## November 16 full function rerun
+
+See [full regression](Acceptance/2026-11-16/full-regression.md) for 17 distinct UI cases, all nine local coin pack purchases, failure and deferred-approval checks, app and simulator restarts, and preservation of the original 800-coin wallet. One test synchronization failure was corrected and rerun successfully; no app source changes were required in this rerun.
+
+## November 16 wallet launch-mode repair
+
+See [wallet regression](Acceptance/2026-11-16/wallet-regression.md) for the reproduced pre-fix failure, local transaction recovery, purchase persistence, cancellation and course-debit regression, and current Debug/Release build results. Apple sandbox and production checkout remain unverified.
+
 ## Local static checks
 
 - Ran XcodeGen to generate the iPhone-only project and its shared Debug Run / Release Archive scheme.

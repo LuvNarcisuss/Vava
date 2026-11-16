@@ -2,7 +2,7 @@ import AVFoundation
 import PhotosUI
 import UIKit
 
-@MainActor final class ProfileScreen: ListScreen {
+@MainActor final class ProfileScreen: ListScreen, UIGestureRecognizerDelegate {
     private enum Collection: String, CaseIterable {
         case shorts = "Shorts"
         case tutorials = "Tutorials"
@@ -12,15 +12,24 @@ import UIKit
 
     private var selection = Collection.shorts
     private var submissions: [Submission] = []
+    private let collectionPage = UIView()
+    private let collectionContent = Theme.stack()
+    private lazy var collectionBar = ProfileCollectionBar(Collection.allCases.map(\.rawValue)) {
+        [weak self] index in
+        self?.selectCollection(at: index)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         heading.text = "Me"
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(walletChanged), name: .walletChanged, object: context.wallet)
         toolbar.addArrangedSubview(
             Theme.icon("settings", label: "Settings") { [weak self] in
                 guard let self else { return }
                 self.push(SettingsScreen(self.context))
             })
+        configureCollectionPage()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -45,6 +54,8 @@ import UIKit
         draw()
     }
 
+    @objc private func walletChanged() { draw() }
+
     private func draw() {
         let profile = context.state.me
         let identity = ProfileHeader.identity(
@@ -62,24 +73,71 @@ import UIKit
             guard let self else { return }
             self.push(WalletScreen(self.context))
         }
-        let categories = Collection.allCases.map { item in
-            let button = Theme.button(item.rawValue, primary: item == selection) { [weak self] in
-                self?.selection = item
-                self?.draw()
-            }
-            if item == selection { button.accessibilityTraits.insert(.selected) }
-            return button
+        let summary = Theme.card([identity, ProfileHeader.divider(), metrics], spacing: 12)
+        var views = [summary, wallet]
+        if context.wallet.hasPurchaseIssue {
+            views.append(
+                Theme.label(
+                    "Some purchases could not be added to your wallet. Open Wallet to retry.",
+                    color: Theme.coral))
         }
-        let pick = Theme.stack(
-            categories, spacing: 6,
-            axis: traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
-        )
-        pick.distribution = .fillEqually
-        var views: [UIView] = [
-            identity, metrics, wallet, pick,
-        ]
+        views += [collectionBar, collectionPage]
+        render(views)
+        drawCollection()
+    }
+
+    private func configureCollectionPage() {
+        collectionPage.clipsToBounds = true
+        collectionPage.addSubview(collectionContent)
+        collectionContent.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionContent.topAnchor.constraint(equalTo: collectionPage.topAnchor),
+            collectionContent.leadingAnchor.constraint(equalTo: collectionPage.leadingAnchor),
+            collectionContent.trailingAnchor.constraint(equalTo: collectionPage.trailingAnchor),
+            collectionContent.bottomAnchor.constraint(lessThanOrEqualTo: collectionPage.bottomAnchor),
+            collectionPage.heightAnchor.constraint(greaterThanOrEqualToConstant: 180),
+        ])
+        let swipe = UIPanGestureRecognizer(target: self, action: #selector(pageCollection(_:)))
+        swipe.maximumNumberOfTouches = 1
+        swipe.delegate = self
+        collectionPage.addGestureRecognizer(swipe)
+        scroll.panGestureRecognizer.require(toFail: swipe)
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let pan = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+        let velocity = pan.velocity(in: collectionPage)
+        return abs(velocity.x) > abs(velocity.y) * 1.4
+    }
+
+    @objc private func pageCollection(_ pan: UIPanGestureRecognizer) {
+        guard pan.state == .ended else { return }
+        let distance = pan.translation(in: collectionPage).x
+        let velocity = pan.velocity(in: collectionPage).x
+        guard abs(distance) >= 44 || (abs(distance) >= 14 && abs(velocity) >= 350) else { return }
+        selectCollection(at: collectionBar.selectedIndex + (distance < 0 ? 1 : -1))
+    }
+
+    private func selectCollection(at index: Int) {
+        let categories = Collection.allCases
+        guard categories.indices.contains(index), categories[index] != selection else { return }
+        if !UIAccessibility.isReduceMotionEnabled {
+            let slide = CATransition()
+            slide.type = .push
+            slide.subtype = index > collectionBar.selectedIndex ? .fromRight : .fromLeft
+            slide.duration = 0.22
+            collectionPage.layer.add(slide, forKey: "collectionPage")
+        }
+        selection = categories[index]
+        drawCollection()
+    }
+
+    private func drawCollection() {
+        collectionBar.select(Collection.allCases.firstIndex(of: selection) ?? 0)
+        var views: [UIView] = []
         switch selection {
         case .shorts:
+            let works = context.ownedClips(from: submissions)
             views.append(
                 Theme.button("Add a video") { [weak self] in
                     guard let self else { return }
@@ -125,18 +183,24 @@ import UIKit
                 ? [Theme.label("No saved items yet.", color: Theme.secondary)]
                 : savedViews.rotated(by: refreshOrder)
         case .tutorials:
-            views.append(Theme.label("You haven’t published any tutorials.", color: Theme.secondary))
+            views.append(Theme.label("My learning", size: 22, display: true))
             let courses = context.catalog.courses.filter {
                 context.state.canShow($0)
                     && (context.wallet.ledger.owned.contains($0.id)
                         || !(context.state.practice[$0.id] ?? []).isEmpty)
             }
-            if !courses.isEmpty {
-                views.append(Theme.label("My learning", size: 22, display: true))
+            if courses.isEmpty {
+                views.append(
+                    Theme.label(
+                        "Start a lesson or unlock a practice plan to see it here.", color: Theme.secondary))
+            } else {
                 views += courses.rotated(by: refreshOrder).map(courseRow)
             }
         }
-        render(views)
+        for view in collectionContent.arrangedSubviews {
+            view.removeFromSuperview()
+        }
+        views.forEach(collectionContent.addArrangedSubview)
     }
 
     private func clips(with ids: Set<String>) -> [Clip] {
@@ -185,7 +249,7 @@ import UIKit
         let details = Theme.stack([title, Theme.label(bio, size: 16, color: Theme.secondary)], spacing: 4)
         let identity = Theme.stack([avatar, details], spacing: 12, axis: .horizontal)
         identity.alignment = .center
-        return Theme.card([identity])
+        return identity
     }
 
     static func metrics(_ values: [(String, Int)]) -> UIView {
@@ -205,7 +269,69 @@ import UIKit
         }
         let row = Theme.stack(columns, spacing: 4, axis: .horizontal)
         row.distribution = .fillEqually
-        return Theme.card([row])
+        return row
+    }
+
+    static func divider() -> UIView {
+        let line = UIView()
+        line.backgroundColor = Theme.line
+        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        return line
+    }
+}
+
+@MainActor private final class ProfileCollectionBar: UIView {
+    private var tabs: [(control: UIButton, label: UILabel, indicator: UIView)] = []
+    private(set) var selectedIndex = 0
+
+    init(_ titles: [String], onSelect: @escaping (Int) -> Void) {
+        super.init(frame: .zero)
+        let row = Theme.stack(spacing: 2, axis: .horizontal)
+        row.distribution = .fillEqually
+        row.semanticContentAttribute = .forceLeftToRight
+        Theme.stack([row, ProfileHeader.divider()], spacing: 0).pin(to: self)
+
+        for (index, title) in titles.enumerated() {
+            let control = UIButton(type: .custom)
+            control.accessibilityLabel = title
+            let label = Theme.label(title, size: 16, display: true)
+            label.numberOfLines = 1
+            label.textAlignment = .center
+            label.adjustsFontSizeToFitWidth = true
+            label.minimumScaleFactor = 0.6
+            label.isUserInteractionEnabled = false
+            label.isAccessibilityElement = false
+            label.pin(to: control, left: 3, bottom: 3, right: 3)
+
+            let indicator = UIView()
+            indicator.backgroundColor = Theme.lime
+            indicator.isUserInteractionEnabled = false
+            control.addSubview(indicator)
+            indicator.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                control.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+                indicator.centerXAnchor.constraint(equalTo: control.centerXAnchor),
+                indicator.bottomAnchor.constraint(equalTo: control.bottomAnchor),
+                indicator.widthAnchor.constraint(equalToConstant: 26),
+                indicator.heightAnchor.constraint(equalToConstant: 3),
+            ])
+            control.addAction(UIAction { _ in onSelect(index) }, for: .touchUpInside)
+            row.addArrangedSubview(control)
+            tabs.append((control, label, indicator))
+        }
+        select(0)
+    }
+
+    required init?(coder: NSCoder) { nil }
+
+    func select(_ index: Int) {
+        selectedIndex = index
+        for (position, tab) in tabs.enumerated() {
+            let selected = position == index
+            tab.label.textColor = selected ? Theme.lime : Theme.secondary
+            tab.indicator.isHidden = !selected
+            tab.control.accessibilityTraits = selected ? [.button, .selected] : [.button]
+        }
     }
 }
 
@@ -267,6 +393,15 @@ import UIKit
 
     private let publisher: Publisher
     private var selection: Works
+    private lazy var worksBar = ProfileCollectionBar(Works.allCases.map(\.rawValue)) {
+        [weak self] index in
+        guard let self else { return }
+        self.selection = Works.allCases[index]
+        self.draw()
+    }
+    private lazy var reportButton = Theme.icon("report", label: "Report content") { [weak self] in
+        self?.reportSingleWork()
+    }
 
     init(_ context: AppContext, publisher: Publisher, openTutorials: Bool = false) {
         self.publisher = publisher
@@ -279,6 +414,7 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         heading.text = "Publisher"
+        toolbar.addArrangedSubview(reportButton)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -308,6 +444,7 @@ import UIKit
         let works = context.catalog.shorts.filter { $0.publisherID == id }
         let total = context.state.totals(for: works)
         let courses = context.catalog.courses.filter { $0.author.id == id }
+        configureReportButton()
         let identity = ProfileHeader.identity(
             name: publisher.name,
             bio: courses.isEmpty ? "Recording source" : "Coaching reference",
@@ -320,7 +457,11 @@ import UIKit
             self.update { try self.context.library.setFollowing(id, enabled: !following) }
         }
         follow.isEnabled = !blocked
-        if following { follow.accessibilityTraits.insert(.selected) }
+        if following {
+            follow.accessibilityTraits.insert(.selected)
+            outline(follow, color: Theme.lime)
+            follow.setTitleColor(Theme.lime, for: .normal)
+        }
         let message = Theme.button("Message") { [weak self] in
             guard let self else { return }
             self.push(
@@ -330,15 +471,22 @@ import UIKit
                     publisher: self.publisher))
         }
         message.isEnabled = !blocked
+        outline(message, color: Theme.line)
         let block = Theme.button(blocked ? "Unblock" : "Block") { [weak self] in
             self?.changeBlock()
         }
+        block.backgroundColor = .clear
+        block.setTitleColor(Theme.coral, for: .normal)
+        let actionAxis: NSLayoutConstraint.Axis =
+            traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
         let actions = Theme.stack(
-            [follow, message, block], spacing: 6,
-            axis: traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
+            [follow, message, block], spacing: 8, axis: actionAxis
         )
-        actions.distribution = .fillEqually
-        var views = [identity, metrics]
+        if actionAxis == .horizontal {
+            follow.widthAnchor.constraint(equalTo: message.widthAnchor).isActive = true
+            block.setContentHuggingPriority(.required, for: .horizontal)
+        }
+        var views = [Theme.card([identity]), Theme.card([metrics])]
         if !works.isEmpty {
             views.append(Theme.label("Includes estimated activity", size: 12, color: Theme.secondary))
         }
@@ -346,17 +494,8 @@ import UIKit
         if let website = publisher.website {
             views.append(Theme.button("Open source website") { [weak self] in self?.open(website) })
         }
-        let categories = Works.allCases.map { item in
-            let button = Theme.button(item.rawValue, primary: item == selection) { [weak self] in
-                self?.selection = item
-                self?.draw()
-            }
-            if selection == item { button.accessibilityTraits.insert(.selected) }
-            return button
-        }
-        let picker = Theme.stack(categories, spacing: 6, axis: .horizontal)
-        picker.distribution = .fillEqually
-        views.append(picker)
+        worksBar.select(Works.allCases.firstIndex(of: selection) ?? 0)
+        views.append(worksBar)
         if blocked {
             views.append(
                 Theme.label("Works are hidden while this publisher is blocked.", color: Theme.secondary))
@@ -400,6 +539,45 @@ import UIKit
                     color: Theme.secondary))
         }
         render(views)
+    }
+
+    private func outline(_ button: UIButton, color: UIColor) {
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.layer.borderColor = color.cgColor
+    }
+
+    private var reportableWorks: [(id: String, title: String)] {
+        let clips = context.catalog.shorts.filter { $0.publisherID == publisher.id }.map { ($0.id, $0.title) }
+        let courses = context.catalog.courses.filter { $0.author.id == publisher.id }.map { ($0.id, $0.title) }
+        return (clips + courses).filter { !context.state.hidden.contains($0.0) }
+    }
+
+    private func configureReportButton() {
+        let items = reportableWorks
+        reportButton.isEnabled = !items.isEmpty
+        reportButton.alpha = items.isEmpty ? 0.45 : 1
+        reportButton.showsMenuAsPrimaryAction = items.count > 1
+        reportButton.menu =
+            items.count > 1
+            ? UIMenu(
+                title: "Choose content to report",
+                children: items.map { item in
+                    UIAction(title: item.title) { [weak self] _ in
+                        self?.reportWork(item.id, title: item.title)
+                    }
+                })
+            : nil
+    }
+
+    private func reportSingleWork() {
+        let items = reportableWorks
+        guard items.count == 1, let item = items.first else { return }
+        reportWork(item.id, title: item.title)
+    }
+
+    private func reportWork(_ id: String, title: String) {
+        reportContent(id, title: "Report \(title)") { [weak self] in self?.draw() }
     }
 
     private func changeBlock() {

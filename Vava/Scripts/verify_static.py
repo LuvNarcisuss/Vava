@@ -127,7 +127,7 @@ check('url(forResource: path, withExtension: nil, subdirectory: "Media")' in app
 check("lastKnownFileType = folder; name = Media; path = Assets/Content/Media;" in project, "Media folder reference")
 check('Bundle.main.decode("catalog")' in app and "URLSession" not in app, "On-device catalog and media")
 art = read_json("Assets/Design/Artwork.json")
-check(len(art) == 29, "29 individually generated artwork files")
+check(len(art) == 30, "30 individually generated artwork files")
 reaction_states = {
     "icon-like-outline": False, "icon-save-outline": False,
     "icon-like-selected": True, "icon-save-selected": True,
