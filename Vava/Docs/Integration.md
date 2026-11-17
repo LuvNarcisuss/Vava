@@ -1,14 +1,20 @@
 # Integration status
 
+Current presentation: all product pages now render as local H5 inside a React Native initialized WKWebView. See [local H5 architecture and current acceptance](LocalH5Migration.md). Earlier React Native runtime evidence below describes the preceding renderer and does not establish H5 acceptance.
+
+## Application framework
+
+The product interface renders every route as bundled local H5 in a React Native initialized WKWebView. Swift modules retain the current library, wallet, media and nearby communication services. The final isolated Debug build passed local H5 acceptance on Vava UI Acceptance, iPhone 17 Pro, iOS 26.0.1, including StoreKit Test success, cancellation and duplicate callbacks. See [current local H5 setup and verification](LocalH5Migration.md). The preceding React Native renderer was tested on Vava UI Acceptance; its historical evidence is retained separately in ReactNativeMigration.md.
+
 ## On-device library
 
 Vava uses the bundled Assets catalog and local profile, consent, activity, notes, course progress, imported videos, and wallet. First launch records acceptance under revision `2026-11-13.2`. The owner changed the reading links. The consent revision is retained. Debug uses Bundle ID `im.seex.sao2` with Yu Sun (`JPTS6M4T5B`). Release uses `com.vava.pingpong`. Each Bundle ID has its own app container. The on-device library preserves the profile identifier from a previous session file when present, then removes that session file.
 
-Short clips, photos, replay covers, and fonts are included in the app. Publisher replay, coaching, source, license, and agreement links need internet access. The app has no connected authentication, messaging, or cloud moderation. Imported Photos originals remain outside the app's copy and removal workflow.
+Short clips, photos, replay covers, and fonts are included in the app. Publisher replay, coaching, source, license, and agreement links need internet access. The app has no online authentication, message relay, or cloud moderation. Imported Photos originals remain outside the app's copy and removal workflow.
 
 ## Account access
 
-Logging out preserves the profile and its wallet. The saved sign-out state requires an explicit Log in action on the welcome screen. The current consent revision remains valid for that profile.
+Cold launch and sign-out both show the login screen. Both require a checked agreement box and an explicit Log in action. The native command validates the selection and writes consent when the revision changes. The existing profile and account-specific wallet are restored on login. A WebView reload within an already signed-in native process keeps that session.
 
 Account deletion records the request before clearing the profile, both wallet ledgers, and imported video copies. An interrupted deletion resumes before sign-in. A new profile gets a new account ID and accepts the current agreements.
 
@@ -38,6 +44,8 @@ Delivery failures are tracked per transaction in the current wallet session, log
 
 To check the Apple sandbox for `com.vava.pingpong`, use a Release-signed build for that Bundle ID with StoreKit Configuration set to None. Reconcile the seven supplied IDs in App Store Connect for `com.vava.pingpong` and create the two new IDs as consumables with the listed prices. Confirm signing, product metadata, pricing and availability, then verify catalog loading and purchase delivery using a Sandbox Apple Account. Use the `InAppPurchase` log category to distinguish missing consumables from a StoreKit request error. See [Apple's consumable setup](https://developer.apple.com/help/app-store-connect/manage-in-app-purchases/create-consumable-or-non-consumable-in-app-purchases) and [sandbox catalog troubleshooting](https://developer.apple.com/documentation/technotes/tn3186-troubleshooting-in-app-purchases-availability-in-the-sandbox).
 
+Local follow-up acceptance on November 16, 2026 verified successful purchases, cancellation, duplicate verified callbacks and cold-restart persistence in an isolated React Native application on Vava UI Acceptance. The original wallet and library remained byte-for-byte unchanged. See [local StoreKit evidence and limits](WalletStoreKitAcceptance.md).
+
 ## Shorts activity
 
 Bundled clips have stable publisher IDs and labeled estimates for likes, saves, and shares. The per-clip display adds locally saved likes, bookmarks, and completed system share actions to those estimates. Profile totals and work cards use that same calculation. Imported works start with zero activity and contribute only their own local interactions to the Me profile. Legacy local-library snapshots decode missing follow, block, and share fields as empty.
@@ -50,9 +58,15 @@ Each lesson credits a public coaching source. Its list entry, detail, and source
 
 Reporting a catalog clip or lesson stores the selected reason and timestamp in the protected app container and hides that item in the same write. The app keeps these reports as personal records. Review is unavailable. Blocking removes the publisher's works from discovery, search, and personal collections while preserving saved items and course access. Unblock from Settings to restore eligible works.
 
-## Contacts and drafts
+## Nearby chat and calls
 
-Chats uses the contacts saved by the current profile. Contact conversations retain drafts and open a Mail compose link when the user chooses to continue. Publisher drafts can be reopened from Chats and remain private. The app does not record external delivery. Blocking a publisher hides their drafts and works until unblocked.
+Chat discovery uses an encrypted Multipeer Connectivity session. Open Find players on two nearby iPhones, allow network access, confirm the other player's code and follow each other. Each installation proves possession of a stable signing key stored with its protected profile. Both peers enforce mutual follows and blocks before accepting a message or a call. A message becomes confirmed only after the receiving device saves it and acknowledges its identifier. Unconfirmed messages can be retried with the same identifier. No relay, background call delivery, or cross-device history sync is configured.
+
+A denied conversation creates a private notice in its owner's history. Editorial publisher identities cannot receive messages or calls. Earlier email contacts and drafts remain in the account snapshot for compatibility and are excluded from message history.
+
+Inbox controls save with the conversation. Opening a thread clears its unread marker. Deleting a row clears its pin and unread marker and hides it until there is new activity. Message history and the other player's inbox remain intact.
+
+Calls signal through the same connection. Audio uses AVAudioEngine voice processing. Video sends bounded front-camera frames only during the accepted call. Microphone or camera denial, loss of connection, and leaving the app end the call. Use two physical iPhones for message and call acceptance.
 
 Profile photos selected through Photos are stored as compact JPEGs with the profile. Owned videos display that photo. Catalog clips share their source image with the publisher profile.
 

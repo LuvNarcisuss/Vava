@@ -18,6 +18,8 @@ import Foundation
         var reports: [String: ContentReport]?
         var contacts: [String: ChatContact]?
         var drafts: [String: String]?
+        var chatIdentity: Data?
+        var chatRecords: [String: ChatHistory]?
     }
 
     private struct PreviousSession: Decodable {
@@ -158,38 +160,70 @@ import Foundation
         try update { $0.profile = Player(id: $0.profile.id, name: name, bio: bio, avatarJPEG: avatarJPEG) }
     }
 
-    func contacts() throws -> [ChatContact] {
-        Array((try current().contacts ?? [:]).values)
+    func hasChatIdentity() throws -> Bool { try current().chatIdentity != nil }
+
+    func chatIdentity(create: () -> Data) throws -> Data {
+        if let identity = try current().chatIdentity { return identity }
+        let identity = create()
+        try update { $0.chatIdentity = identity }
+        return identity
     }
 
-    func addContact(name: String, address: String) throws -> ChatContact {
-        let current = try current()
-        if let existing = current.contacts?.values.first(where: { $0.address == address }) {
-            return existing
+    func chatHistories() throws -> [ChatHistory] {
+        Array((try current().chatRecords ?? [:]).values)
+    }
+
+    @discardableResult
+    func addChatEntry(
+        _ entry: ChatEntry, for person: ChatPerson, coalesceNotice: Bool = false, markUnread: Bool = false
+    ) throws -> Bool {
+        var snapshot = try current()
+        var records = snapshot.chatRecords ?? [:]
+        var history = records[person.id] ?? ChatHistory(person: person, entries: [])
+        guard !history.entries.contains(where: { $0.id == entry.id }) else { return false }
+        history.person = person
+        if coalesceNotice, history.entries.last?.kind == .notice,
+            history.entries.last?.text == entry.text
+        {
+            history.entries.removeLast()
         }
-        let contact = ChatContact(id: UUID().uuidString, name: name, address: address)
-        try update { snapshot in
-            var contacts = snapshot.contacts ?? [:]
-            contacts[contact.id] = contact
-            snapshot.contacts = contacts
-        }
-        return contact
+        history.entries.append(entry)
+        var inbox = history.inbox ?? ChatInboxState()
+        inbox.hidden = false
+        if markUnread { inbox.unread = true }
+        history.inbox = inbox
+        records[person.id] = history
+        snapshot.chatRecords = records
+        try save(snapshot)
+        return true
     }
 
-    func savedDrafts() throws -> [String: String] {
-        try current().drafts ?? [:]
+    @discardableResult
+    func updateChatInbox(_ id: String, _ change: (inout ChatInboxState) -> Void) throws -> Bool {
+        var snapshot = try current()
+        guard var history = snapshot.chatRecords?[id] else { return false }
+        let previous = history.inbox ?? ChatInboxState()
+        var next = previous
+        change(&next)
+        guard next != previous else { return false }
+        history.inbox = next
+        snapshot.chatRecords?[id] = history
+        try save(snapshot)
+        return true
     }
 
-    func draft(for contactID: String) throws -> String {
-        try current().drafts?[contactID] ?? ""
-    }
-
-    func saveDraft(_ text: String, for contactID: String) throws {
-        try update { snapshot in
-            var drafts = snapshot.drafts ?? [:]
-            drafts[contactID] = text.isEmpty ? nil : text
-            snapshot.drafts = drafts
-        }
+    func updateChatEntry(
+        _ id: UUID, for person: ChatPerson, to kind: ChatEntryKind, showInInbox: Bool = false
+    ) throws {
+        var snapshot = try current()
+        guard var history = snapshot.chatRecords?[person.id],
+            let index = history.entries.firstIndex(where: { $0.id == id }),
+            history.entries[index].kind == .sending || history.entries[index].kind == .unconfirmed
+        else { return }
+        history.entries[index].kind = kind
+        if showInInbox { history.inbox?.hidden = false }
+        snapshot.chatRecords?[person.id] = history
+        try save(snapshot)
     }
 
     func post(clip: String, id: UUID, body: String, replyTo: UUID?) throws {

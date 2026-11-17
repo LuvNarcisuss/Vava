@@ -8,6 +8,7 @@ import re
 import subprocess
 import xml.etree.ElementTree as ET
 from uuid import UUID
+from zipfile import ZipFile
 
 from PIL import Image
 
@@ -32,7 +33,9 @@ def read_json(path):
 
 plist = plistlib.loads((root / "App/Info.plist").read_bytes())
 project = (root / "Vava.xcodeproj/project.pbxproj").read_text()
-app = "\n".join(path.read_text() for path in (root / "App").rglob("*.swift"))
+native_sources = list((root / "App/Core").glob("*.swift")) + list((root / "App/ReactNative").glob("*.swift"))
+app = "\n".join(path.read_text() for path in native_sources if path.name != "Theme.swift")
+react = "\n".join(path.read_text() for path in (root / "ReactNative").glob("*.tsx"))
 check(plist["CFBundleDisplayName"] == "Vava", "Vava display name")
 check(plist["CFBundleName"] == "$(PRODUCT_NAME)" and "PRODUCT_NAME = Vava;" in project, "Vava product name")
 check(plist["CFBundleIdentifier"] == "$(PRODUCT_BUNDLE_IDENTIFIER)", "Bundle ID follows build configuration")
@@ -44,12 +47,18 @@ check(project.count("DEVELOPMENT_TEAM = JPTS6M4T5B;") == 2, "Yu Sun signing team
 check(not re.search(r"SecItem|kSecAttr|TableTennis\.Auth", app), "No Keychain access")
 check(".atomic, .completeFileProtectionUntilFirstUserAuthentication" in app, "Protected local library persistence")
 check("2026-11-13.2" in app, "Preserved consent revision")
-check(re.search(r'case \.terms:\s+return URL\(\s*string: "https://docs\.google\.com/document/d/1HKDBNvyA7Vha5_sVVoc4P4Z8e-udZkrMlfdbTgVvdOs"', app), "Terms document URL")
-check(re.search(r'case \.privacy:\s+return URL\(\s*string: "https://docs\.google\.com/document/d/1_ldTUi2Y1bfT5x9BphLfDo3AwM7ZBpNxUnHFmwI2GFo"', app), "Privacy document URL")
-check(app.count("agreement.open(from: self)") == 2, "Shared Welcome and Settings agreement reader")
+check("https://docs.google.com/document/d/1HKDBNvyA7Vha5_sVVoc4P4Z8e-udZkrMlfdbTgVvdOs" in app, "Terms document URL")
+check("https://docs.google.com/document/d/1_ldTUi2Y1bfT5x9BphLfDo3AwM7ZBpNxUnHFmwI2GFo" in app, "Privacy document URL")
+check("SFSafariViewController" in app and "snapshot.agreements" in react, "Shared native agreement reader")
 check("terms.pdf in Resources" not in project and "privacy.pdf in Resources" not in project, "Historical PDFs stay outside the app bundle")
 check(not (root / "TableTennis.xcodeproj").exists(), "Retired project removed")
 check(plist["UISupportedInterfaceOrientations"] == ["UIInterfaceOrientationPortrait"], "Portrait orientation")
+check(set(plist["NSBonjourServices"]) == {"_vava-chat._tcp", "_vava-chat._udp"}
+      and all(plist.get(key) for key in ("NSLocalNetworkUsageDescription", "NSMicrophoneUsageDescription",
+                                       "NSCameraUsageDescription")), "Nearby chat discovery and call permissions")
+for name in ("ChatModels", "ChatService", "ChatTransport", "ChatMedia"):
+    check(f"{name}.swift in Sources" in project, f"{name} is in the iPhone target")
+check("mailto" not in app.lower(), "Chats does not substitute email for private messages")
 check("TARGETED_DEVICE_FAMILY = 1;" in project, "iPhone target")
 check(set(re.findall(r"TARGETED_DEVICE_FAMILY = ([^;]+);", project)) == {"1"}, "All configurations are iPhone-only")
 for key in ("SUPPORTS_MACCATALYST", "SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD", "SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"):
@@ -89,8 +98,46 @@ check("VavaCoins.storekit in Resources" not in project, "Local catalog stays out
 spec = (root / "project.yml").read_text()
 check(f"storeKitConfiguration: {storekit_path}" in spec and f'{local_mode}: "1"' in spec,
       "XcodeGen preserves the local StoreKit configuration")
-roots = re.findall(r'\("([A-Za-z]+)", "[a-z]+", [A-Za-z]+Screen\(context\)\)', app)
-check(roots == ["Academy", "Watch", "Shorts", "Chats", "Me"], "Five independent roots in tab order")
+package = read_json("package.json")
+lock = read_json("package-lock.json")
+check(package["dependencies"]["react-native"] == lock["packages"]["node_modules/react-native"]["version"], "Locked React Native version")
+check(package["dependencies"]["react"] == lock["packages"]["node_modules/react"]["version"], "Locked React version")
+check("withModuleName: \"Vava\"" in app and "AppRegistry.registerComponent('Vava'" in (root / "index.js").read_text(), "Matching React Native entrypoint")
+check("react-native-xcode.sh" in project and "react-native-xcode.sh" in spec, "Release JavaScript bundling phase")
+for name in ("VavaNative.swift", "VavaNativeBridge.m", "NativeVideo.swift", "NativeMediaActions.swift"):
+    check(f"{name} in Sources" in project, f"Native bridge source {name}")
+for name in [path.name for path in (root / "App/Features").glob("*.swift")] + ["Theme.swift"]:
+    check(f"{name} in Sources" not in project, f"UIKit screen excluded {name}")
+react_entry = (root / "ReactNative/WebApp.tsx").read_text()
+root_declaration = re.search(r"const tabs = \[(.*?)\]", react_entry, re.S)
+check(root_declaration is not None and re.findall(r'[\"\']([A-Za-z]+)[\"\']', root_declaration.group(1))
+      == ["Academy", "Watch", "Shorts", "Chats", "Me"], "Five local H5 navigation roots in order")
+check("previous.revision" in react_entry and "snapshotRevision" in app, "Snapshot ordering protection")
+check("PrivacyInfo.xcprivacy in Resources" in project and "PrivacyInfo.xcprivacy" in spec, "Privacy manifest retained by generator")
+check((root / "Vava.xcworkspace/contents.xcworkspacedata").exists(), "CocoaPods workspace exists")
+check((root / "Podfile.lock").exists(), "Native dependency lockfile exists")
+# The shipped archive must correspond to the current presentation source.
+with ZipFile(root / "Assets/LocalWeb/vava.zip") as archive:
+    members = archive.namelist()
+    check(all(not name.startswith("/") and ".." not in Path(name).parts for name in members), "Local H5 archive paths")
+    for name in ["index.html", "app.js", "app.css", "manifest.json", "art/icon-academy.png", "art/icon-me.png", "fonts/Kalam-Bold.ttf", "fonts/ComicNeue-Regular.ttf"]:
+        check(name in members, f"Local H5 resource {name}")
+    manifest = json.loads(archive.read("manifest.json"))
+    for name, expected in manifest["sources"].items():
+        check(digest(root / name) == expected, f"Local H5 archive matches {name}")
+    for directory in ["ReactNative", "Web"]:
+        check(all(str(path.relative_to(root)) in manifest["sources"] for path in (root / directory).iterdir() if path.is_file()), f"Local H5 manifest covers {directory}")
+    for name in ["index.html", "app.css"]:
+        check(archive.read(name) == (root / "Web" / name).read_bytes(), f"Local H5 packaged {name}")
+    check(archive.read("art/background.png") == (root / "Assets/Assets.xcassets/background.imageset/image.png").read_bytes(),
+          "Local H5 packaged the current screen background")
+    check(b"connect-src 'none'" in archive.read("index.html"), "Local H5 denies web network requests")
+check("vava.zip in Resources" in project and "Assets/LocalWeb/vava.zip" in spec, "Bundled H5 archive in generated project")
+check("LocalWebView.swift in Sources" in project, "Native local WebView included")
+page_host = (root / "App/ReactNative/LocalWebView.swift").read_text()
+check("allowingReadAccessTo: root" in page_host and "websiteDataStore = .nonPersistent()" in page_host, "Restricted local WebView storage")
+check("message.frameInfo.isMainFrame" in page_host and "entry.type != .symlink" in page_host, "Local bridge and archive validation")
+check("commands.has(message.command)" in (root / "ReactNative/App.tsx").read_text(), "H5 command allowlist")
 packs = read_json("Configuration/coin-products.json")
 check(len(packs) == 9, "Nine StoreKit consumables for the wallet grid")
 expected_packs = [
@@ -127,7 +174,7 @@ check('url(forResource: path, withExtension: nil, subdirectory: "Media")' in app
 check("lastKnownFileType = folder; name = Media; path = Assets/Content/Media;" in project, "Media folder reference")
 check('Bundle.main.decode("catalog")' in app and "URLSession" not in app, "On-device catalog and media")
 art = read_json("Assets/Design/Artwork.json")
-check(len(art) == 30, "30 individually generated artwork files")
+check(len(art) == 33, "33 artwork entries with generated and owner-provided provenance")
 reaction_states = {
     "icon-like-outline": False, "icon-save-outline": False,
     "icon-like-selected": True, "icon-save-selected": True,

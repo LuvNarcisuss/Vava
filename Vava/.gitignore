@@ -1,1 +1,7 @@
 !/Vava.xcodeproj/xcshareddata/xcschemes/Vava.xcscheme
+node_modules/
+Pods/
+.xcode.env.local
+build/
+!/Vava.xcworkspace/
+!/Vava.xcworkspace/contents.xcworkspacedata

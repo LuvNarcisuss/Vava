@@ -283,6 +283,7 @@ extension UIView {
     let toolbar = Theme.stack(spacing: 2, axis: .horizontal)
     let scroll = UIScrollView()
     let body = Theme.stack(spacing: 12)
+    private(set) var scrollBottomConstraint: NSLayoutConstraint?
     private let refresh = UIRefreshControl()
     private var refreshing = false
     private(set) var refreshOrder = 0
@@ -310,6 +311,8 @@ extension UIView {
         }
         scroll.addSubview(body)
         body.translatesAutoresizingMaskIntoConstraints = false
+        let bottom = scroll.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
+        scrollBottomConstraint = bottom
         NSLayoutConstraint.activate([
             top.topAnchor.constraint(equalTo: safe.topAnchor, constant: 8),
             top.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 18),
@@ -317,7 +320,7 @@ extension UIView {
             scroll.topAnchor.constraint(equalTo: top.bottomAnchor, constant: 8),
             scroll.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
             scroll.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            scroll.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+            bottom,
             body.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor, constant: 18),
             body.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor, constant: -18),
             body.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 6),

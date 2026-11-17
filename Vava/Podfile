@@ -1,0 +1,28 @@
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve("react-native/scripts/react_native_pods.rb", {paths: [process.argv[1]]})',
+  __dir__]).strip
+
+platform :ios, '16.0'
+prepare_react_native_project!
+project 'Vava.xcodeproj'
+
+target 'Vava' do
+  pod 'ZIPFoundation', '0.9.20'
+  config = use_native_modules!
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => __dir__
+  )
+
+  post_install do |installer|
+    react_native_post_install(installer, config[:reactNativePath], :mac_catalyst_enabled => false)
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |configuration|
+        configuration.build_settings['TARGETED_DEVICE_FAMILY'] = '1'
+        configuration.build_settings['SUPPORTS_MACCATALYST'] = 'NO'
+        configuration.build_settings['SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD'] = 'NO'
+        configuration.build_settings['SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD'] = 'NO'
+      end
+    end
+  end
+end

@@ -58,22 +58,21 @@ import UIKit
 
     private func draw() {
         let profile = context.state.me
-        let identity = ProfileHeader.identity(
-            name: profile.name, bio: profile.bio.isEmpty ? "Add a bio in Settings." : profile.bio,
-            photo: profile.avatarJPEG.flatMap { UIImage(data: $0) })
         let works = context.ownedClips(from: submissions)
         let totals = context.state.totals(for: works)
-        let metrics = ProfileHeader.metrics([
-            ("Likes", totals.likes), ("Saves", totals.saves),
-            ("Following", context.state.following.count),
-        ])
+        let summary = ProfileHeader.card(
+            name: profile.name, bio: profile.bio.isEmpty ? "Add a bio in Settings." : profile.bio,
+            photo: profile.avatarJPEG.flatMap { UIImage(data: $0) },
+            counts: [
+                ("Likes", totals.likes), ("Saves", totals.saves),
+                ("Following", context.state.following.count),
+            ])
         let wallet = Theme.button(
             "Wallet  ·  \(context.wallet.ledger.balance.formatted()) coins", primary: true
         ) { [weak self] in
             guard let self else { return }
             self.push(WalletScreen(self.context))
         }
-        let summary = Theme.card([identity, ProfileHeader.divider(), metrics], spacing: 12)
         var views = [summary, wallet]
         if context.wallet.hasPurchaseIssue {
             views.append(
@@ -242,7 +241,15 @@ import UIKit
 }
 
 @MainActor private enum ProfileHeader {
-    static func identity(name: String, bio: String, photo: UIImage? = nil, cover: URL? = nil) -> UIView {
+    static func card(
+        name: String, bio: String, photo: UIImage? = nil, cover: URL? = nil, counts: [(String, Int)]
+    ) -> UIView {
+        Theme.card(
+            [identity(name: name, bio: bio, photo: photo, cover: cover), divider(), metrics(counts)],
+            spacing: 12)
+    }
+
+    private static func identity(name: String, bio: String, photo: UIImage?, cover: URL?) -> UIView {
         let avatar = Theme.avatar(58, photo: photo, source: cover)
         let title = Theme.label(name, size: 26, display: true)
         title.accessibilityTraits.insert(.header)
@@ -252,7 +259,7 @@ import UIKit
         return identity
     }
 
-    static func metrics(_ values: [(String, Int)]) -> UIView {
+    private static func metrics(_ values: [(String, Int)]) -> UIView {
         let columns = values.map { title, value in
             let number = Theme.label(value.formatted(), size: 23, display: true, color: Theme.lime)
             let label = Theme.label(title, size: 14, color: Theme.secondary)
@@ -445,13 +452,13 @@ import UIKit
         let total = context.state.totals(for: works)
         let courses = context.catalog.courses.filter { $0.author.id == id }
         configureReportButton()
-        let identity = ProfileHeader.identity(
+        let summary = ProfileHeader.card(
             name: publisher.name,
             bio: courses.isEmpty ? "Recording source" : "Coaching reference",
-            cover: context.portrait(for: publisher))
-        let metrics = ProfileHeader.metrics([
-            ("Likes", total.likes), ("Saves", total.saves), ("Your follows", following ? 1 : 0),
-        ])
+            cover: context.portrait(for: publisher),
+            counts: [
+                ("Likes", total.likes), ("Saves", total.saves), ("Your follows", following ? 1 : 0),
+            ])
         let follow = Theme.button(following ? "Following" : "Follow", primary: !following) { [weak self] in
             guard let self else { return }
             self.update { try self.context.library.setFollowing(id, enabled: !following) }
@@ -464,11 +471,7 @@ import UIKit
         }
         let message = Theme.button("Message") { [weak self] in
             guard let self else { return }
-            self.push(
-                ChatThreadScreen(
-                    self.context,
-                    contact: ChatContact(id: self.publisher.id, name: self.publisher.name, address: nil),
-                    publisher: self.publisher))
+            self.openChat(with: ChatPerson(self.publisher))
         }
         message.isEnabled = !blocked
         outline(message, color: Theme.line)
@@ -486,7 +489,7 @@ import UIKit
             follow.widthAnchor.constraint(equalTo: message.widthAnchor).isActive = true
             block.setContentHuggingPriority(.required, for: .horizontal)
         }
-        var views = [Theme.card([identity]), Theme.card([metrics])]
+        var views = [summary]
         if !works.isEmpty {
             views.append(Theme.label("Includes estimated activity", size: 12, color: Theme.secondary))
         }

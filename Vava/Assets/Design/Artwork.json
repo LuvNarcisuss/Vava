@@ -199,12 +199,15 @@
   },
   {
     "name": "background",
-    "prompt": "Portrait iPhone edge-to-edge decorative background for a premium table tennis sports journal. Close-up low-angle photographic view of a dark forest green matte table tennis table surface. A faint warm-ivory sideline and a subtle seam in the lower right edge, soft studio shadows and quiet paper-grain finish. Almost entirely deep evergreen, with rich dark charcoal at top, unobtrusive tonal composition and vast calm negative space for cream UI text, no objects in upper 65%, no text, numbers or branding.",
+    "prompt": "Use case: stylized-concept. Asset type: full-bleed portrait background artwork for a table tennis iPhone app. Render a sophisticated editorial still life of an actual table tennis court: one unbranded dark burgundy rubber paddle with a wood handle, a small warm ivory ball, a real black mesh net and subtle painted court lines on a textured dark evergreen table. Use a near-overhead view with the net and paddle diagonally composed mostly along the right edge, ball close to the paddle, and the recognizable outline of the paddle still visible if cropped at the sides for a 9:19.5 iPhone. Keep the upper-center and left center calm and deeply shaded for an app logo and text; the lower third is dark matte green with subtle angled court markings, suitable for ivory controls. Retain visible detail along the right third, with soft low-key rim lighting, realistic materials and restrained burgundy and warm ivory accents. The overall image is low contrast, primarily deep pine green and teal black, clearly recognizable as table tennis even underneath a slight app scrim. Portrait 9:19 or tallest available portrait, edge-to-edge image. No text, letters, numbers, logos, watermarks, people, UI elements, bright white area, borders or grid of images.",
     "tool": "built-in ImageGen",
-    "source": "Assets/Design/Sources/background.png",
-    "sourceSHA256": "771a52a2f5671f24de67227f1108d772db6b259f1a06c0332e08b3e6e02e31a0",
+    "source": "Assets/Design/Sources/table-tennis-background.png",
+    "sourceSHA256": "4dac097265dc20dbd271bf701d905360b57f9a6832f9604c602ba448d1b1c58a",
     "asset": "Assets/Assets.xcassets/background.imageset/image.png",
-    "assetSHA256": "0fd10e623bcce2e7fa923c9846f96b276a3cf4d63448f28d9bd7b81a541fe1b3"
+    "assetSHA256": "4dac097265dc20dbd271bf701d905360b57f9a6832f9604c602ba448d1b1c58a",
+    "supersededSource": "Assets/Design/Sources/background.png",
+    "supersededSourceSHA256": "771a52a2f5671f24de67227f1108d772db6b259f1a06c0332e08b3e6e02e31a0",
+    "supersededPrompt": "Portrait iPhone edge-to-edge decorative background for a premium table tennis sports journal. Close-up low-angle photographic view of a dark forest green matte table tennis table surface. A faint warm-ivory sideline and a subtle seam in the lower right edge, soft studio shadows and quiet paper-grain finish. Almost entirely deep evergreen, with rich dark charcoal at top, unobtrusive tonal composition and vast calm negative space for cream UI text, no objects in upper 65%, no text, numbers or branding."
   },
   {
     "name": "welcome",
@@ -217,12 +220,16 @@
   },
   {
     "name": "AppIcon",
-    "prompt": "One iOS launcher icon with opaque full-bleed square dark emerald background. One vermilion table tennis paddle and one ivory ball with a short cream motion trail. Crisp centered sports editorial enamel emblem, thick simple silhouette, slight tactile printing detail, highly legible at tiny sizes, safe margins. No lettering, borders, words or extra objects.",
-    "tool": "built-in ImageGen",
-    "source": "Assets/Design/Sources/launcher.png",
-    "sourceSHA256": "01610698a363198a930ad6dfbbe3acc2ee5b653e939de538c6c03e7410475acc",
+    "origin": "Owner-provided logo, selected on 2026-11-17",
+    "tool": "Direct image copy; opaque RGB packaging for the launcher",
+    "originalPath": "/Users/apple/Downloads/247/logo.png",
+    "source": "Assets/Design/Sources/brand-logo.png",
+    "sourceSHA256": "d73d7438e5d4b93c834cebe50e7c28934b03216eb04868e963ca667765596163",
     "asset": "Assets/Assets.xcassets/AppIcon.appiconset/image.png",
-    "assetSHA256": "9534893d44d7e4af581e10e99ae34a24ed487b18073c81388f62fddbae34cc95"
+    "usage": "Authorized by the owner for Vava branding",
+    "supersededSource": "Assets/Design/Sources/launcher.png",
+    "supersededSourceSHA256": "01610698a363198a930ad6dfbbe3acc2ee5b653e939de538c6c03e7410475acc",
+    "assetSHA256": "05d708bc5418518e7ce5afaec7deba2c695529ce1bcf49df76580e3680b391df"
   },
   {
     "name": "icon-like-outline",
@@ -268,5 +275,34 @@
     "sourceSHA256": "9c3bf98b226fd1a2bf91f69b4b08b135729b0eba352fe08066ecc0d6888679b7",
     "asset": "Assets/Assets.xcassets/icon-report.imageset/image.png",
     "assetSHA256": "4bc00bc530bdd50a7212cd57657cb89ea4d01feca8cc8d9b1a15fdf7602f3b64"
+  },
+  {
+    "name": "icon-call",
+    "prompt": "Create one original flat raster iPhone control icon for Vava, a retro evergreen table tennis app. Glyph: a classic telephone handset tilted diagonally upward with the earpieces clearly defined, recognizable voice-call silhouette. Use pale warm ivory #FFF2D4 fill and a thin deep athletic emerald #007845 outline. Center the single glyph on a square true alpha transparent canvas with margins of around 13 percent. Crisp, clear at toolbar size, flat, no badge, no enclosing container, no text, no extra marks or shadows.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/call.png",
+    "sourceSHA256": "6f4007e95403e8531eca001b62d0fda2b8ebe9e9cce042d7e315f3aa9c5ecfaf",
+    "asset": "Assets/Assets.xcassets/icon-call.imageset/image.png",
+    "assetSHA256": "7441154c75f9b870ff4d34b345f143e3f29e419651f5d376c2dec5a7a58910c6"
+  },
+  {
+    "name": "icon-video",
+    "prompt": "Create one original flat raster iPhone control icon for Vava, a retro evergreen table tennis app. Glyph: a front-facing rectangular video-camera body with rounded corners and a small trapezoid lens pointing to the right, recognizable video-call silhouette. Use pale warm ivory #FFF2D4 fill and a thin deep athletic emerald #007845 outline. Center the single glyph on a square true alpha transparent canvas with margins of around 13 percent. Crisp, clear at toolbar size, flat, no badge, no enclosing container, no text, no extra marks or shadows.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/video.png",
+    "sourceSHA256": "639a79922f1defb1d1014a33d71449a086ee4fa978a4e750a3613ecf6607b74e",
+    "asset": "Assets/Assets.xcassets/icon-video.imageset/image.png",
+    "assetSHA256": "7f756d302f025fad4fd627e518f49b37d571fe43c0bf4412f282008ffdbaf1ca"
+  },
+  {
+    "name": "brand-logo",
+    "origin": "Owner-provided logo, selected on 2026-11-17",
+    "tool": "Direct image copy without visual alterations",
+    "originalPath": "/Users/apple/Downloads/247/logo.png",
+    "source": "Assets/Design/Sources/brand-logo.png",
+    "sourceSHA256": "d73d7438e5d4b93c834cebe50e7c28934b03216eb04868e963ca667765596163",
+    "asset": "Assets/Assets.xcassets/brand-logo.imageset/image.png",
+    "assetSHA256": "d73d7438e5d4b93c834cebe50e7c28934b03216eb04868e963ca667765596163",
+    "usage": "Authorized by the owner for Vava branding"
   }
 ]

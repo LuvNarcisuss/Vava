@@ -112,7 +112,7 @@ struct WalletLedger: Codable {
         }
     }
 
-    private func receive(_ result: VerificationResult<Transaction>) async {
+    func receive(_ result: VerificationResult<Transaction>) async {
         // Unverified fields only scope feedback; credit still requires full verification.
         let transaction = result.unsafePayloadValue
         guard active, transaction.appAccountToken == account,

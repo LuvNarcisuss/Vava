@@ -1,0 +1,18 @@
+{
+  "extends": "@react-native/typescript-config",
+  "compilerOptions": {
+    "strict": true,
+    "types": [
+      "react",
+      "react-native"
+    ]
+  },
+  "include": [
+    "ReactNative/**/*.ts",
+    "ReactNative/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "Pods"
+  ]
+}

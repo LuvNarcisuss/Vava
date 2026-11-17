@@ -22,6 +22,24 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_vava-chat._tcp</string>
+		<string>_vava-chat._udp</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Vava uses your camera during video calls.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Vava connects to nearby players for messages and calls.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Vava uses your microphone during calls.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Kalam-Bold.ttf</string>
@@ -37,5 +55,7 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

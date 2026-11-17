@@ -1,0 +1,106 @@
+@font-face {
+  font-family: Kalam-Bold;
+  src: url("fonts/Kalam-Bold.ttf");
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: ComicNeue-Regular;
+  src: url("fonts/ComicNeue-Regular.ttf");
+  font-weight: 100 900;
+  font-display: swap;
+}
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: var(--viewport-height, 100%);
+  overflow: hidden;
+  background: #0d211f;
+  color: #fff2d4;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+}
+body {
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  font-family: ComicNeue-Regular, sans-serif;
+}
+button,
+input,
+textarea {
+  font: inherit;
+}
+.vava-dialog {
+  max-width: min(85vw, 420px);
+  max-height: 80vh;
+  overflow: auto;
+  border: 1px solid #45614f;
+  border-radius: 22px;
+  padding: 22px;
+  background: #1a3830;
+  color: #fff2d4;
+}
+.vava-dialog::backdrop {
+  background: #0009;
+}
+.vava-dialog h2 {
+  font-family: Kalam-Bold, sans-serif;
+  margin-top: 0;
+}
+.vava-dialog button,
+.failure button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 10px;
+  border: 1px solid #45614f;
+  border-radius: 12px;
+  color: #fff2d4;
+  background: #0d211f;
+}
+.vava-dialog button.danger {
+  color: #ff6b52;
+}
+.vava-short-video-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(13 33 31 / 70%),
+    transparent 18%,
+    transparent 51%,
+    rgb(13 33 31 / 88%)
+  );
+}
+[data-testid="shorts-swipe-surface"][role="button"] {
+  touch-action: none;
+}
+.vava-refresh-status {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  z-index: 1;
+  transform: translateX(-50%);
+  pointer-events: none;
+  color: #d4f07a;
+  background: #0d211f;
+  border: 1px solid #45614f;
+  border-radius: 14px;
+  padding: 4px 12px;
+  font-size: 13px;
+}
+.failure {
+  position: relative;
+  flex: 1;
+  padding: 24px;
+}
+.failure-content {
+  position: relative;
+}
+
+[aria-modal="true"] { max-height: var(--viewport-height, 100%); }
