@@ -1,7 +1,7 @@
 # Vava iPhone project
 
 - Read Docs/Product.md and Docs/Integration.md before editing behavior or configuration.
-- Use React Native and TypeScript for the iOS shell. Render every product screen and navigation stack as local HTML/CSS/JavaScript through React Native for Web in a bundled WebView. Read Docs/LocalH5Migration.md. Keep Swift native modules for protected persistence, AVFoundation, StoreKit 2, and nearby communication. Target iOS 16 or later. Support iPhone only.
+- Use React Native and TypeScript for the iOS shell. Render every product screen and navigation stack as local HTML/CSS/JavaScript through React Native for Web in a bundled WebView. Read Docs/LocalH5Migration.md. Keep Swift native modules for protected persistence, AVFoundation, StoreKit 1, and nearby communication. Target iOS 16 or later. Support iPhone only.
 - Use Vava for the app display name, project, app target, and shared scheme. Use `im.seex.sao2` and Yu Sun (`JPTS6M4T5B`) for Debug testing. Use `com.vava.pingpong` for Release. Keep personal activity in the protected app container and app resources under Assets.
 - Keep five independent navigation roots in order: Academy, Watch, Shorts, Chats, Me. Open the first tab by default.
 - Use English for project artifacts and app-owned text. Use original image-model raster glyphs and backgrounds and bundled OFL typefaces.

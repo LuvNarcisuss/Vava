@@ -5,3 +5,7 @@ Pods/
 build/
 !/Vava.xcworkspace/
 !/Vava.xcworkspace/contents.xcworkspacedata
+
+!/Vava.xcworkspace/xcshareddata/
+!/Vava.xcworkspace/xcshareddata/swiftpm/
+!/Vava.xcworkspace/xcshareddata/swiftpm/Package.resolved

@@ -56,3 +56,7 @@ Installed the new Debug build on **Vava UI Acceptance**, iPhone 17 Pro, **iOS 26
 Evidence: `/tmp/vava-workspace-build.wdkEU1/WorkspaceBuild.xcresult` and `/tmp/vava-touch-acceptance.iNN0lq/DeviceResults.xcresult`. This run covered the publisher profile and the five listed refresh routes. Nearby player discovery and StoreKit purchases were outside its scope.
 
 A follow-up Shorts XCUITest on the same simulator passed with 1 test, 0 failures, and 0 skips. A downward drag on the first clip displayed `Shorts updated` and advanced to the second clip. An upward drag advanced to the third clip, two downward drags returned to the first clip, and an upward drag from the first clip advanced to the second. Evidence: `/tmp/vava-shorts-acceptance.LCGp33/ShortsResults.xcresult`.
+
+## StoreKit 1 repair on November 17, 2026
+
+The active wallet now uses StoreKit 1 as requested by the owner. Earlier StoreKit 2 purchase evidence above remains historical. See [the diagnosis, receipt verification boundary and new acceptance record](StoreKit1Repair.md). The presentation remains local H5 through the React Native shell.

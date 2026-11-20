@@ -67,10 +67,12 @@ final class VavaLocalWebView: UIView, WKNavigationDelegate {
         if #available(iOS 16.4, *) { page.isInspectable = _isDebugAssertConfiguration() }
         addSubview(page)
         observers.append(NotificationCenter.default.addObserver(forName: VavaNative.callFrame, object: nil, queue: .main) { [weak self] notification in
-            guard let self, !self.frameInFlight, Date().timeIntervalSince(self.lastFrame) >= 0.1,
-                  let image = notification.object as? UIImage, let bytes = image.jpegData(compressionQuality: 0.65) else { return }
-            self.lastFrame = Date(); self.frameInFlight = true
-            self.page.callAsyncJavaScript("window.dispatchEvent(new CustomEvent('vava-call-frame', {detail: frame}))", arguments: ["frame": "data:image/jpeg;base64," + bytes.base64EncodedString()], in: nil, in: .page) { [weak self] _ in self?.frameInFlight = false }
+            guard let image = notification.object as? UIImage, let bytes = image.jpegData(compressionQuality: 0.65) else { return }
+            self?.deliverCallFrame(bytes, event: "vava-call-frame")
+        })
+        observers.append(NotificationCenter.default.addObserver(forName: VavaNative.callPreviewFrame, object: nil, queue: .main) { [weak self] notification in
+            guard let bytes = notification.object as? Data else { return }
+            self?.deliverCallFrame(bytes, event: "vava-call-preview-frame")
         })
         observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
             self?.page.evaluateJavaScript("document.querySelectorAll('video').forEach(video => video.pause())")
@@ -78,6 +80,16 @@ final class VavaLocalWebView: UIView, WKNavigationDelegate {
         observers.append(NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
             self?.page.evaluateJavaScript("window.dispatchEvent(new Event('vava-playback'))")
         })
+    }
+    private func deliverCallFrame(_ bytes: Data, event: String) {
+        guard !frameInFlight, Date().timeIntervalSince(lastFrame) >= 0.1 else { return }
+        lastFrame = Date()
+        frameInFlight = true
+        page.callAsyncJavaScript(
+            "window.dispatchEvent(new CustomEvent(event, { detail: frame }))",
+            arguments: ["event": event, "frame": "data:image/jpeg;base64," + bytes.base64EncodedString()],
+            in: nil, in: .page
+        ) { [weak self] _ in self?.frameInFlight = false }
     }
     required init?(coder: NSCoder) { nil }
     override func layoutSubviews() { super.layoutSubviews(); page.frame = bounds }

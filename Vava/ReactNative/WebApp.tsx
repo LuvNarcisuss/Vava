@@ -302,6 +302,7 @@ function Screen({ route }: { route: Route }) {
     case "shorts":
       return <Shorts selectedID={route.id} />;
     case "Chats":
+    case "callPreview":
     case "discovery":
     case "player":
     case "thread":

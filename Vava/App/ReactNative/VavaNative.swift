@@ -5,9 +5,11 @@ import UIKit
 @objc(VavaNative) @MainActor final class VavaNative: RCTEventEmitter {
     static weak var shared: VavaNative?
     static let callFrame = Notification.Name("Vava.ReactNative.CallFrame")
+    static let callPreviewFrame = Notification.Name("Vava.ReactNative.CallPreviewFrame")
     private var library: LocalLibrary?
     private var wallet: Wallet?
     private var chat: ChatService?
+    private var callPreview: LocalCallPreview?
     private var catalog: Catalog?
     private var knownPeople: [String: ChatPerson] = [:]
     private var snapshotRevision: UInt64 = 0
@@ -56,7 +58,10 @@ import UIKit
         }
         super.invalidate()
     }
-    func suspend() { chat?.suspend() }
+    func suspend() {
+        stopCallPreview()
+        chat?.suspend()
+    }
     func resume() { chat?.resume() }
 
     @objc(request:payload:resolver:rejecter:)
@@ -119,6 +124,7 @@ import UIKit
 
     private func leave() {
         signedIn = false
+        stopCallPreview()
         chat?.stop()
         wallet?.stop()
         chat = nil
@@ -129,6 +135,7 @@ import UIKit
     private func execute(_ command: String, payload: NSDictionary) async throws -> String? {
         let library = try openLibrary()
         if command == "bootstrap" {
+            stopCallPreview()
             try library.reload()
             try library.finishPendingDeletion()
             return nil
@@ -289,16 +296,32 @@ import UIKit
             return try chat.send(string("text", in: payload), to: person(string("id", in: payload)),
                                  retry: (payload["retryID"] as? String).flatMap(UUID.init(uuidString:)))
         case "chatCall":
+            stopCallPreview()
             connectVideoFrames(chat)
             return try chat.requestCall(to: person(string("id", in: payload)), video: payload["video"] as? Bool == true)
         case "callAnswer":
+            stopCallPreview()
             connectVideoFrames(chat)
             chat.answer(try identifier("id", in: payload))
         case "callEnd": chat.closeCall(try identifier("id", in: payload))
         case "callMute": chat.setMuted(payload["muted"] as? Bool == true)
+        case "callPreviewStart":
+            guard chat.call == nil else { throw AppFailure("Close the current call first.") }
+            stopCallPreview()
+            let preview = LocalCallPreview()
+            callPreview = preview
+            return try await preview.start(video: payload["video"] as? Bool == true) { frame in
+                NotificationCenter.default.post(name: Self.callPreviewFrame, object: frame)
+            }
+        case "callPreviewStop": stopCallPreview()
         default: throw AppFailure("This action is unavailable.")
         }
         return nil
+    }
+
+    private func stopCallPreview() {
+        callPreview?.stop()
+        callPreview = nil
     }
 
     private func connectVideoFrames(_ chat: ChatService) {
@@ -410,6 +433,8 @@ import UIKit
                             "entries": try json(wallet.ledger.entries), "busy": wallet.busy,
                             "retrying": wallet.retryingPurchases, "hasPurchaseIssue": wallet.hasPurchaseIssue,
                             "paymentsAllowed": wallet.paymentsAllowed,
+                            "catalogStatus": wallet.catalogStatus.rawValue,
+                            "catalogMessage": wallet.catalogMessage,
                             "packs": CoinPack.all.map { pack -> [String: Any] in
                                 var value: [String: Any] = ["productID": pack.productID, "coins": pack.coins]
                                 if let price = wallet.price(for: pack) { value["price"] = price }

@@ -85,7 +85,8 @@ check(scheme.find(".//ArchiveAction").get("buildConfiguration") == "Release", "R
 launch = scheme.find("./LaunchAction")
 storekit_path = "Configuration/VavaCoins.storekit"
 storekit_reference = launch.find("StoreKitConfigurationFileReference")
-check(storekit_reference is not None and storekit_reference.get("identifier") == f"../../{storekit_path}",
+check(storekit_reference is not None and storekit_reference.get("identifier") == f"../{storekit_path}"
+      and (root / "Vava.xcworkspace" / storekit_reference.get("identifier")).resolve().is_file(),
       "Vava Debug Run selects the local StoreKit catalog")
 local_mode = "VAVA_LOCAL_STOREKIT"
 launch_flag = launch.find(f"EnvironmentVariables/EnvironmentVariable[@key='{local_mode}']")
@@ -96,7 +97,8 @@ check(scheme.find(f"./ArchiveAction//EnvironmentVariable[@key='{local_mode}']") 
       "Archive has no local StoreKit settings")
 check("VavaCoins.storekit in Resources" not in project, "Local catalog stays outside the app bundle")
 spec = (root / "project.yml").read_text()
-check(f"storeKitConfiguration: {storekit_path}" in spec and f'{local_mode}: "1"' in spec,
+check(f"storeKitConfiguration: {storekit_path}" in spec and f'{local_mode}: "1"' in spec
+      and 'schemePathPrefix: "../"' in spec,
       "XcodeGen preserves the local StoreKit configuration")
 package = read_json("package.json")
 lock = read_json("package-lock.json")
@@ -162,11 +164,17 @@ check([(offer["displayPrice"], offer["productID"], offer["type"], offer["referen
       == [(pack["referenceUSD"], pack["productID"], "Consumable", f"{pack['coins']:,} Coins") for pack in packs],
       "Local StoreKit consumables match the wallet catalog")
 wallet = (root / "App/Core/Wallet.swift").read_text()
+check(all(api in wallet for api in ["SKProductsRequest", "SKPaymentQueue", "SKMutablePayment", "SKReceiptRefreshRequest"])
+      and not any(api in wallet for api in ["Product.products", "Transaction.updates", "Transaction.unfinished", "VerificationResult<Transaction>"]),
+      "Wallet uses StoreKit 1 exclusively")
+check("case .valid = await receipt.validate()" in wallet
+      and "transactionIdentifier == transactionID" in wallet, "Receipt validation precedes transaction credit")
+
 check(re.search(r"#if DEBUG\s+.*?" + local_mode + r".*?#else\s+localStoreKit = false\s+#endif", wallet, re.S),
       "Local wallet opt-in is compiled out of Release")
 check('localStoreKit ? localFile : appleFile' in wallet and '"LocalStoreKitWallets"' in wallet,
       "Local StoreKit uses a separate wallet file")
-check(re.search(r"localStoreKit\s*\? environment == \.xcode\s*: environment == \.sandbox \|\| environment == \.production", wallet),
+check(re.search(r"localStoreKit\s*\? environment == \.xcode\s*: environment == \.sandbox \|\| environment == \.productionSandbox \|\| environment == \.production", wallet),
       "Purchase delivery requires the wallet's StoreKit environment")
 check(not (root / "Configuration/backend.json").exists(), "Retired backend configuration removed")
 check("backend.json" not in project and "storage/v1" not in app and "rest/v1" not in app, "No active backend routes")

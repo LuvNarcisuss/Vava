@@ -595,7 +595,15 @@ export function WalletScreen() {
   const wallet = snapshot.wallet!;
   const pack = wallet.packs.find((item) => item.productID === selected);
   return (
-    <Page title="Wallet" onRefresh={() => command("walletRefresh")}>
+    <Page
+      title="Wallet"
+      onRefresh={async () => {
+        const result = await command("walletRefresh");
+        return result?.snapshot.wallet?.catalogStatus === "ready"
+          ? result
+          : undefined;
+      }}
+    >
       <Card>
         <Label title>{wallet.balance.toLocaleString("en")} coins</Label>
         <Label muted>Unlock more practice plans.</Label>
@@ -668,7 +676,7 @@ export function WalletScreen() {
           setBuying(false);
         }}
       />
-      <Label muted>Pull down to reload prices.</Label>
+      <Label muted>{wallet.catalogMessage}</Label>
       <Label title>Wallet activity</Label>
       {wallet.entries.map((entry) => (
         <Card key={entry.id}>

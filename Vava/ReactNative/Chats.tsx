@@ -20,6 +20,7 @@ import {
   Message,
   NativeCallVideo,
   Person,
+  request,
   Snapshot,
 } from "./native";
 import { Route, useApp } from "./state";
@@ -411,7 +412,7 @@ function MessageBubble({ entry, person }: { entry: Message; person: Person }) {
 }
 
 function Thread({ person: original }: { person: Person }) {
-  const { snapshot, command, back, active } = useApp();
+  const { snapshot, command, navigate, back, active } = useApp();
   const person = currentPerson(snapshot, original);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
@@ -486,6 +487,17 @@ function Thread({ person: original }: { person: Person }) {
             void command("chatCall", { id: person.id, video: true });
           }}
         />
+        <Icon
+          name="more"
+          label="View profile"
+          onPress={() =>
+            navigate(
+              person.isPublisher
+                ? { name: "publisher", id: person.id }
+                : { name: "player", person },
+            )
+          }
+        />
       </View>
       <FlatList
         ref={list}
@@ -550,7 +562,79 @@ function Thread({ person: original }: { person: Person }) {
   );
 }
 
+function CallPreview() {
+  const { active } = useApp();
+  const attempt = useRef(0);
+  const [preview, setPreview] = useState<{ id: number; video: boolean }>();
+  const [status, setStatus] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!active) {
+      setPreview(undefined);
+      setStatus("");
+      setBusy(false);
+      return;
+    }
+    return () => {
+      attempt.current += 1;
+      void request("callPreviewStop").catch(() => {});
+    };
+  }, [active]);
+
+  async function start(video: boolean) {
+    const id = ++attempt.current;
+    setPreview({ id, video });
+    setStatus("");
+    setBusy(true);
+    try {
+      const result = await request("callPreviewStart", { video });
+      if (attempt.current === id) setStatus(result.message ?? "");
+    } catch {
+      if (attempt.current === id) {
+        setStatus("Preview stopped. Try again to restart it.");
+      }
+    } finally {
+      if (attempt.current === id) setBusy(false);
+    }
+  }
+
+  return (
+    <Page title="Call preview">
+      {preview?.video && (
+        <NativeCallVideo
+          key={preview.id}
+          localPreview
+          style={chatStyles.callVideo}
+          accessibilityLabel="Your camera preview"
+        />
+      )}
+      <View accessibilityLiveRegion="polite">
+        <Label muted>
+          {busy
+            ? "Checking access…"
+            : status || "Check your microphone and front camera on this device."}
+        </Label>
+      </View>
+      <Button
+        title="Voice preview"
+        disabled={busy}
+        onPress={() => void start(false)}
+      />
+      <Button
+        title="Video preview"
+        primary
+        disabled={busy}
+        onPress={() => void start(true)}
+      />
+    </Page>
+  );
+}
+
 export function ChatsScreen({ route }: { route: Route }) {
+  if (route.name === "callPreview") {
+    return <CallPreview />;
+  }
   if (route.name === "discovery") {
     return <Discovery />;
   }
@@ -720,6 +804,7 @@ const chatStyles = StyleSheet.create({
     fontSize: 23,
     color: "#FFF2D4",
     flex: 1,
+    minWidth: 0,
   },
   messages: { padding: 18, gap: 12, flexGrow: 1 },
   messageRow: { flexDirection: "row", paddingRight: "15%" },

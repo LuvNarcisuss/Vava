@@ -1,0 +1,42 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "x86_64",
+        "deviceId" : "C6BBDAF1-EF03-4F2E-980F-CB8C472367D6",
+        "deviceName" : "Vava UI Acceptance",
+        "modelName" : "iPhone 17 Pro",
+        "osBuildNumber" : "23A8464",
+        "osVersion" : "26.0.1",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 3,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "VavaH5Acceptance · Built with macOS 15.7.2",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1794898772.375,
+  "passedTests" : 3,
+  "result" : "Passed",
+  "skippedTests" : 0,
+  "startTime" : 1794898591.048,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - VavaH5Acceptance",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 3
+}

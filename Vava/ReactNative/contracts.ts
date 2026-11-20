@@ -109,6 +109,14 @@ export interface Snapshot {
     retrying: boolean;
     hasPurchaseIssue: boolean;
     paymentsAllowed: boolean;
+    catalogStatus:
+      | "idle"
+      | "loading"
+      | "ready"
+      | "partial"
+      | "unavailable"
+      | "failed";
+    catalogMessage: string;
   };
   chat: {
     players: Person[];

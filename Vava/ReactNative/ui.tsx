@@ -218,6 +218,7 @@ export function Page({
   const [refreshing, setRefreshing] = useState(false);
   const [notice, setNotice] = useState("");
   async function refresh() {
+    setNotice("");
     setRefreshing(true);
     try {
       const result = await (onRefresh ? onRefresh() : app.command("refresh"));

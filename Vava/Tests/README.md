@@ -1,3 +1,7 @@
+# Current StoreKit 1 verification
+
+The active tests now use SKProductsRequest and SKPaymentQueue through the production wallet. A test-only observer captures real purchased queue transactions for duplicate callback replay; tests no longer use StoreKit 2 Transaction.latest or VerificationResult. The H5 suite includes an empty-catalog rejection and recovery regression. Local receipts are validated before credit. See [current repair evidence](../Docs/StoreKit1Repair.md). The older runtime outcomes below predate this migration unless explicitly dated otherwise.
+
 # Wallet acceptance tests
 
 ## Current React Native and StoreKit coverage
@@ -17,7 +21,7 @@ xcodebuild -workspace Vava.xcworkspace -scheme VavaWalletAcceptance -configurati
 
 Use a new result path for each run. Keep Metro serving the current workspace for the React Native host. Use only the printed isolated Bundle ID for manual purchase checks. Never reset the owner's container or its StoreKit history. Record hashes of the original application's library and wallet before and after the run. Local StoreKit success does not establish Apple sandbox or production readiness.
 
-The harness alone enables `SKIncludeConsumableInAppPurchaseHistory` so the test can retrieve a finished consumable's signed result for duplicate delivery. Its display name is `Vava Wallet Test`, and the StoreKit fixture belongs to the test bundle. The test ends with a synthetic local profile that can be reopened for manual UI acceptance. Run on the designated simulator; finished-consumable history requires iOS 18 or later.
+The harness embeds the native shell for offline startup; the recorder retains the real StoreKit 1 purchased callback for duplicate delivery. Its display name is `Vava Wallet Test`, and the StoreKit fixture belongs to the test bundle. The test ends with a synthetic local profile that can be reopened for manual UI acceptance. Run on the designated simulator; finished-consumable history requires iOS 18 or later.
 
 ## Historical wallet feedback UI regression
 

@@ -77,21 +77,32 @@ export function NativeVideo({
     </View>
   );
 }
-export function NativeCallVideo({ style, accessibilityLabel }: any) {
+export function NativeCallVideo({ style, accessibilityLabel, localPreview }: any) {
   const [frame, setFrame] = useState<string>();
   useEffect(() => {
+    const name = localPreview ? "vava-call-preview-frame" : "vava-call-frame";
     const receive = ((event: CustomEvent) =>
       setFrame(event.detail)) as EventListener;
-    window.addEventListener("vava-call-frame", receive);
-    return () => window.removeEventListener("vava-call-frame", receive);
-  }, []);
+    const clear = () => setFrame(undefined);
+    window.addEventListener(name, receive);
+    if (localPreview) window.addEventListener("vava-playback", clear);
+    return () => {
+      window.removeEventListener(name, receive);
+      if (localPreview) window.removeEventListener("vava-playback", clear);
+    };
+  }, [localPreview]);
   return (
     <View style={style}>
       {frame && (
         <img
           src={frame}
           alt={accessibilityLabel || "Remote video"}
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            transform: localPreview ? "scaleX(-1)" : undefined,
+          }}
         />
       )}
     </View>

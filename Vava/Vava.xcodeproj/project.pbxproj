@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		02994670EBE7200BDD727993 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3B3DF4815E17DE8DACEADF /* Wallet.swift */; };
-		058174FDA52FD677FA1C0EEA /* libPods-Vava.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46229B3C70D1CD4228A5CB6A /* libPods-Vava.a */; };
 		0ADC62D286A49B369C7D124D /* VavaApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412B10A34B572E93B1E83E0 /* VavaApplication.swift */; };
+		0E7577BE5F2ED6A516517955 /* Licenses in Resources */ = {isa = PBXBuildFile; fileRef = D6E94D3EF1050A1876F9B744 /* Licenses */; };
 		0FB838E769CCA9974D01313E /* Kalam-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33A85AABDA798C6D2505E903 /* Kalam-Bold.ttf */; };
 		103B6943EF38D6F2192D1E72 /* Media in Resources */ = {isa = PBXBuildFile; fileRef = E072667ED506E35B33214B05 /* Media */; };
 		2CEEEA956FACC9A3759A9149 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17457AF0350A0EDD6DB62F2F /* ChatService.swift */; };
 		35C77D3EDDC6F4FD61C3CD8F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B098906FE34BCF792B197BD /* Models.swift */; };
+		3679546FFBA0459A21F7F170 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F3B43EF58269870951C8DC7 /* StoreKit.framework */; };
 		455D8EBFB2DC544DABCD4B2E /* NativeMediaActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322A2563B7BBB42BDC661C3B /* NativeMediaActions.swift */; };
 		4B4E0D5A18AD48367DD6E762 /* ComicNeue-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F26F1AC99F26234192B0E704 /* ComicNeue-OFL.txt */; };
 		55AE0B8946E7EDDA8DEA266C /* vava.zip in Resources */ = {isa = PBXBuildFile; fileRef = 95AF9F5E043F4A086B12BE6D /* vava.zip */; };
@@ -22,7 +23,9 @@
 		7B56D272F2F61D3CF478C5CE /* VavaNativeBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F1AB3E16617417F5ED48F0A /* VavaNativeBridge.m */; };
 		7E46185F7E7DFD7E08C36BAE /* ChatMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA72D296209BCAD444322883 /* ChatMedia.swift */; };
 		8956D74D426979439776DE18 /* ComicNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 295E6E6A3081BE7BBF63FD46 /* ComicNeue-Regular.ttf */; };
+		9244C465ED08BEA0094B6AD9 /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = BFDD59F736194238421C6C40 /* TPInAppReceipt */; };
 		9440AC15F53747513372990E /* Kalam-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = B6156C5BD6A23B6B91DD22F2 /* Kalam-OFL.txt */; };
+		98868280D2926EDEC975CD06 /* libPods-Vava.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4A0806DB07D86D6985144E /* libPods-Vava.a */; };
 		A05865AD13A0B5AB3EAFF4D4 /* coin-products.json in Resources */ = {isa = PBXBuildFile; fileRef = E5824A3D49C2B224DB276A11 /* coin-products.json */; };
 		AE4A5B1FE604483BDDA78526 /* VavaNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F6ABC8E3EEEA59FDAE5C27 /* VavaNative.swift */; };
 		B648E66DAC560F3D88718D0E /* NativeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4852F008A3EFAFE86D0ED7BF /* NativeVideo.swift */; };
@@ -37,6 +40,7 @@
 		02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		0842D7D65A6BD30966C5A6D7 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
 		08F6666AFCB368DEACE50592 /* Content.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Content.tsx; sourceTree = "<group>"; };
+		0A54F31F71A2AD1F8D886FD6 /* table-tennis-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table-tennis-background.png"; sourceTree = "<group>"; };
 		1146BF7410A7070A16CA0782 /* LocalLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLibrary.swift; sourceTree = "<group>"; };
 		128526FCAC5A133E1165CAB3 /* app.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = app.css; sourceTree = "<group>"; };
 		1316B8E5BE32A9DA55490C7E /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
@@ -61,9 +65,9 @@
 		3CCBF7A36475CF2E801CD882 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		3D93E2577398FF57A30089FD /* call.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call.png; sourceTree = "<group>"; };
 		43A8A0C1C6CC8516103C3EA9 /* state.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = state.tsx; sourceTree = "<group>"; };
-		46229B3C70D1CD4228A5CB6A /* libPods-Vava.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vava.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4852F008A3EFAFE86D0ED7BF /* NativeVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeVideo.swift; sourceTree = "<group>"; };
 		48986339B811BEFD16E0A8C0 /* like-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like-outline.png"; sourceTree = "<group>"; };
+		4C4FCEC9E9005B6849B2F7D5 /* brand-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brand-logo.png"; sourceTree = "<group>"; };
 		4C741FB69FFBEA2DC31378CD /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		52AF9E999DFA57972CD2E0A2 /* save-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-selected.png"; sourceTree = "<group>"; };
 		5606206B6F163AD9691DE5C1 /* WebApp.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = WebApp.tsx; sourceTree = "<group>"; };
@@ -73,6 +77,7 @@
 		6ABA2087180357B93774D1C0 /* chats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chats.png; sourceTree = "<group>"; };
 		6BAC3D21DBF252B1E5784CE3 /* contracts.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = contracts.ts; sourceTree = "<group>"; };
 		6BFA9EF6EAB25A47F8F8B8C3 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		6CB772EF784B98ADDCB50D07 /* Pods-Vava.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vava.debug.xcconfig"; path = "Target Support Files/Pods-Vava/Pods-Vava.debug.xcconfig"; sourceTree = "<group>"; };
 		7648803FB433DA191B9E57D8 /* academy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = academy.png; sourceTree = "<group>"; };
 		772863D41AA8AA59381CBEC6 /* muted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = muted.png; sourceTree = "<group>"; };
 		7B6CA2F41DB5E6300421753B /* privacy.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = privacy.md; sourceTree = "<group>"; };
@@ -81,6 +86,7 @@
 		8A0EF72BAB5B06774C8874A1 /* Chats.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Chats.tsx; sourceTree = "<group>"; };
 		8CBCEE99ACA8F77C528D023C /* privacy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = privacy.pdf; sourceTree = "<group>"; };
 		8CEEBF60819BAF4D1FF05278 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
+		8F3B43EF58269870951C8DC7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9028318A4093294D34C70FCF /* native.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = native.ts; sourceTree = "<group>"; };
 		90968B265A33E11350973D13 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		936F60034675AE39D39942CB /* save-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-outline.png"; sourceTree = "<group>"; };
@@ -104,14 +110,16 @@
 		BCFCCE3EB1561C8B8E974709 /* club-rally-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "club-rally-review.jpg"; sourceTree = "<group>"; };
 		BD3B3DF4815E17DE8DACEADF /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		BE2128FABB813D2BA6A0D58D /* open-rally-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "open-rally-review.jpg"; sourceTree = "<group>"; };
-		C0E7827D0452FAD11D7415CB /* Pods-Vava.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vava.release.xcconfig"; path = "Target Support Files/Pods-Vava/Pods-Vava.release.xcconfig"; sourceTree = "<group>"; };
 		C0FDD331785C44779EBDF1B2 /* native.web.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = native.web.tsx; sourceTree = "<group>"; };
 		C437CCEEF6958ADF4090201B /* Artwork.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Artwork.json; sourceTree = "<group>"; };
+		C6477FFB4C584CE1E7F90363 /* Pods-Vava.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vava.release.xcconfig"; path = "Target Support Files/Pods-Vava/Pods-Vava.release.xcconfig"; sourceTree = "<group>"; };
 		C9E3F39ECA8ADC1A1D9372F8 /* platform.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = platform.tsx; sourceTree = "<group>"; };
 		CDEE150A7E276CF308A7F03D /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		D4F6ABC8E3EEEA59FDAE5C27 /* VavaNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VavaNative.swift; sourceTree = "<group>"; };
+		D6E94D3EF1050A1876F9B744 /* Licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Licenses; path = Assets/Licenses; sourceTree = SOURCE_ROOT; };
 		D7A2A7C581DF77350655344E /* App.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = App.tsx; sourceTree = "<group>"; };
 		D8CCB0C6FF8DCF73D76D963E /* LocalWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalWebView.swift; sourceTree = "<group>"; };
+		D983F179767F2BAD5154AF30 /* ScreenBackground.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = ScreenBackground.tsx; sourceTree = "<group>"; };
 		DC71E98B98384F0E5543524A /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		E072667ED506E35B33214B05 /* Media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Media; path = Assets/Content/Media; sourceTree = SOURCE_ROOT; };
 		E24B85992F9BDC664239982F /* terms.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = terms.md; sourceTree = "<group>"; };
@@ -119,19 +127,21 @@
 		E7F2E3827600C4AA1F35A2E1 /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
 		EDF5F1FFE2FF7EA546CEB9E9 /* Profile.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Profile.tsx; sourceTree = "<group>"; };
 		F26F1AC99F26234192B0E704 /* ComicNeue-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ComicNeue-OFL.txt"; sourceTree = "<group>"; };
-		F5A6977241EBDE16D808D439 /* Pods-Vava.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vava.debug.xcconfig"; path = "Target Support Files/Pods-Vava/Pods-Vava.debug.xcconfig"; sourceTree = "<group>"; };
 		F79972B372A698E4AB010461 /* coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin.png; sourceTree = "<group>"; };
 		F9F1376DCB44CEBC8037D214 /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		FA4A0806DB07D86D6985144E /* libPods-Vava.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vava.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB7F3582C23229C9C8EBE0B2 /* catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = catalog.json; sourceTree = "<group>"; };
 		FC1E3059F4D630797BF1FF0B /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9D596F321879DFB9C0B83F33 /* Frameworks */ = {
+		67B455B27E8F0B5F574CDE22 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				058174FDA52FD677FA1C0EEA /* libPods-Vava.a in Frameworks */,
+				9244C465ED08BEA0094B6AD9 /* TPInAppReceipt in Frameworks */,
+				3679546FFBA0459A21F7F170 /* StoreKit.framework in Frameworks */,
+				98868280D2926EDEC975CD06 /* libPods-Vava.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,6 +172,7 @@
 				DC71E98B98384F0E5543524A /* add.png */,
 				203BE2C60F73F7F2670D9A89 /* back.png */,
 				4C741FB69FFBEA2DC31378CD /* background.png */,
+				4C4FCEC9E9005B6849B2F7D5 /* brand-logo.png */,
 				3D93E2577398FF57A30089FD /* call.png */,
 				6ABA2087180357B93774D1C0 /* chats.png */,
 				CDEE150A7E276CF308A7F03D /* check.png */,
@@ -187,6 +198,7 @@
 				0842D7D65A6BD30966C5A6D7 /* share.png */,
 				AA796B0A1F0A46B46A8EC7FA /* shorts.png */,
 				B4C97832C0C06B54B2F9728C /* sound.png */,
+				0A54F31F71A2AD1F8D886FD6 /* table-tennis-background.png */,
 				1316B8E5BE32A9DA55490C7E /* video.png */,
 				A6BC829B21087D4844916BF0 /* watch.png */,
 				AEAFCD7F097021EF60EA3628 /* welcome.png */,
@@ -208,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				5CF0C2CD8B3BB805996A0661 /* Assets.xcassets */,
+				D6E94D3EF1050A1876F9B744 /* Licenses */,
 				B3E1BC71255F64ABB3492CBD /* Agreements */,
 				FD9FDC26092F4F7794EED74D /* AgreementSources */,
 				74CB972A87E0D4A0697D602D /* Content */,
@@ -263,6 +276,7 @@
 				6BAC3D21DBF252B1E5784CE3 /* contracts.ts */,
 				9028318A4093294D34C70FCF /* native.ts */,
 				EDF5F1FFE2FF7EA546CEB9E9 /* Profile.tsx */,
+				D983F179767F2BAD5154AF30 /* ScreenBackground.tsx */,
 				1C512FCF1CE62EA991F49D67 /* Shorts.tsx */,
 				43A8A0C1C6CC8516103C3EA9 /* state.tsx */,
 				ADB600D228D11ECAAD4A709E /* ui.tsx */,
@@ -285,11 +299,11 @@
 			path = Web;
 			sourceTree = "<group>";
 		};
-		A5EBCB0A629401B33C828D6D /* Pods */ = {
+		AF26E7BA6828230DAA942A89 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F5A6977241EBDE16D808D439 /* Pods-Vava.debug.xcconfig */,
-				C0E7827D0452FAD11D7415CB /* Pods-Vava.release.xcconfig */,
+				6CB772EF784B98ADDCB50D07 /* Pods-Vava.debug.xcconfig */,
+				C6477FFB4C584CE1E7F90363 /* Pods-Vava.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -343,6 +357,15 @@
 			path = Review;
 			sourceTree = "<group>";
 		};
+		E552EEA3EF228C5915C85C58 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8F3B43EF58269870951C8DC7 /* StoreKit.framework */,
+				FA4A0806DB07D86D6985144E /* libPods-Vava.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EB186EE41358203BDF0BD487 = {
 			isa = PBXGroup;
 			children = (
@@ -355,18 +378,10 @@
 				0A93603A8E30F71C769C66B9 /* Configuration */,
 				93BC4468690A04C1F4935778 /* ReactNative */,
 				9DFEFD135A1967C23B23819F /* Web */,
+				E552EEA3EF228C5915C85C58 /* Frameworks */,
 				055B2A8DE2A94031EB9E8915 /* Products */,
-				A5EBCB0A629401B33C828D6D /* Pods */,
-				FC5F3EB3C9BB43C116C343A2 /* Frameworks */,
+				AF26E7BA6828230DAA942A89 /* Pods */,
 			);
-			sourceTree = "<group>";
-		};
-		FC5F3EB3C9BB43C116C343A2 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				46229B3C70D1CD4228A5CB6A /* libPods-Vava.a */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		FD9FDC26092F4F7794EED74D /* AgreementSources */ = {
@@ -385,19 +400,22 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3AC96D2053E60E1099AECBE4 /* Build configuration list for PBXNativeTarget "Vava" */;
 			buildPhases = (
-				7C00285C7BAFC25C3A4F5A7C /* [CP] Check Pods Manifest.lock */,
+				56005042EC9AE5CAF02F7745 /* [CP] Check Pods Manifest.lock */,
 				58D22D855FAA8FF35183E081 /* Sources */,
 				DE4F6D655D4AE4AFC74C9F22 /* Resources */,
+				67B455B27E8F0B5F574CDE22 /* Frameworks */,
 				E87B2C51E8CD831A03AB4F2B /* Bundle React Native code and images */,
-				9D596F321879DFB9C0B83F33 /* Frameworks */,
-				AEC3D5B5211F03F3D63A8EEF /* [CP] Embed Pods Frameworks */,
-				16E22BDFB9870781266C5C72 /* [CP] Copy Pods Resources */,
+				016BE71312B4C537AE313998 /* [CP] Embed Pods Frameworks */,
+				D622FEFF35439B8EF41934C2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Vava;
+			packageProductDependencies = (
+				BFDD59F736194238421C6C40 /* TPInAppReceipt */,
+			);
 			productName = Vava;
 			productReference = 2CFC401C9F5C9149A2A56A79 /* Vava.app */;
 			productType = "com.apple.product-type.application";
@@ -420,6 +438,9 @@
 			);
 			mainGroup = EB186EE41358203BDF0BD487;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F3A189F38779255FB3B8E8F0 /* XCRemoteSwiftPackageReference "TPInAppReceipt" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 055B2A8DE2A94031EB9E8915 /* Products */;
 			projectDirPath = "";
@@ -440,6 +461,7 @@
 				8956D74D426979439776DE18 /* ComicNeue-Regular.ttf in Resources */,
 				0FB838E769CCA9974D01313E /* Kalam-Bold.ttf in Resources */,
 				9440AC15F53747513372990E /* Kalam-OFL.txt in Resources */,
+				0E7577BE5F2ED6A516517955 /* Licenses in Resources */,
 				103B6943EF38D6F2192D1E72 /* Media in Resources */,
 				F6BA88623966A761B4FD1E31 /* PrivacyInfo.xcprivacy in Resources */,
 				64BC9442EF46E711B789E343 /* catalog.json in Resources */,
@@ -451,28 +473,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		16E22BDFB9870781266C5C72 /* [CP] Copy Pods Resources */ = {
+		016BE71312B4C537AE313998 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7C00285C7BAFC25C3A4F5A7C /* [CP] Check Pods Manifest.lock */ = {
+		56005042EC9AE5CAF02F7745 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -494,25 +516,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEC3D5B5211F03F3D63A8EEF /* [CP] Embed Pods Frameworks */ = {
+		D622FEFF35439B8EF41934C2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E87B2C51E8CD831A03AB4F2B /* Bundle React Native code and images */ = {
@@ -635,7 +657,7 @@
 		};
 		1A633F97C7C4E27DCAA09D38 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5A6977241EBDE16D808D439 /* Pods-Vava.debug.xcconfig */;
+			baseConfigurationReference = 6CB772EF784B98ADDCB50D07 /* Pods-Vava.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -662,7 +684,7 @@
 		};
 		3EA8BCEA05D0F58F28ED8CA4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0E7827D0452FAD11D7415CB /* Pods-Vava.release.xcconfig */;
+			baseConfigurationReference = C6477FFB4C584CE1E7F90363 /* Pods-Vava.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -789,6 +811,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F3A189F38779255FB3B8E8F0 /* XCRemoteSwiftPackageReference "TPInAppReceipt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tikhop/TPInAppReceipt.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BFDD59F736194238421C6C40 /* TPInAppReceipt */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3A189F38779255FB3B8E8F0 /* XCRemoteSwiftPackageReference "TPInAppReceipt" */;
+			productName = TPInAppReceipt;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9B39D7ED3443063E9E405678 /* Project object */;
 }

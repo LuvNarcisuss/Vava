@@ -35,7 +35,7 @@ export const NativeVideo = requireNativeComponent<
   }
 >("VavaVideo");
 export const NativeCallVideo =
-  requireNativeComponent<ViewProps>("VavaCallVideo");
+  requireNativeComponent<ViewProps & { localPreview?: boolean }>("VavaCallVideo");
 
 // Every command returns a fresh snapshot after a successful operation.
 // bootstrap, refresh, login {accepted}, signOut, deleteAccount
@@ -47,3 +47,4 @@ export const NativeCallVideo =
 // chatStart, chatOpen/chatClose/chatHide {id}, chatInbox {id,pinned?,unread?}
 // chatFollow/chatBlock {id,enabled}, chatSend {id,text,retryID?}
 // chatCall {id,video}, callAnswer/callEnd {id}, callMute {muted}
+// callPreviewStart {video}, callPreviewStop

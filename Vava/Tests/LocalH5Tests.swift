@@ -5,6 +5,48 @@ import XCTest
 @testable import Vava
 
 @MainActor final class LocalH5Tests: XCTestCase {
+    func testEmptyCatalogIsFailureAndCanRecover() async throws {
+        guard Bundle.main.bundleIdentifier?.hasPrefix("com.vava.h5acceptance.") == true else {
+            XCTFail("Catalog tests require an isolated application.")
+            return
+        }
+        let fixture = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "VavaCoins", withExtension: "storekit"))
+        var configuration = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: fixture)) as? [String: Any])
+        configuration["products"] = []
+        let emptyFixture = FileManager.default.temporaryDirectory.appendingPathComponent("EmptyCatalog.storekit")
+        try JSONSerialization.data(withJSONObject: configuration).write(to: emptyFixture)
+        defer { try? FileManager.default.removeItem(at: emptyFixture) }
+        let emptySession = try SKTestSession(contentsOf: emptyFixture)
+        emptySession.disableDialogs = true
+        let wallet = try Wallet(account: UUID())
+        defer { wallet.stop() }
+        do {
+            try await wallet.refresh()
+            XCTFail("An empty StoreKit catalog must not report a successful refresh.")
+        } catch {
+            XCTAssertFalse(error is CancellationError)
+        }
+        XCTAssertTrue(CoinPack.all.allSatisfy { wallet.price(for: $0) == nil })
+        XCTAssertEqual(wallet.catalogStatus, .unavailable)
+        var partial = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: fixture)) as? [String: Any])
+        partial["products"] = Array(try XCTUnwrap(partial["products"] as? [[String: Any]]).prefix(1))
+        let partialFixture = FileManager.default.temporaryDirectory.appendingPathComponent("PartialCatalog.storekit")
+        try JSONSerialization.data(withJSONObject: partial).write(to: partialFixture)
+        defer { try? FileManager.default.removeItem(at: partialFixture) }
+        let partialSession = try SKTestSession(contentsOf: partialFixture)
+        try await wallet.refresh()
+        XCTAssertEqual(wallet.catalogStatus, .partial)
+        XCTAssertEqual(CoinPack.all.filter { wallet.price(for: $0) != nil }.count, 1)
+        let session = try SKTestSession(contentsOf: fixture)
+        session.disableDialogs = true
+        try await wallet.refresh()
+        XCTAssertEqual(CoinPack.all.filter { wallet.price(for: $0) != nil }.count, 9)
+        XCTAssertEqual(wallet.catalogStatus, .ready)
+        XCTAssertEqual(wallet.ledger.balance, 0)
+        XCTAssertTrue(wallet.ledger.entries.isEmpty)
+        withExtendedLifetime((emptySession, partialSession, session)) {}
+    }
+
     private var page: WKWebView!
     private func findPage(_ view: UIView) -> WKWebView? {
         if let page = view as? WKWebView { return page }
@@ -245,6 +287,8 @@ import XCTest
         try await wait("Array.from(document.querySelectorAll('[aria-label]')).some(e => e.getAttribute('aria-label').startsWith('400 coins,') && !e.getAttribute('aria-label').includes('Unavailable'))")
         try await expectPageBackground()
         try await capture("Wallet")
+        let recorder = StoreKitTransactionRecorder()
+        defer { recorder.stop() }
         try await tap("400 coins,", prefix: true)
         try await tap("Buy ·", prefix: true)
         try await text("Coins added to your wallet.")
@@ -262,12 +306,10 @@ import XCTest
         try await tap("OK")
         XCTAssertEqual(try Data(contentsOf: ledgerURL), credited)
         try await session.setSimulatedError(nil, forAPI: StoreKitPurchaseAPI())
-        let latest = await Transaction.latest(for: "ampqtftkneoumheh")
-        let verified = try XCTUnwrap(latest)
-        guard case .verified(let transaction) = verified else { XCTFail("Expected verified StoreKit transaction"); return }
-        XCTAssertEqual(transaction.appAccountToken, profile.id)
+        let transaction = try XCTUnwrap(recorder.purchases.first)
+        XCTAssertEqual(transaction.payment.applicationUsername, profile.id.uuidString)
         let duplicateReceiver = try Wallet(account: profile.id)
-        for _ in 0..<12 { await duplicateReceiver.receive(verified) }
+        for _ in 0..<12 { await duplicateReceiver.receive(transaction) }
         duplicateReceiver.stop()
         XCTAssertEqual(try Data(contentsOf: ledgerURL), credited)
         try await capture("Wallet credited")

@@ -48,6 +48,8 @@ const commands = new Set([
   "callAnswer",
   "callEnd",
   "callMute",
+  "callPreviewStart",
+  "callPreviewStop",
 ]);
 const LocalPage = requireNativeComponent<
   ViewProps & {

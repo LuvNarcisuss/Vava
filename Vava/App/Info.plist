@@ -33,11 +33,11 @@
 		<string>_vava-chat._udp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Vava uses your camera during video calls.</string>
+	<string>Vava uses your camera for video calls and local preview.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Vava connects to nearby players for messages and calls.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Vava uses your microphone during calls.</string>
+	<string>Vava uses your microphone for calls and lets you check access in Call preview.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>

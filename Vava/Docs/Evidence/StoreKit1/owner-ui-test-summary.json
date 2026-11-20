@@ -1,0 +1,42 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "x86_64",
+        "deviceId" : "C6BBDAF1-EF03-4F2E-980F-CB8C472367D6",
+        "deviceName" : "Vava UI Acceptance",
+        "modelName" : "iPhone 17 Pro",
+        "osBuildNumber" : "23A8464",
+        "osVersion" : "26.0.1",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 1,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "Transient Testing · Built with macOS 15.7.2",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1794899923.636,
+  "passedTests" : 1,
+  "result" : "Passed",
+  "skippedTests" : 0,
+  "startTime" : 1794899898.035,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - Transient Testing",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 1
+}

@@ -30,9 +30,7 @@ import UIKit
 
     func start(video: Bool) async throws {
         let audioSession = AVAudioSession.sharedInstance()
-        let microphoneAllowed: Bool = await withCheckedContinuation { continuation in
-            audioSession.requestRecordPermission { continuation.resume(returning: $0) }
-        }
+        let microphoneAllowed = await Self.requestMicrophoneAccess()
         guard microphoneAllowed else { throw AppFailure("Allow microphone access to join the call.") }
         if video, !(await AVCaptureDevice.requestAccess(for: .video)) {
             throw AppFailure("Allow camera access to join the video call.")
@@ -107,6 +105,14 @@ import UIKit
         }
     }
 
+    static func requestMicrophoneAccess() async -> Bool {
+        await withCheckedContinuation { continuation in
+            AVAudioSession.sharedInstance().requestRecordPermission { allowed in
+                continuation.resume(returning: allowed)
+            }
+        }
+    }
+
     func play(_ data: Data) {
         guard running, queued < 6, data.count.isMultiple(of: 2), (2...8192).contains(data.count)
         else { return }
@@ -159,7 +165,63 @@ import UIKit
     }
 }
 
+@MainActor final class LocalCallPreview {
+    private var camera: ChatCamera?
+    private var stopped = false
+
+    func start(video: Bool, onFrame: @escaping (Data) -> Void) async throws -> String {
+        let microphoneAllowed = await ChatMedia.requestMicrophoneAccess()
+        try checkActive()
+        let microphoneStatus = microphoneAllowed
+            ? "Microphone access granted."
+            : "Microphone access denied. You can enable it in Settings."
+        guard video else { return microphoneStatus }
+
+        let cameraAllowed = await AVCaptureDevice.requestAccess(for: .video)
+        try checkActive()
+        let cameraStatus: String
+        if ChatCamera.frontDevice == nil {
+            cameraStatus = cameraAllowed
+                ? "Camera access granted. The front camera is unavailable on this device."
+                : "The front camera is unavailable on this device."
+        } else if !cameraAllowed {
+            cameraStatus = "Camera access denied. You can enable it in Settings."
+        } else {
+            let camera = ChatCamera()
+            self.camera = camera
+            do {
+                try await camera.start { [weak self] frame in
+                    Task { @MainActor [weak self] in
+                        guard let self, !self.stopped else { return }
+                        onFrame(frame)
+                    }
+                }
+                cameraStatus = "Camera access granted."
+            } catch {
+                camera.stop()
+                self.camera = nil
+                cameraStatus = "The camera could not start."
+            }
+            try checkActive()
+        }
+        return microphoneStatus + " " + cameraStatus
+    }
+
+    func stop() {
+        stopped = true
+        camera?.stop()
+        camera = nil
+    }
+
+    private func checkActive() throws {
+        if stopped { throw CancellationError() }
+    }
+}
+
 private final class ChatCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+    static var frontDevice: AVCaptureDevice? {
+        AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
+    }
     private let queue = DispatchQueue(label: "com.vava.pingpong.chat-camera")
     private let session = AVCaptureSession()
     private let imageContext = CIContext()
@@ -184,9 +246,7 @@ private final class ChatCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDe
     }
 
     private func configure() throws {
-        guard
-            let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
-        else {
+        guard let device = Self.frontDevice else {
             throw AppFailure("A front camera is required for video calls.")
         }
         let input = try AVCaptureDeviceInput(device: device)

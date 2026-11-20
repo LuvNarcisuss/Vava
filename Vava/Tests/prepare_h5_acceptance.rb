@@ -16,7 +16,6 @@ app = project.targets.find { |target| target.name == 'Vava' }
 info = Xcodeproj::Plist.read_from_path(File.join(root, 'App/Info.plist'))
 info['CFBundleDisplayName'] = 'Vava H5 Test'
 info['VavaUseBundledJavaScript'] = true
-info['SKIncludeConsumableInAppPurchaseHistory'] = true
 Xcodeproj::Plist.write_to_path(info, File.join(destination, 'AcceptanceInfo.plist'))
 app.build_configurations.each do |config|
   config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = bundle
@@ -25,6 +24,8 @@ app.build_configurations.each do |config|
 end
 tests = project.new_target(:unit_test_bundle, 'VavaH5Tests', :ios, '17.0')
 tests.add_dependency(app)
+tests.source_build_phase.add_file_reference(project.main_group.new_file(File.join(root, 'Tests/WalletStoreKitTests.swift')))
+tests.source_build_phase.add_file_reference(project.main_group.new_file(File.join(root, 'Tests/StoreKitTransactionRecorder.swift')))
 tests.source_build_phase.add_file_reference(project.main_group.new_file(File.join(root, 'Tests/LocalH5Tests.swift')))
 tests.resources_build_phase.add_file_reference(project.main_group.new_file(File.join(root, 'Configuration/VavaCoins.storekit')))
 tests.build_configurations.each do |config|
