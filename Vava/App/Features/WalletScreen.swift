@@ -51,13 +51,13 @@ import UIKit
         } catch is CancellationError {
             throw CancellationError()
         } catch {
-            status = "Prices could not load. Pull down to try again."
+            status = context.wallet.catalogMessage
         }
     }
 
     override var refreshCompletionMessage: String? {
         guard status == nil, !loadingPrices, !context.wallet.hasPurchaseIssue, context.wallet.paymentsAllowed,
-            CoinPack.all.contains(where: { context.wallet.price(for: $0) != nil })
+            context.wallet.catalogStatus == .ready
         else { return nil }
         return "Prices updated"
     }

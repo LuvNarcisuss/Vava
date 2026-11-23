@@ -1,10 +1,8 @@
 # Integration status
 
-Current presentation: all product pages now render as local H5 inside a React Native initialized WKWebView. See [local H5 architecture and current acceptance](LocalH5Migration.md). Earlier React Native runtime evidence below describes the preceding renderer and does not establish H5 acceptance.
-
 ## Application framework
 
-The product interface renders every route as bundled local H5 in a React Native initialized WKWebView. Swift modules retain the current library, wallet, media and nearby communication services. The final isolated Debug build passed local H5 acceptance on Vava UI Acceptance, iPhone 17 Pro, iOS 26.0.1, including StoreKit Test success, cancellation and duplicate callbacks. See [current local H5 setup and verification](LocalH5Migration.md). The preceding React Native renderer was tested on Vava UI Acceptance; its historical evidence is retained separately in ReactNativeMigration.md.
+The Swift application delegate displays the UIKit login screen and opens a tab controller with five navigation stacks. The controllers call the existing library, wallet, media and nearby services directly.
 
 ## On-device library
 
@@ -14,7 +12,7 @@ Short clips, photos, replay covers, and fonts are included in the app. Publisher
 
 ## Account access
 
-Cold launch and sign-out both show the login screen. Both require a checked agreement box and an explicit Log in action. The native command validates the selection and writes consent when the revision changes. The existing profile and account-specific wallet are restored on login. A WebView reload within an already signed-in native process keeps that session.
+Cold launch and sign-out both show the login screen. Both require a checked agreement box and an explicit Log in action. The login controller validates the selection and writes consent when the revision changes. The existing profile and account-specific wallet are restored on login.
 
 Account deletion records the request before clearing the profile, both wallet ledgers, and imported video copies. An interrupted deletion resumes before sign-in. A new profile gets a new account ID and accepts the current agreements.
 
@@ -36,7 +34,7 @@ Account deletion records the request before clearing the profile, both wallet le
 
 The wallet uses StoreKit 1 (`SKProductsRequest`, `SKProduct`, `SKMutablePayment`, and `SKPaymentQueue`) as requested by the owner on November 17. It enables checkout only for returned catalog products and formats their prices with the returned `priceLocale`. Reference USD values configure the catalogs; they are not fallback display prices. Payment carries the local profile UUID in `applicationUsername`. Delivery validates the local signed app receipt, transaction identifier, product, quantity, bundle, environment and cancellation status before atomically crediting the matching local account and finishing the queue transaction. Legacy receipts do not supply a signed account token; ownership also requires the matching queue payment username. A missing or mismatched username is not reassigned to the current account. Pending or canceled purchases leave the balance unchanged. Wallet balances and course unlocks stay on the device.
 
-The shared `Vava` scheme uses `Configuration/VavaCoins.storekit` for Debug Run. Open `Vava.xcworkspace`; XcodeGen must retain `schemePathPrefix: "../"` so the generated reference is `../Configuration/VavaCoins.storekit`. The previous `../../` prefix resolved outside the app directory and left the fixture inactive. Run from Xcode to load the nine local offers. The `VAVA_LOCAL_STOREKIT` Run variable selects a separate per-profile ledger that accepts verified `.xcode` transactions. The fixture stays outside the app bundle. Choosing a local ledger with an environment variable does not activate a StoreKit catalog; launch from the configured Xcode Run action, or initialize SKTestSession in an isolated test runner. A plain CLI or Home Screen launch does not establish fixture activation. Release uses the existing Apple ledger and accepts verified `.sandbox` and `.production` transactions.
+The shared `Vava` scheme uses `Configuration/VavaCoins.storekit` for Debug Run. Open `Vava.xcodeproj`. Xcode resolves the scheme reference from its internal `Vava.xcodeproj/project.xcworkspace`. The `../../` prefix in `project.yml` reaches the app directory and selects the checked-in fixture. Run from Xcode to load the nine local offers. The `VAVA_LOCAL_STOREKIT` Run variable selects a separate per-profile ledger that accepts verified `.xcode` transactions. The fixture stays outside the app bundle. Choosing a local ledger with an environment variable does not activate a StoreKit catalog; launch from the configured Xcode Run action, or initialize SKTestSession in an isolated test runner. A plain CLI or Home Screen launch does not establish fixture activation. Release uses the existing Apple ledger and accepts verified `.sandbox` and `.production` transactions.
 
 Debug simulator launches default to the local StoreKit ledger even when opened from the Home Screen without Xcode's environment variables. Set `VAVA_LOCAL_STOREKIT=0` explicitly when testing the Apple catalog on a Debug simulator. Debug physical-device builds require `VAVA_LOCAL_STOREKIT=1` for local StoreKit. Unfinished transactions are retried on launch and credited once after verification.
 

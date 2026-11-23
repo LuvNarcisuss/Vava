@@ -1,11 +1,7 @@
 !/Vava.xcodeproj/xcshareddata/xcschemes/Vava.xcscheme
-node_modules/
-Pods/
-.xcode.env.local
 build/
-!/Vava.xcworkspace/
-!/Vava.xcworkspace/contents.xcworkspacedata
-
-!/Vava.xcworkspace/xcshareddata/
-!/Vava.xcworkspace/xcshareddata/swiftpm/
-!/Vava.xcworkspace/xcshareddata/swiftpm/Package.resolved
+!/Vava.xcodeproj/project.xcworkspace/
+!/Vava.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+!/Vava.xcodeproj/project.xcworkspace/xcshareddata/
+!/Vava.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+!/Vava.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved

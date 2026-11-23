@@ -4,7 +4,7 @@ options:
     iOS: "16.0"
   developmentLanguage: en
   createIntermediateGroups: true
-  schemePathPrefix: "../"
+  schemePathPrefix: "../../"
 packages:
   TPInAppReceipt:
     url: https://github.com/tikhop/TPInAppReceipt.git
@@ -19,11 +19,6 @@ settings:
     SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
     SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
 fileGroups:
-  - ReactNative
-  - Web
-  - package.json
-  - index.js
-  - Podfile
   - Configuration
   - Assets/Design
   - Assets/AgreementSources
@@ -39,15 +34,11 @@ targets:
       - path: App
         excludes:
           - Info.plist
-          - Features
-          - Core/Theme.swift
       - path: Configuration
         includes:
           - "coin-products.json"
         buildPhase: resources
       - path: PrivacyInfo.xcprivacy
-        buildPhase: resources
-      - path: Assets/LocalWeb/vava.zip
         buildPhase: resources
       - path: Assets/Assets.xcassets
       - path: Assets/Licenses
@@ -69,19 +60,10 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         INFOPLIST_FILE: App/Info.plist
         GENERATE_INFOPLIST_FILE: NO
-        OTHER_LDFLAGS: "$(inherited) -ObjC -lc++"
-        ENABLE_USER_SCRIPT_SANDBOXING: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
       configs:
         Debug:
           PRODUCT_BUNDLE_IDENTIFIER: im.seex.sao2
-    postBuildScripts:
-      - name: Bundle React Native code and images
-        basedOnDependencyAnalysis: false
-        script: |
-          export PROJECT_ROOT="$SRCROOT"
-          export REACT_NATIVE_PATH="$SRCROOT/node_modules/react-native"
-          /bin/sh "$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh" "$REACT_NATIVE_PATH/scripts/react-native-xcode.sh"
 schemes:
   Vava:
     build:

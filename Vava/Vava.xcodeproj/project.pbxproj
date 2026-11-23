@@ -12,51 +12,46 @@
 		0E7577BE5F2ED6A516517955 /* Licenses in Resources */ = {isa = PBXBuildFile; fileRef = D6E94D3EF1050A1876F9B744 /* Licenses */; };
 		0FB838E769CCA9974D01313E /* Kalam-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33A85AABDA798C6D2505E903 /* Kalam-Bold.ttf */; };
 		103B6943EF38D6F2192D1E72 /* Media in Resources */ = {isa = PBXBuildFile; fileRef = E072667ED506E35B33214B05 /* Media */; };
+		285F3E77A7CBCB419CB172EA /* Academy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A957C6531CBECBD3608CD325 /* Academy.swift */; };
 		2CEEEA956FACC9A3759A9149 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17457AF0350A0EDD6DB62F2F /* ChatService.swift */; };
 		35C77D3EDDC6F4FD61C3CD8F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B098906FE34BCF792B197BD /* Models.swift */; };
 		3679546FFBA0459A21F7F170 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F3B43EF58269870951C8DC7 /* StoreKit.framework */; };
-		455D8EBFB2DC544DABCD4B2E /* NativeMediaActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322A2563B7BBB42BDC661C3B /* NativeMediaActions.swift */; };
 		4B4E0D5A18AD48367DD6E762 /* ComicNeue-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F26F1AC99F26234192B0E704 /* ComicNeue-OFL.txt */; };
-		55AE0B8946E7EDDA8DEA266C /* vava.zip in Resources */ = {isa = PBXBuildFile; fileRef = 95AF9F5E043F4A086B12BE6D /* vava.zip */; };
 		64A9BE40096D3CDBD807FD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CF0C2CD8B3BB805996A0661 /* Assets.xcassets */; };
 		64BC9442EF46E711B789E343 /* catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = FB7F3582C23229C9C8EBE0B2 /* catalog.json */; };
-		7B56D272F2F61D3CF478C5CE /* VavaNativeBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F1AB3E16617417F5ED48F0A /* VavaNativeBridge.m */; };
 		7E46185F7E7DFD7E08C36BAE /* ChatMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA72D296209BCAD444322883 /* ChatMedia.swift */; };
 		8956D74D426979439776DE18 /* ComicNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 295E6E6A3081BE7BBF63FD46 /* ComicNeue-Regular.ttf */; };
 		9244C465ED08BEA0094B6AD9 /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = BFDD59F736194238421C6C40 /* TPInAppReceipt */; };
 		9440AC15F53747513372990E /* Kalam-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = B6156C5BD6A23B6B91DD22F2 /* Kalam-OFL.txt */; };
-		98868280D2926EDEC975CD06 /* libPods-Vava.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4A0806DB07D86D6985144E /* libPods-Vava.a */; };
+		9FCFE6D3E130BEB1EC678820 /* Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54061B57F502DE7EE9D95F87 /* Submission.swift */; };
 		A05865AD13A0B5AB3EAFF4D4 /* coin-products.json in Resources */ = {isa = PBXBuildFile; fileRef = E5824A3D49C2B224DB276A11 /* coin-products.json */; };
-		AE4A5B1FE604483BDDA78526 /* VavaNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F6ABC8E3EEEA59FDAE5C27 /* VavaNative.swift */; };
-		B648E66DAC560F3D88718D0E /* NativeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4852F008A3EFAFE86D0ED7BF /* NativeVideo.swift */; };
+		A4862300B6161E4A4492D834 /* WalletScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D54AB4A8BAABB7C754B40A /* WalletScreen.swift */; };
+		A7C90EC9278112B105F49E6C /* Discussion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B7CF1C40A261EF0317873F /* Discussion.swift */; };
+		A9B8C1D00C553AFBB5EDD644 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5861667AE559D1C86FF592CF /* Theme.swift */; };
+		AB1A5F935BE02C1D400B25A1 /* Watch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCBE232AA31A2EC8B831BC8 /* Watch.swift */; };
+		B3A8F23585BB9271564439A2 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D34561CACFA31E6A8A7 /* Chats.swift */; };
+		B7B115DBBEE163869064034E /* Shorts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB078C03FA7B07053B83C9B /* Shorts.swift */; };
 		CF59C71AC49CAA86C9FA16BF /* LocalLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1146BF7410A7070A16CA0782 /* LocalLibrary.swift */; };
-		E2C87FBE2AC6B20E51F18D05 /* LocalWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CCB0C6FF8DCF73D76D963E /* LocalWebView.swift */; };
 		EC7C037D6C8EF5BB9985A369 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5935E590997A4C603C9A4B5A /* ChatModels.swift */; };
+		F46CD97973FF2C5F682A410F /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557AF13CD3296B60F9A22F2B /* Profile.swift */; };
 		F6BA88623966A761B4FD1E31 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */; };
 		FB54A219EC31B7281367D93B /* ChatTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAB86A0FD29544E20E3D5 /* ChatTransport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		0842D7D65A6BD30966C5A6D7 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
-		08F6666AFCB368DEACE50592 /* Content.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Content.tsx; sourceTree = "<group>"; };
 		0A54F31F71A2AD1F8D886FD6 /* table-tennis-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table-tennis-background.png"; sourceTree = "<group>"; };
 		1146BF7410A7070A16CA0782 /* LocalLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLibrary.swift; sourceTree = "<group>"; };
-		128526FCAC5A133E1165CAB3 /* app.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = app.css; sourceTree = "<group>"; };
 		1316B8E5BE32A9DA55490C7E /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		1412B10A34B572E93B1E83E0 /* VavaApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VavaApplication.swift; sourceTree = "<group>"; };
 		15BDC8DFC3E25EE4731D9EF4 /* netherlands-china-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "netherlands-china-review.jpg"; sourceTree = "<group>"; };
 		17457AF0350A0EDD6DB62F2F /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		1B098906FE34BCF792B197BD /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		1BC7EFC3E0DA3654A8742950 /* like-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like-selected.png"; sourceTree = "<group>"; };
-		1C512FCF1CE62EA991F49D67 /* Shorts.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Shorts.tsx; sourceTree = "<group>"; };
-		1F1AB3E16617417F5ED48F0A /* VavaNativeBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VavaNativeBridge.m; sourceTree = "<group>"; };
 		203BE2C60F73F7F2670D9A89 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
-		27087253FD7B667DC1DC1652 /* safe-area.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = "safe-area.tsx"; sourceTree = "<group>"; };
 		295E6E6A3081BE7BBF63FD46 /* ComicNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ComicNeue-Regular.ttf"; sourceTree = "<group>"; };
-		2C210C97D33F757978CADA28 /* entry.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = entry.tsx; sourceTree = "<group>"; };
-		2CFC401C9F5C9149A2A56A79 /* Vava.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vava.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		322A2563B7BBB42BDC661C3B /* NativeMediaActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeMediaActions.swift; sourceTree = "<group>"; };
+		2CFC401C9F5C9149A2A56A79 /* Vava.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vava.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33A85AABDA798C6D2505E903 /* Kalam-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kalam-Bold.ttf"; sourceTree = "<group>"; };
 		35D5FA7588F37D295C342C11 /* terms.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = terms.pdf; sourceTree = "<group>"; };
 		3744B1A1B42B6ABE66535F17 /* ravne-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ravne-review.jpg"; sourceTree = "<group>"; };
@@ -64,72 +59,58 @@
 		3A3FAB86A0FD29544E20E3D5 /* ChatTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTransport.swift; sourceTree = "<group>"; };
 		3CCBF7A36475CF2E801CD882 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		3D93E2577398FF57A30089FD /* call.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call.png; sourceTree = "<group>"; };
-		43A8A0C1C6CC8516103C3EA9 /* state.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = state.tsx; sourceTree = "<group>"; };
-		4852F008A3EFAFE86D0ED7BF /* NativeVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeVideo.swift; sourceTree = "<group>"; };
 		48986339B811BEFD16E0A8C0 /* like-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like-outline.png"; sourceTree = "<group>"; };
 		4C4FCEC9E9005B6849B2F7D5 /* brand-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brand-logo.png"; sourceTree = "<group>"; };
 		4C741FB69FFBEA2DC31378CD /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		52AF9E999DFA57972CD2E0A2 /* save-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-selected.png"; sourceTree = "<group>"; };
-		5606206B6F163AD9691DE5C1 /* WebApp.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = WebApp.tsx; sourceTree = "<group>"; };
+		54061B57F502DE7EE9D95F87 /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
+		557AF13CD3296B60F9A22F2B /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		5861667AE559D1C86FF592CF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5935E590997A4C603C9A4B5A /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
+		5CCBE232AA31A2EC8B831BC8 /* Watch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watch.swift; sourceTree = "<group>"; };
 		5CF0C2CD8B3BB805996A0661 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		68D62629AEA44F075A7C3E06 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		5FB078C03FA7B07053B83C9B /* Shorts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shorts.swift; sourceTree = "<group>"; };
 		6ABA2087180357B93774D1C0 /* chats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chats.png; sourceTree = "<group>"; };
-		6BAC3D21DBF252B1E5784CE3 /* contracts.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = contracts.ts; sourceTree = "<group>"; };
 		6BFA9EF6EAB25A47F8F8B8C3 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
-		6CB772EF784B98ADDCB50D07 /* Pods-Vava.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vava.debug.xcconfig"; path = "Target Support Files/Pods-Vava/Pods-Vava.debug.xcconfig"; sourceTree = "<group>"; };
+		72D54AB4A8BAABB7C754B40A /* WalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletScreen.swift; sourceTree = "<group>"; };
+		75B7CF1C40A261EF0317873F /* Discussion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discussion.swift; sourceTree = "<group>"; };
 		7648803FB433DA191B9E57D8 /* academy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = academy.png; sourceTree = "<group>"; };
 		772863D41AA8AA59381CBEC6 /* muted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = muted.png; sourceTree = "<group>"; };
 		7B6CA2F41DB5E6300421753B /* privacy.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = privacy.md; sourceTree = "<group>"; };
 		7B729576514295838A36C192 /* icons.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icons.jpg; sourceTree = "<group>"; };
 		8383499EDE019843605903DA /* launcher.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launcher.png; sourceTree = "<group>"; };
-		8A0EF72BAB5B06774C8874A1 /* Chats.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Chats.tsx; sourceTree = "<group>"; };
 		8CBCEE99ACA8F77C528D023C /* privacy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = privacy.pdf; sourceTree = "<group>"; };
 		8CEEBF60819BAF4D1FF05278 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
 		8F3B43EF58269870951C8DC7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		9028318A4093294D34C70FCF /* native.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = native.ts; sourceTree = "<group>"; };
-		90968B265A33E11350973D13 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		936F60034675AE39D39942CB /* save-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-outline.png"; sourceTree = "<group>"; };
-		95AF9F5E043F4A086B12BE6D /* vava.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = vava.zip; sourceTree = "<group>"; };
 		9741DD58267996F4334870D0 /* report.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = report.png; sourceTree = "<group>"; };
-		9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = VavaCoins.storekit; sourceTree = "<group>"; };
-		9FE0CC70329B18D63CD9BEE2 /* bridge.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = bridge.ts; sourceTree = "<group>"; };
+		9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */ = {isa = PBXFileReference; path = VavaCoins.storekit; sourceTree = "<group>"; };
 		A360E8AEE33F388355E93F02 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
 		A66122F570BA93EE04B20125 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		A6BC829B21087D4844916BF0 /* watch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watch.png; sourceTree = "<group>"; };
+		A957C6531CBECBD3608CD325 /* Academy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Academy.swift; sourceTree = "<group>"; };
 		AA72D296209BCAD444322883 /* ChatMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMedia.swift; sourceTree = "<group>"; };
 		AA796B0A1F0A46B46A8EC7FA /* shorts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shorts.png; sourceTree = "<group>"; };
-		ADB600D228D11ECAAD4A709E /* ui.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = ui.tsx; sourceTree = "<group>"; };
 		AEAFCD7F097021EF60EA3628 /* welcome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome.png; sourceTree = "<group>"; };
 		B24FEBA32566A21B1D466B7E /* me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = me.png; sourceTree = "<group>"; };
 		B4C97832C0C06B54B2F9728C /* sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sound.png; sourceTree = "<group>"; };
 		B6156C5BD6A23B6B91DD22F2 /* Kalam-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Kalam-OFL.txt"; sourceTree = "<group>"; };
 		B946E2B2757444C0D35A4EAE /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
 		B9F38807A6B53A9BA684DB29 /* filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter.png; sourceTree = "<group>"; };
-		BB809B056F595188A416023D /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		BCFCCE3EB1561C8B8E974709 /* club-rally-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "club-rally-review.jpg"; sourceTree = "<group>"; };
 		BD3B3DF4815E17DE8DACEADF /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		BE2128FABB813D2BA6A0D58D /* open-rally-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "open-rally-review.jpg"; sourceTree = "<group>"; };
-		C0FDD331785C44779EBDF1B2 /* native.web.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = native.web.tsx; sourceTree = "<group>"; };
 		C437CCEEF6958ADF4090201B /* Artwork.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Artwork.json; sourceTree = "<group>"; };
-		C6477FFB4C584CE1E7F90363 /* Pods-Vava.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vava.release.xcconfig"; path = "Target Support Files/Pods-Vava/Pods-Vava.release.xcconfig"; sourceTree = "<group>"; };
-		C9E3F39ECA8ADC1A1D9372F8 /* platform.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = platform.tsx; sourceTree = "<group>"; };
 		CDEE150A7E276CF308A7F03D /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
-		D4F6ABC8E3EEEA59FDAE5C27 /* VavaNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VavaNative.swift; sourceTree = "<group>"; };
 		D6E94D3EF1050A1876F9B744 /* Licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Licenses; path = Assets/Licenses; sourceTree = SOURCE_ROOT; };
-		D7A2A7C581DF77350655344E /* App.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = App.tsx; sourceTree = "<group>"; };
-		D8CCB0C6FF8DCF73D76D963E /* LocalWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalWebView.swift; sourceTree = "<group>"; };
-		D983F179767F2BAD5154AF30 /* ScreenBackground.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = ScreenBackground.tsx; sourceTree = "<group>"; };
+		DB2D9D34561CACFA31E6A8A7 /* Chats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
 		DC71E98B98384F0E5543524A /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		E072667ED506E35B33214B05 /* Media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Media; path = Assets/Content/Media; sourceTree = SOURCE_ROOT; };
 		E24B85992F9BDC664239982F /* terms.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = terms.md; sourceTree = "<group>"; };
 		E5824A3D49C2B224DB276A11 /* coin-products.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "coin-products.json"; sourceTree = "<group>"; };
 		E7F2E3827600C4AA1F35A2E1 /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
-		EDF5F1FFE2FF7EA546CEB9E9 /* Profile.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = Profile.tsx; sourceTree = "<group>"; };
 		F26F1AC99F26234192B0E704 /* ComicNeue-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ComicNeue-OFL.txt"; sourceTree = "<group>"; };
 		F79972B372A698E4AB010461 /* coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin.png; sourceTree = "<group>"; };
-		F9F1376DCB44CEBC8037D214 /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
-		FA4A0806DB07D86D6985144E /* libPods-Vava.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vava.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB7F3582C23229C9C8EBE0B2 /* catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = catalog.json; sourceTree = "<group>"; };
 		FC1E3059F4D630797BF1FF0B /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,7 +122,6 @@
 			files = (
 				9244C465ED08BEA0094B6AD9 /* TPInAppReceipt in Frameworks */,
 				3679546FFBA0459A21F7F170 /* StoreKit.framework in Frameworks */,
-				98868280D2926EDEC975CD06 /* libPods-Vava.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +186,21 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		4EAC4113B9892E88401C9F34 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A957C6531CBECBD3608CD325 /* Academy.swift */,
+				DB2D9D34561CACFA31E6A8A7 /* Chats.swift */,
+				75B7CF1C40A261EF0317873F /* Discussion.swift */,
+				557AF13CD3296B60F9A22F2B /* Profile.swift */,
+				5FB078C03FA7B07053B83C9B /* Shorts.swift */,
+				54061B57F502DE7EE9D95F87 /* Submission.swift */,
+				72D54AB4A8BAABB7C754B40A /* WalletScreen.swift */,
+				5CCBE232AA31A2EC8B831BC8 /* Watch.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
 		6059A1F80F2F52BF90A2C0AD /* Design */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,7 +221,6 @@
 				74CB972A87E0D4A0697D602D /* Content */,
 				6059A1F80F2F52BF90A2C0AD /* Design */,
 				C4DD87839ECF1137639ADC55 /* Fonts */,
-				D549817FA663B44CF9B93F1A /* LocalWeb */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -240,6 +234,7 @@
 				3A3FAB86A0FD29544E20E3D5 /* ChatTransport.swift */,
 				1146BF7410A7070A16CA0782 /* LocalLibrary.swift */,
 				1B098906FE34BCF792B197BD /* Models.swift */,
+				5861667AE559D1C86FF592CF /* Theme.swift */,
 				1412B10A34B572E93B1E83E0 /* VavaApplication.swift */,
 				BD3B3DF4815E17DE8DACEADF /* Wallet.swift */,
 			);
@@ -255,59 +250,6 @@
 			path = Content;
 			sourceTree = "<group>";
 		};
-		8BED6C161C29BCFB8977DB55 /* ReactNative */ = {
-			isa = PBXGroup;
-			children = (
-				D8CCB0C6FF8DCF73D76D963E /* LocalWebView.swift */,
-				322A2563B7BBB42BDC661C3B /* NativeMediaActions.swift */,
-				4852F008A3EFAFE86D0ED7BF /* NativeVideo.swift */,
-				D4F6ABC8E3EEEA59FDAE5C27 /* VavaNative.swift */,
-				1F1AB3E16617417F5ED48F0A /* VavaNativeBridge.m */,
-			);
-			path = ReactNative;
-			sourceTree = "<group>";
-		};
-		93BC4468690A04C1F4935778 /* ReactNative */ = {
-			isa = PBXGroup;
-			children = (
-				D7A2A7C581DF77350655344E /* App.tsx */,
-				8A0EF72BAB5B06774C8874A1 /* Chats.tsx */,
-				08F6666AFCB368DEACE50592 /* Content.tsx */,
-				6BAC3D21DBF252B1E5784CE3 /* contracts.ts */,
-				9028318A4093294D34C70FCF /* native.ts */,
-				EDF5F1FFE2FF7EA546CEB9E9 /* Profile.tsx */,
-				D983F179767F2BAD5154AF30 /* ScreenBackground.tsx */,
-				1C512FCF1CE62EA991F49D67 /* Shorts.tsx */,
-				43A8A0C1C6CC8516103C3EA9 /* state.tsx */,
-				ADB600D228D11ECAAD4A709E /* ui.tsx */,
-				5606206B6F163AD9691DE5C1 /* WebApp.tsx */,
-			);
-			path = ReactNative;
-			sourceTree = "<group>";
-		};
-		9DFEFD135A1967C23B23819F /* Web */ = {
-			isa = PBXGroup;
-			children = (
-				128526FCAC5A133E1165CAB3 /* app.css */,
-				9FE0CC70329B18D63CD9BEE2 /* bridge.ts */,
-				2C210C97D33F757978CADA28 /* entry.tsx */,
-				BB809B056F595188A416023D /* index.html */,
-				C0FDD331785C44779EBDF1B2 /* native.web.tsx */,
-				C9E3F39ECA8ADC1A1D9372F8 /* platform.tsx */,
-				27087253FD7B667DC1DC1652 /* safe-area.tsx */,
-			);
-			path = Web;
-			sourceTree = "<group>";
-		};
-		AF26E7BA6828230DAA942A89 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6CB772EF784B98ADDCB50D07 /* Pods-Vava.debug.xcconfig */,
-				C6477FFB4C584CE1E7F90363 /* Pods-Vava.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		B3E1BC71255F64ABB3492CBD /* Agreements */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,7 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				6F1F4A430C1AB0716455C338 /* Core */,
-				8BED6C161C29BCFB8977DB55 /* ReactNative */,
+				4EAC4113B9892E88401C9F34 /* Features */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -335,14 +277,6 @@
 				B6156C5BD6A23B6B91DD22F2 /* Kalam-OFL.txt */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		D549817FA663B44CF9B93F1A /* LocalWeb */ = {
-			isa = PBXGroup;
-			children = (
-				95AF9F5E043F4A086B12BE6D /* vava.zip */,
-			);
-			path = LocalWeb;
 			sourceTree = "<group>";
 		};
 		DEE2A149D917D2C34537DF88 /* Review */ = {
@@ -361,7 +295,6 @@
 			isa = PBXGroup;
 			children = (
 				8F3B43EF58269870951C8DC7 /* StoreKit.framework */,
-				FA4A0806DB07D86D6985144E /* libPods-Vava.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -369,18 +302,12 @@
 		EB186EE41358203BDF0BD487 = {
 			isa = PBXGroup;
 			children = (
-				F9F1376DCB44CEBC8037D214 /* index.js */,
-				90968B265A33E11350973D13 /* package.json */,
-				68D62629AEA44F075A7C3E06 /* Podfile */,
 				02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */,
 				C3F23272A5397E177471759F /* App */,
 				6CEF0FAA6B52D5D2FD21A18B /* Assets */,
 				0A93603A8E30F71C769C66B9 /* Configuration */,
-				93BC4468690A04C1F4935778 /* ReactNative */,
-				9DFEFD135A1967C23B23819F /* Web */,
 				E552EEA3EF228C5915C85C58 /* Frameworks */,
 				055B2A8DE2A94031EB9E8915 /* Products */,
-				AF26E7BA6828230DAA942A89 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -400,13 +327,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3AC96D2053E60E1099AECBE4 /* Build configuration list for PBXNativeTarget "Vava" */;
 			buildPhases = (
-				56005042EC9AE5CAF02F7745 /* [CP] Check Pods Manifest.lock */,
 				58D22D855FAA8FF35183E081 /* Sources */,
 				DE4F6D655D4AE4AFC74C9F22 /* Resources */,
 				67B455B27E8F0B5F574CDE22 /* Frameworks */,
-				E87B2C51E8CD831A03AB4F2B /* Bundle React Native code and images */,
-				016BE71312B4C537AE313998 /* [CP] Embed Pods Frameworks */,
-				D622FEFF35439B8EF41934C2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -427,7 +350,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					94589A7DCAC575AF8E4A7A9D = {
+						DevelopmentTeam = JPTS6M4T5B;
+					};
+				};
 			};
 			buildConfigurationList = 32CDE79E9E9FA293BAA579BB /* Build configuration list for PBXProject "Vava" */;
 			developmentRegion = en;
@@ -466,116 +394,33 @@
 				F6BA88623966A761B4FD1E31 /* PrivacyInfo.xcprivacy in Resources */,
 				64BC9442EF46E711B789E343 /* catalog.json in Resources */,
 				A05865AD13A0B5AB3EAFF4D4 /* coin-products.json in Resources */,
-				55AE0B8946E7EDDA8DEA266C /* vava.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		016BE71312B4C537AE313998 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		56005042EC9AE5CAF02F7745 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Vava-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D622FEFF35439B8EF41934C2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Vava/Pods-Vava-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E87B2C51E8CD831A03AB4F2B /* Bundle React Native code and images */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native code and images";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PROJECT_ROOT=\"$SRCROOT\"\nexport REACT_NATIVE_PATH=\"$SRCROOT/node_modules/react-native\"\n/bin/sh \"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\" \"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58D22D855FAA8FF35183E081 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				285F3E77A7CBCB419CB172EA /* Academy.swift in Sources */,
 				7E46185F7E7DFD7E08C36BAE /* ChatMedia.swift in Sources */,
 				EC7C037D6C8EF5BB9985A369 /* ChatModels.swift in Sources */,
 				2CEEEA956FACC9A3759A9149 /* ChatService.swift in Sources */,
 				FB54A219EC31B7281367D93B /* ChatTransport.swift in Sources */,
+				B3A8F23585BB9271564439A2 /* Chats.swift in Sources */,
+				A7C90EC9278112B105F49E6C /* Discussion.swift in Sources */,
 				CF59C71AC49CAA86C9FA16BF /* LocalLibrary.swift in Sources */,
-				E2C87FBE2AC6B20E51F18D05 /* LocalWebView.swift in Sources */,
 				35C77D3EDDC6F4FD61C3CD8F /* Models.swift in Sources */,
-				455D8EBFB2DC544DABCD4B2E /* NativeMediaActions.swift in Sources */,
-				B648E66DAC560F3D88718D0E /* NativeVideo.swift in Sources */,
+				F46CD97973FF2C5F682A410F /* Profile.swift in Sources */,
+				B7B115DBBEE163869064034E /* Shorts.swift in Sources */,
+				9FCFE6D3E130BEB1EC678820 /* Submission.swift in Sources */,
+				A9B8C1D00C553AFBB5EDD644 /* Theme.swift in Sources */,
 				0ADC62D286A49B369C7D124D /* VavaApplication.swift in Sources */,
-				AE4A5B1FE604483BDDA78526 /* VavaNative.swift in Sources */,
-				7B56D272F2F61D3CF478C5CE /* VavaNativeBridge.m in Sources */,
 				02994670EBE7200BDD727993 /* Wallet.swift in Sources */,
+				A4862300B6161E4A4492D834 /* WalletScreen.swift in Sources */,
+				AB1A5F935BE02C1D400B25A1 /* Watch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,7 +433,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -632,49 +477,31 @@
 				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-DRCT_REMOVE_LEGACY_ARCH=1",
-				);
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(inherited)",
-					"-DRCT_REMOVE_LEGACY_ARCH=1",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				USE_HERMES = true;
 			};
 			name = Release;
 		};
 		1A633F97C7C4E27DCAA09D38 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CB772EF784B98ADDCB50D07 /* Pods-Vava.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				DEVELOPMENT_TEAM = JPTS6M4T5B;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.vava.pingpong;
+				PRODUCT_BUNDLE_IDENTIFIER = im.seex.sao2;
 				PRODUCT_NAME = Vava;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -684,22 +511,15 @@
 		};
 		3EA8BCEA05D0F58F28ED8CA4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C6477FFB4C584CE1E7F90363 /* Pods-Vava.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				DEVELOPMENT_TEAM = JPTS6M4T5B;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vava.pingpong;
 				PRODUCT_NAME = Vava;
@@ -715,7 +535,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -766,26 +586,15 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-DRCT_REMOVE_LEGACY_ARCH=1",
-				);
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(inherited)",
-					"-DRCT_REMOVE_LEGACY_ARCH=1",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
-				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				USE_HERMES = true;
 			};
 			name = Debug;
 		};

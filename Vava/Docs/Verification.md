@@ -1,5 +1,17 @@
 # Verification record
 
+## November 23 native Swift acceptance
+
+Built the Debug Vava scheme from `Vava.xcodeproj` with Xcode 26.3 (17C529) for the iPhone 17 Pro named **Vava QA**. XCTest reported iOS 26.3.1 (23D8133). The production-source Debug build uses `im.seex.sao2`. All purchases, content changes and callback replays used separate acceptance bundle identifiers on that simulator.
+
+- A course author's profile crashed when UIKit activated the Follow and Message equal-width constraint before the two buttons had a common ancestor. The shared action row now attaches both controls before activating the constraint. The UI regression opened the coaching profile, conversation and profile link, returned to Academy, opened Watch and saved a replay.
+- UI checks covered the agreement gate, bundled logo, lesson search and saving, Shorts search, playback controls, likes, comments, video submission, source and license details, hide confirmation, the Chats inbox and nearby discovery, profile collections, settings, profile editing, blocked publishers, media credits and call preview controls. The disabled login button now uses a dark background and light text. [Simulator screenshots](Evidence/SwiftQA-2026-11-23.jpg)
+- The isolated StoreKit host initially returned zero products. The simulator logged that the host was not installed for development. A signed Debug simulator host with `get-task-allow` allowed StoreKit Test to change its configuration. The catalog regression exercised zero, one and all nine valid products through the app's StoreKit 1 requests.
+- A local purchase credited 400 coins once. Cancellation preserved the ledger bytes. Replaying the purchased callback 12 times, then reopening the wallet and delivering it again, preserved the same 400-coin balance, single entry and ledger bytes.
+- All three wallet tests passed together on the final source. The hosted UIKit case tapped the real login, profile, coin pack and Buy controls with StoreKit Test controlling the transaction responses. It verified the success and cancellation alerts, one new activity row and the updated balance on returning to Me.
+- A separate XCUITest exercised the visible Xcode purchase sheet. It started with 800 test coins, selected the 400-coin pack at $0.99, confirmed the system purchase and acknowledged the Xcode receipt alert. It opened checkout again, closed the sheet, verified Vava's cancellation message and returned to Me with 1,200 coins and just one additional purchase row.
+- The original Debug application's library and wallet JSON inventories were empty before and after testing on this simulator. The installed executable, Debug library and compiled assets matched the final build by SHA-256. The original application was brought back to the foreground at its login screen. Apple sandbox, production payment processing and two-device calls were outside this local run.
+
 ## November 16 wallet feedback and Tutorials repair
 
 Me now refreshes on wallet changes, failed delivery has persistent feedback and an explicit retry, and Tutorials describes learning instead of publishing. The pre-fix UI failures were reproduced. Four targeted tests and all 17 existing acceptance cases passed after the repair, including real storage-write failure and recovery, all nine local packs, and app/device restarts. The original 800-coin wallet and personal data were preserved. See [repair validation](Acceptance/2026-11-16/wallet-feedback-repair.md).

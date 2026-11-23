@@ -8,7 +8,6 @@ import re
 import subprocess
 import xml.etree.ElementTree as ET
 from uuid import UUID
-from zipfile import ZipFile
 
 from PIL import Image
 
@@ -33,9 +32,8 @@ def read_json(path):
 
 plist = plistlib.loads((root / "App/Info.plist").read_bytes())
 project = (root / "Vava.xcodeproj/project.pbxproj").read_text()
-native_sources = list((root / "App/Core").glob("*.swift")) + list((root / "App/ReactNative").glob("*.swift"))
-app = "\n".join(path.read_text() for path in native_sources if path.name != "Theme.swift")
-react = "\n".join(path.read_text() for path in (root / "ReactNative").glob("*.tsx"))
+native_sources = sorted(path for folder in ("App/Core", "App/Features") for path in (root / folder).glob("*.swift"))
+app = "\n".join(path.read_text() for path in native_sources)
 check(plist["CFBundleDisplayName"] == "Vava", "Vava display name")
 check(plist["CFBundleName"] == "$(PRODUCT_NAME)" and "PRODUCT_NAME = Vava;" in project, "Vava product name")
 check(plist["CFBundleIdentifier"] == "$(PRODUCT_BUNDLE_IDENTIFIER)", "Bundle ID follows build configuration")
@@ -49,7 +47,7 @@ check(".atomic, .completeFileProtectionUntilFirstUserAuthentication" in app, "Pr
 check("2026-11-13.2" in app, "Preserved consent revision")
 check("https://docs.google.com/document/d/1HKDBNvyA7Vha5_sVVoc4P4Z8e-udZkrMlfdbTgVvdOs" in app, "Terms document URL")
 check("https://docs.google.com/document/d/1_ldTUi2Y1bfT5x9BphLfDo3AwM7ZBpNxUnHFmwI2GFo" in app, "Privacy document URL")
-check("SFSafariViewController" in app and "snapshot.agreements" in react, "Shared native agreement reader")
+check("SFSafariViewController" in app and "Agreement.allCases" in app, "Shared native agreement reader")
 check("terms.pdf in Resources" not in project and "privacy.pdf in Resources" not in project, "Historical PDFs stay outside the app bundle")
 check(not (root / "TableTennis.xcodeproj").exists(), "Retired project removed")
 check(plist["UISupportedInterfaceOrientations"] == ["UIInterfaceOrientationPortrait"], "Portrait orientation")
@@ -85,8 +83,10 @@ check(scheme.find(".//ArchiveAction").get("buildConfiguration") == "Release", "R
 launch = scheme.find("./LaunchAction")
 storekit_path = "Configuration/VavaCoins.storekit"
 storekit_reference = launch.find("StoreKitConfigurationFileReference")
-check(storekit_reference is not None and storekit_reference.get("identifier") == f"../{storekit_path}"
-      and (root / "Vava.xcworkspace" / storekit_reference.get("identifier")).resolve().is_file(),
+project_workspace = root / "Vava.xcodeproj/project.xcworkspace"
+check(storekit_reference is not None
+      and (project_workspace / storekit_reference.attrib["identifier"]).resolve() == root / storekit_path
+      and (root / storekit_path).is_file(),
       "Vava Debug Run selects the local StoreKit catalog")
 local_mode = "VAVA_LOCAL_STOREKIT"
 launch_flag = launch.find(f"EnvironmentVariables/EnvironmentVariable[@key='{local_mode}']")
@@ -98,48 +98,22 @@ check(scheme.find(f"./ArchiveAction//EnvironmentVariable[@key='{local_mode}']") 
 check("VavaCoins.storekit in Resources" not in project, "Local catalog stays outside the app bundle")
 spec = (root / "project.yml").read_text()
 check(f"storeKitConfiguration: {storekit_path}" in spec and f'{local_mode}: "1"' in spec
-      and 'schemePathPrefix: "../"' in spec,
+      and 'schemePathPrefix: "../../"' in spec,
       "XcodeGen preserves the local StoreKit configuration")
-package = read_json("package.json")
-lock = read_json("package-lock.json")
-check(package["dependencies"]["react-native"] == lock["packages"]["node_modules/react-native"]["version"], "Locked React Native version")
-check(package["dependencies"]["react"] == lock["packages"]["node_modules/react"]["version"], "Locked React version")
-check("withModuleName: \"Vava\"" in app and "AppRegistry.registerComponent('Vava'" in (root / "index.js").read_text(), "Matching React Native entrypoint")
-check("react-native-xcode.sh" in project and "react-native-xcode.sh" in spec, "Release JavaScript bundling phase")
-for name in ("VavaNative.swift", "VavaNativeBridge.m", "NativeVideo.swift", "NativeMediaActions.swift"):
-    check(f"{name} in Sources" in project, f"Native bridge source {name}")
-for name in [path.name for path in (root / "App/Features").glob("*.swift")] + ["Theme.swift"]:
-    check(f"{name} in Sources" not in project, f"UIKit screen excluded {name}")
-react_entry = (root / "ReactNative/WebApp.tsx").read_text()
-root_declaration = re.search(r"const tabs = \[(.*?)\]", react_entry, re.S)
-check(root_declaration is not None and re.findall(r'[\"\']([A-Za-z]+)[\"\']', root_declaration.group(1))
-      == ["Academy", "Watch", "Shorts", "Chats", "Me"], "Five local H5 navigation roots in order")
-check("previous.revision" in react_entry and "snapshotRevision" in app, "Snapshot ordering protection")
-check("PrivacyInfo.xcprivacy in Resources" in project and "PrivacyInfo.xcprivacy" in spec, "Privacy manifest retained by generator")
-check((root / "Vava.xcworkspace/contents.xcworkspacedata").exists(), "CocoaPods workspace exists")
-check((root / "Podfile.lock").exists(), "Native dependency lockfile exists")
-# The shipped archive must correspond to the current presentation source.
-with ZipFile(root / "Assets/LocalWeb/vava.zip") as archive:
-    members = archive.namelist()
-    check(all(not name.startswith("/") and ".." not in Path(name).parts for name in members), "Local H5 archive paths")
-    for name in ["index.html", "app.js", "app.css", "manifest.json", "art/icon-academy.png", "art/icon-me.png", "fonts/Kalam-Bold.ttf", "fonts/ComicNeue-Regular.ttf"]:
-        check(name in members, f"Local H5 resource {name}")
-    manifest = json.loads(archive.read("manifest.json"))
-    for name, expected in manifest["sources"].items():
-        check(digest(root / name) == expected, f"Local H5 archive matches {name}")
-    for directory in ["ReactNative", "Web"]:
-        check(all(str(path.relative_to(root)) in manifest["sources"] for path in (root / directory).iterdir() if path.is_file()), f"Local H5 manifest covers {directory}")
-    for name in ["index.html", "app.css"]:
-        check(archive.read(name) == (root / "Web" / name).read_bytes(), f"Local H5 packaged {name}")
-    check(archive.read("art/background.png") == (root / "Assets/Assets.xcassets/background.imageset/image.png").read_bytes(),
-          "Local H5 packaged the current screen background")
-    check(b"connect-src 'none'" in archive.read("index.html"), "Local H5 denies web network requests")
-check("vava.zip in Resources" in project and "Assets/LocalWeb/vava.zip" in spec, "Bundled H5 archive in generated project")
-check("LocalWebView.swift in Sources" in project, "Native local WebView included")
-page_host = (root / "App/ReactNative/LocalWebView.swift").read_text()
-check("allowingReadAccessTo: root" in page_host and "websiteDataStore = .nonPersistent()" in page_host, "Restricted local WebView storage")
-check("message.frameInfo.isMainFrame" in page_host and "entry.type != .symlink" in page_host, "Local bridge and archive validation")
-check("commands.has(message.command)" in (root / "ReactNative/App.tsx").read_text(), "H5 command allowlist")
+phase = project.split("/* Begin PBXSourcesBuildPhase section */")[1].split("/* End PBXSourcesBuildPhase section */")[0]
+target_sources = re.findall(r"/\* ([^*]+) in Sources \*/", phase)
+check(sorted(target_sources) == sorted(p.name for p in native_sources), "Target builds exactly the Swift application and feature sources")
+check(app.count("@main") == 1 and "window?.rootViewController = Dock(context)" in app, "UIKit application entry")
+check(re.findall(r'^\s+\("(\w+)", "\w+", \w+Screen\(context\)\)', app, re.M)
+      == ["Academy", "Watch", "Shorts", "Chats", "Me"], "Five native navigation roots in order")
+workspace = ET.parse(project_workspace / "contents.xcworkspacedata")
+check([f.get("location") for f in workspace.findall("FileRef")] == ["self:"], "Standalone project workspace")
+pins = read_json(project_workspace / "xcshareddata/swiftpm/Package.resolved")["pins"]
+check(any(pin["identity"] == "tpinappreceipt" and pin["state"]["version"] == "4.0.2" for pin in pins),
+      "Receipt package locked for the standalone project")
+check(all(token not in project for token in ("Pods-", "react-native-xcode.sh", "vava.zip in Resources", "LocalWebView.swift")), "Standalone UIKit target")
+check("TPInAppReceipt in Frameworks" in project and "PrivacyInfo.xcprivacy in Resources" in project, "Receipt verification and privacy manifest")
+check('UIImage(named: "brand-logo")' in app and "enter.isEnabled = accepted && !isOpening" in app, "Branded native login requires consent")
 packs = read_json("Configuration/coin-products.json")
 check(len(packs) == 9, "Nine StoreKit consumables for the wallet grid")
 expected_packs = [
@@ -252,11 +226,8 @@ for name, item in media.items():
     path = root / "Assets/Content/Media" / name
     check(path.stat().st_size == item["bytes"] and digest(path) == item["sha256"], f"Media hash {name}")
     if path.suffix == ".mp4":
-        output = subprocess.check_output(
-            ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
-             "stream=codec_name", "-of", "csv=p=0", str(path)], text=True
-        )
-        check(output.strip() == "h264", f"H.264 video {name}")
+        output = subprocess.check_output(["avmediainfo", str(path)], text=True)
+        check("Format: H.264 'avc1'" in output, f"H.264 video {name}")
     else:
         with Image.open(path) as image:
             check(image.format == "JPEG" and image.width > 250, f"Photo cover {name}")

@@ -3,12 +3,14 @@ import argparse
 from pathlib import Path
 import subprocess
 
+from qa_simulator import simulator_id
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--harness", required=True, type=Path)
 parser.add_argument("--result", required=True)
 parser.add_argument("--log", required=True, type=Path)
 args = parser.parse_args()
-simulator = "C6BBDAF1-EF03-4F2E-980F-CB8C472367D6"
+simulator = simulator_id()
 bundle = "com.vava.pingpong.acceptance.nov13"
 command = [
     "xcodebuild", "-project", "Vava.xcodeproj", "-scheme", "Vava", "-configuration", "Debug",

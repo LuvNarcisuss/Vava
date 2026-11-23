@@ -475,19 +475,8 @@ import UIKit
         }
         message.isEnabled = !blocked
         outline(message, color: Theme.line)
-        let block = Theme.button(blocked ? "Unblock" : "Block") { [weak self] in
+        let actions = Theme.profileActions(follow: follow, message: message, blocked: blocked) { [weak self] in
             self?.changeBlock()
-        }
-        block.backgroundColor = .clear
-        block.setTitleColor(Theme.coral, for: .normal)
-        let actionAxis: NSLayoutConstraint.Axis =
-            traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
-        let actions = Theme.stack(
-            [follow, message, block], spacing: 8, axis: actionAxis
-        )
-        if actionAxis == .horizontal {
-            follow.widthAnchor.constraint(equalTo: message.widthAnchor).isActive = true
-            block.setContentHuggingPriority(.required, for: .horizontal)
         }
         var views = [summary]
         if !works.isEmpty {
@@ -657,7 +646,11 @@ import UIKit
         let signOut = Theme.button("Log out") { [weak self] in self?.signOut() }
         let delete = Theme.button("Delete account") { [weak self] in self?.deleteAccount() }
         delete.setTitleColor(Theme.coral, for: .normal)
-        render([edit, credits, blocked] + agreementButtons + [signOut, delete])
+        let preview = Theme.button("Call preview") { [weak self] in
+            guard let self else { return }
+            self.push(CallPreviewScreen(self.context))
+        }
+        render([edit, credits, blocked, preview] + agreementButtons + [signOut, delete])
     }
 
     private func signOut() {

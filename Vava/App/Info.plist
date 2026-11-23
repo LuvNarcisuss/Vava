@@ -38,8 +38,6 @@
 	<string>Vava connects to nearby players for messages and calls.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Vava uses your microphone for calls and lets you check access in Call preview.</string>
-	<key>RCTNewArchEnabled</key>
-	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Kalam-Bold.ttf</string>

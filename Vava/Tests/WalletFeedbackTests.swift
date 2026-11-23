@@ -16,12 +16,10 @@ final class WalletFeedbackTests: XCTestCase {
     }
 
     private func launch() {
-        app.launchEnvironment["VAVA_LOCAL_STOREKIT"] = ""
+        app.launchEnvironment["VAVA_LOCAL_STOREKIT"] = "1"
         app.launch()
-        if app.buttons["Continue"].exists {
-            tap("Accept the agreements")
-            tap("Continue")
-        }
+        tap("Accept the agreements")
+        tap("Log in")
     }
 
     private func session() throws -> SKTestSession {

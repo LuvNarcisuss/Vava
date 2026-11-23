@@ -1,14 +1,59 @@
 import StoreKit
 import StoreKitTest
+import UIKit
 import XCTest
 @testable import Vava
 
 @MainActor final class WalletStoreKitTests: XCTestCase {
+    func testEmptyCatalogIsFailureAndCanRecover() async throws {
+        guard Bundle.main.bundleIdentifier?.hasPrefix("com.vava.walletacceptance.") == true else {
+            XCTFail("Catalog tests require an isolated application.")
+            return
+        }
+        let fixture = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "VavaCoins", withExtension: "storekit"))
+        var configuration = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: fixture)) as? [String: Any])
+        configuration["products"] = []
+        let emptyFixture = FileManager.default.temporaryDirectory.appendingPathComponent("EmptyCatalog.storekit")
+        try JSONSerialization.data(withJSONObject: configuration).write(to: emptyFixture)
+        defer { try? FileManager.default.removeItem(at: emptyFixture) }
+        let emptySession = try SKTestSession(contentsOf: emptyFixture)
+        emptySession.disableDialogs = true
+        let wallet = try Wallet(account: UUID())
+        defer { wallet.stop() }
+        do {
+            try await wallet.refresh()
+            XCTFail("An empty StoreKit catalog must not report a successful refresh.")
+        } catch {
+            XCTAssertFalse(error is CancellationError)
+        }
+        XCTAssertTrue(CoinPack.all.allSatisfy { wallet.price(for: $0) == nil })
+        XCTAssertEqual(wallet.catalogStatus, .unavailable)
+        var partial = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: fixture)) as? [String: Any])
+        partial["products"] = Array(try XCTUnwrap(partial["products"] as? [[String: Any]]).prefix(1))
+        let partialFixture = FileManager.default.temporaryDirectory.appendingPathComponent("PartialCatalog.storekit")
+        try JSONSerialization.data(withJSONObject: partial).write(to: partialFixture)
+        defer { try? FileManager.default.removeItem(at: partialFixture) }
+        let partialSession = try SKTestSession(contentsOf: partialFixture)
+        try await wallet.refresh()
+        XCTAssertEqual(wallet.catalogStatus, .partial)
+        XCTAssertEqual(CoinPack.all.filter { wallet.price(for: $0) != nil }.count, 1)
+        let session = try SKTestSession(contentsOf: fixture)
+        session.disableDialogs = true
+        try await wallet.refresh()
+        XCTAssertEqual(CoinPack.all.filter { wallet.price(for: $0) != nil }.count, 9)
+        XCTAssertEqual(wallet.catalogStatus, .ready)
+        XCTAssertEqual(wallet.ledger.balance, 0)
+        XCTAssertTrue(wallet.ledger.entries.isEmpty)
+        withExtendedLifetime((emptySession, partialSession, session)) {}
+    }
+
     func testPurchaseCancellationAndDuplicateDelivery() async throws {
         continueAfterFailure = false
         let bundle = try XCTUnwrap(Bundle.main.bundleIdentifier)
-        XCTAssertTrue((bundle.hasPrefix("com.vava.walletacceptance.") || bundle.hasPrefix("com.vava.h5acceptance.")), "Only run in an isolated app")
-        guard (bundle.hasPrefix("com.vava.walletacceptance.") || bundle.hasPrefix("com.vava.h5acceptance.")) else { return }
+        guard bundle.hasPrefix("com.vava.walletacceptance.") else {
+            XCTFail("Purchase tests require an isolated wallet test application.")
+            return
+        }
         let fixture = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "VavaCoins", withExtension: "storekit"))
         let session = try SKTestSession(contentsOf: fixture)
         session.resetToDefaultState()
@@ -80,5 +125,102 @@ import XCTest
         print("WALLET_ACCEPTANCE reopen_duplicate balance=400 entries=1 ledger_unchanged=true")
 
         reopened.stop()
+    }
+}
+
+
+extension WalletStoreKitTests {
+    func testWalletScreenCheckout() async throws {
+        guard Bundle.main.bundleIdentifier?.hasPrefix("com.vava.walletacceptance.") == true else {
+            XCTFail("Checkout requires an isolated application.")
+            return
+        }
+        let window = try XCTUnwrap((UIApplication.shared.delegate as? VavaApplication)?.window)
+        let fixture = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "VavaCoins", withExtension: "storekit"))
+        let session = try SKTestSession(contentsOf: fixture)
+        session.resetToDefaultState()
+        session.disableDialogs = true
+        defer { session.resetToDefaultState() }
+
+        func button(_ label: String) async throws -> UIButton {
+            try await waitFor(label) {
+                self.descendants(of: window).compactMap { $0 as? UIButton }.first {
+                    $0.isEnabled && ($0.accessibilityLabel == label || $0.currentTitle == label)
+                }
+            }
+        }
+
+        func checkout(expected: String) async throws {
+            let pack = try await button("400 coins")
+            let price = try XCTUnwrap(pack.accessibilityValue)
+            pack.sendActions(for: .touchUpInside)
+            let buy = try await button("Buy for " + price)
+            buy.sendActions(for: .touchUpInside)
+            let alert: UIAlertController = try await waitFor(expected) {
+                let tabs = window.rootViewController as? UITabBarController
+                let navigation = tabs?.selectedViewController as? UINavigationController
+                let presented = navigation?.topViewController?.presentedViewController
+                    ?? navigation?.presentedViewController ?? tabs?.presentedViewController
+                return presented as? UIAlertController
+            }
+            XCTAssertEqual(alert.message, expected)
+            await withCheckedContinuation { done in
+                alert.dismiss(animated: false) { done.resume() }
+            }
+        }
+
+        let consent = try await button("Accept the agreements")
+        consent.sendActions(for: .touchUpInside)
+        let login = try await button("Log in")
+        login.sendActions(for: .touchUpInside)
+        let profile = try await button("Me")
+        profile.sendActions(for: .touchUpInside)
+        let tabs = try XCTUnwrap(window.rootViewController as? Dock)
+        let navigation = try XCTUnwrap(tabs.selectedViewController as? UINavigationController)
+        let screen = try XCTUnwrap(navigation.topViewController as? ProfileScreen)
+        let initialBalance = screen.context.wallet.ledger.balance
+        let wallet = try await button("Wallet  ·  " + initialBalance.formatted() + " coins")
+        wallet.sendActions(for: .touchUpInside)
+        for pack in CoinPack.all {
+            let offer = try await button(pack.coins.formatted() + " coins")
+            let price = try XCTUnwrap(offer.accessibilityValue)
+            XCTAssertFalse(price.isEmpty)
+            XCTAssertNotEqual(price, "Unavailable")
+        }
+
+        func purchaseRows() -> Int {
+            descendants(of: window).compactMap { ($0 as? UILabel)?.text }
+                .filter { $0 == "Coin pack  ·  +400 coins" }.count
+        }
+        let initialRows = purchaseRows()
+        try await checkout(expected: "Coins added to your wallet.")
+        try await session.setSimulatedError(.generic(.userCancelled), forAPI: StoreKitPurchaseAPI())
+        try await checkout(expected: "Purchase canceled.")
+        XCTAssertEqual(purchaseRows(), initialRows + 1)
+        let image = UIGraphicsImageRenderer(bounds: window.bounds).image { _ in
+            _ = window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+        }
+        let attachment = XCTAttachment(image: image)
+        attachment.name = "Wallet after purchase and cancellation"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+        let back = try await button("Back")
+        back.sendActions(for: .touchUpInside)
+        _ = try await button("Wallet  ·  " + (initialBalance + 400).formatted() + " coins")
+    }
+
+    private func descendants(of view: UIView) -> [UIView] {
+        guard !view.isHidden else { return [] }
+        return [view] + view.subviews.flatMap { descendants(of: $0) }
+    }
+
+    private func waitFor<T>(_ description: String, value: () -> T?) async throws -> T {
+        let deadline = Date().addingTimeInterval(30)
+        repeat {
+            if let result = value() { return result }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        } while Date() < deadline
+        throw NSError(domain: "WalletAcceptance", code: 1,
+                      userInfo: [NSLocalizedDescriptionKey: "Timed out waiting for " + description])
     }
 }

@@ -339,28 +339,27 @@ import UIKit
             }
         }
         follow.isEnabled = !blocked
+        let message = Theme.button("Message") { [weak self] in
+            guard let self else { return }
+            self.openChat(with: self.person)
+        }
+        let actions = Theme.profileActions(follow: follow, message: message, blocked: blocked) { [weak self] in
+            guard let self else { return }
+            if blocked {
+                self.setBlocked(false)
+            } else {
+                self.confirm(
+                    "Block \(self.person.name)?",
+                    message: "This player will no longer be able to chat or call you.",
+                    action: "Block", destructive: true
+                ) { [weak self] in self?.setBlocked(true) }
+            }
+        }
         render([
             Theme.card([
                 Theme.label(person.name, size: 24, display: true),
                 Theme.label("Player code: \(person.code)", color: Theme.secondary),
-            ]),
-            follow,
-            Theme.button("Message") { [weak self] in
-                guard let self else { return }
-                self.openChat(with: self.person)
-            },
-            Theme.button(blocked ? "Unblock" : "Block") { [weak self] in
-                guard let self else { return }
-                if blocked {
-                    self.setBlocked(false)
-                } else {
-                    self.confirm(
-                        "Block \(self.person.name)?",
-                        message: "This player will no longer be able to chat or call you.",
-                        action: "Block", destructive: true
-                    ) { [weak self] in self?.setBlocked(true) }
-                }
-            },
+            ]), actions,
         ])
     }
 
@@ -408,6 +407,18 @@ extension Screen {
             Theme.icon("call", label: "Voice call") { [weak self] in self?.call(video: false) })
         toolbar.addArrangedSubview(
             Theme.icon("video", label: "Video call") { [weak self] in self?.call(video: true) })
+        toolbar.addArrangedSubview(Theme.icon("more", label: "View profile") { [weak self] in
+            guard let self else { return }
+            if self.person.isPublisher {
+                guard let publisher = self.context.publishers.first(where: { $0.id == self.person.id }) else {
+                    self.show("Profile unavailable", message: "This publisher could not be found.")
+                    return
+                }
+                self.push(PublisherProfileScreen(self.context, publisher: publisher))
+            } else {
+                self.push(NearbyPlayerScreen(self.context, person: self.person))
+            }
+        })
         input.delegate = self
         input.returnKeyType = .send
         let controls = Theme.stack([input, sendButton], spacing: 8, axis: .horizontal)
@@ -623,5 +634,63 @@ extension Screen {
                 self.context.chat.closeCall(call.id)
             })
         render(views)
+    }
+}
+
+@MainActor final class CallPreviewScreen: ListScreen {
+    private var preview: LocalCallPreview?
+    private let frame = UIImageView()
+    private let status = Theme.label("Check your microphone and front camera on this device.", color: Theme.secondary)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        heading.text = "Call preview"
+        frame.contentMode = .scaleAspectFit
+        frame.transform = CGAffineTransform(scaleX: -1, y: 1)
+        frame.heightAnchor.constraint(equalTo: frame.widthAnchor, multiplier: 0.75).isActive = true
+        frame.isHidden = true
+        render([
+            frame, status,
+            Theme.button("Voice preview") { [weak self] in self?.start(video: false) },
+            Theme.button("Video preview", primary: true) { [weak self] in self?.start(video: true) },
+        ])
+        NotificationCenter.default.addObserver(self, selector: #selector(stopPreview),
+            name: UIApplication.didEnterBackgroundNotification, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopPreview()
+    }
+
+    @objc private func stopPreview() {
+        preview?.stop()
+        preview = nil
+        frame.image = nil
+        frame.isHidden = true
+        status.text = "Check your microphone and front camera on this device."
+    }
+
+    private func start(video: Bool) {
+        guard context.chat.call == nil else {
+            show("Call preview", message: "Close the current call first.")
+            return
+        }
+        stopPreview()
+        let session = LocalCallPreview()
+        preview = session
+        status.text = "Checking access…"
+        Task {
+            do {
+                let result = try await session.start(video: video) { [weak self, weak session] data in
+                    guard let self, let session, self.preview === session else { return }
+                    self.frame.image = UIImage(data: data)
+                    self.frame.isHidden = false
+                }
+                if preview === session { status.text = result }
+            } catch {
+                if preview === session { status.text = "Preview stopped. Try again to restart it." }
+            }
+        }
     }
 }

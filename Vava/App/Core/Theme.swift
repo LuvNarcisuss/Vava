@@ -69,6 +69,16 @@ import UIKit
         return button
     }
 
+    static func profileActions(follow: UIButton, message: UIButton, blocked: Bool, onBlock: @escaping () -> Void) -> UIStackView {
+        let block = button("🚫", action: onBlock)
+        block.accessibilityLabel = blocked ? "Unblock" : "Block"
+        block.backgroundColor = blocked ? panel : .clear
+        block.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        let actions = stack([follow, message, block], spacing: 8, axis: .horizontal)
+        follow.widthAnchor.constraint(equalTo: message.widthAnchor).isActive = true
+        return actions
+    }
+
     static func field(_ placeholder: String, value: String? = nil) -> UITextField {
         let field = UITextField()
         field.text = value
@@ -152,6 +162,11 @@ extension UIView {
 @MainActor final class RefreshFeedback {
     private let label = Theme.label("", size: 15, display: true, color: Theme.ink)
     private var dismissTask: Task<Void, Never>?
+
+    func hide() {
+        dismissTask?.cancel()
+        label.isHidden = true
+    }
 
     func show(in view: UIView, message: String = "Updated") {
         if label.superview == nil {
@@ -350,6 +365,7 @@ extension UIView {
                 self.refreshing = false
                 self.refresh.endRefreshing()
             }
+            self.refreshFeedback.hide()
             let previousOrder = self.refreshOrder
             self.refreshOrder += 1
             do {

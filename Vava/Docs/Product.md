@@ -1,8 +1,6 @@
 # Product scope
 
-Current presentation: all product pages now render as local H5 inside a React Native initialized WKWebView. See [local H5 architecture and current acceptance](LocalH5Migration.md). Earlier React Native runtime evidence below describes the preceding renderer and does not establish H5 acceptance.
-
-The application interface is packaged as local H5 and displayed by a React Native shell. TypeScript presentation modules render HTML and CSS through React Native for Web. Native iOS modules retain protected persistence, StoreKit, media and nearby communication. Current runtime acceptance is recorded in LocalH5Migration.md.
+Vava uses native Swift and UIKit for login, navigation and product screens.
 
 Vava follows Toli's five independent navigation stacks and its compact editorial layout. The main navigation opens on its first tab, Academy. The Release Bundle ID is `com.vava.pingpong`. Debug testing uses `im.seex.sao2` with the Yu Sun team.
 

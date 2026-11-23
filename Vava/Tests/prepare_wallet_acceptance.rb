@@ -1,30 +1,34 @@
 require 'fileutils'
 require 'json'
+require 'open3'
 require 'securerandom'
 require 'tmpdir'
 require 'xcodeproj'
 
 root = File.expand_path('..', __dir__)
-destination = Dir.mktmpdir('vava-wallet-rn-')
-bundle = "com.vava.walletacceptance.rn#{SecureRandom.hex(4)}"
-%w[App Assets Configuration ReactNative node_modules Pods build PrivacyInfo.xcprivacy
-   Podfile Podfile.lock package.json .xcode.env index.js babel.config.js metro.config.js
-   react-native.config.js].each do |name|
+simulator, resolution = Open3.capture2('python3', File.join(__dir__, 'qa_simulator.py'))
+abort 'Unable to resolve Vava QA.' unless resolution.success?
+destination = Dir.mktmpdir('vava-wallet-swift-')
+bundle = "com.vava.walletacceptance.swift#{SecureRandom.hex(4)}"
+%w[App Assets Configuration PrivacyInfo.xcprivacy].each do |name|
   File.symlink(File.join(root, name), File.join(destination, name))
 end
+File.symlink(File.join(__dir__, 'qa_simulator.py'), File.join(destination, 'qa_simulator.py'))
 FileUtils.cp_r(File.join(root, 'Vava.xcodeproj'), destination)
-FileUtils.cp_r(File.join(root, 'Vava.xcworkspace'), destination)
 path = File.join(destination, 'Vava.xcodeproj')
 project = Xcodeproj::Project.open(path)
 app = project.targets.find { |target| target.name == 'Vava' }
 info = Xcodeproj::Plist.read_from_path(File.join(root, 'App/Info.plist'))
-info['VavaUseBundledJavaScript'] = true
 info['CFBundleDisplayName'] = 'Vava Wallet Test'
 Xcodeproj::Plist.write_to_path(info, File.join(destination, 'AcceptanceInfo.plist'))
+Xcodeproj::Plist.write_to_path({ 'get-task-allow' => true }, File.join(destination, 'Acceptance.entitlements'))
 app.build_configurations.each do |config|
   config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = bundle
   config.build_settings['ENABLE_TESTABILITY'] = 'YES'
   config.build_settings['INFOPLIST_FILE'] = 'AcceptanceInfo.plist'
+  if config.name == 'Debug'
+    config.build_settings['CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]'] = 'Acceptance.entitlements'
+  end
 end
 tests = project.new_target(:unit_test_bundle, 'VavaWalletTests', :ios, '17.0')
 tests.add_dependency(app)
@@ -41,7 +45,6 @@ tests.build_configurations.each do |config|
     'SWIFT_VERSION' => '5.0',
     'TEST_HOST' => '$(BUILT_PRODUCTS_DIR)/Vava.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Vava',
     'BUNDLE_LOADER' => '$(TEST_HOST)',
-    'OTHER_LDFLAGS' => ['-lc++'],
     'TARGETED_DEVICE_FAMILY' => '1',
     'SUPPORTS_MACCATALYST' => 'NO',
     'SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD' => 'NO',
@@ -63,6 +66,6 @@ scheme.launch_action.environment_variables = Xcodeproj::XCScheme::EnvironmentVar
 ])
 scheme.save_as(path, 'VavaWalletAcceptance', true)
 metadata = { 'directory' => destination, 'bundle' => bundle,
-             'simulator' => 'C6BBDAF1-EF03-4F2E-980F-CB8C472367D6' }
+             'simulator' => simulator.strip }
 File.write(File.join(destination, 'acceptance.json'), JSON.pretty_generate(metadata))
 puts JSON.generate(metadata)
