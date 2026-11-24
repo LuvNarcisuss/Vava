@@ -12,8 +12,8 @@ def sql_json(value):
 
 
 print("begin;")
-for kind, items in catalog.items():
-    for position, source in enumerate(items):
+for kind in ("shorts", "courses", "replays"):
+    for position, source in enumerate(catalog[kind]):
         row = dict(source)
         key = row["id"]
         assert key.replace("-", "").isalnum() and key.isascii()

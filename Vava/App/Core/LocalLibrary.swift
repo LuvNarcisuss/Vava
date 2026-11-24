@@ -1,6 +1,8 @@
 import Foundation
 
 @MainActor final class LocalLibrary {
+    static let followersChanged = Notification.Name("Vava.FollowersChanged")
+
     private struct Snapshot: Codable {
         var profile: Player
         var agreement: String?
@@ -13,6 +15,7 @@ import Foundation
         var comments: [String: [Discussion]] = [:]
         var submissions: [Submission] = []
         var following: Set<String>?
+        var followers: Set<String>?
         var blocked: Set<String>?
         var shareCounts: [String: Int]?
         var reports: [String: ContentReport]?
@@ -89,7 +92,7 @@ import Foundation
         return PersonalState(
             me: value.profile, likes: value.likes, saves: value.saves,
             hidden: value.hidden.union((value.reports ?? [:]).keys), practice: value.practice,
-            following: value.following ?? [], blocked: value.blocked ?? [],
+            following: value.following ?? [], followers: value.followers ?? [], blocked: value.blocked ?? [],
             commentsByClip: value.comments, shareCounts: value.shareCounts ?? [:])
     }
 
@@ -105,6 +108,15 @@ import Foundation
         }
     }
 
+    func recordIncomingFollow(from playerID: String, enabled: Bool) throws {
+        let snapshot = try current()
+        let shouldCount = enabled && snapshot.blocked?.contains(playerID) != true
+        var followers = snapshot.followers ?? []
+        guard followers.contains(playerID) != shouldCount else { return }
+        if shouldCount { followers.insert(playerID) } else { followers.remove(playerID) }
+        try update { $0.followers = followers }
+    }
+
     func setBlocked(_ publisher: String, enabled: Bool, person: ChatPerson? = nil) throws {
         try update { snapshot in
             var blocked = snapshot.blocked ?? []
@@ -112,6 +124,7 @@ import Foundation
             if enabled {
                 blocked.insert(publisher)
                 snapshot.following?.remove(publisher)
+                snapshot.followers?.remove(publisher)
                 if let person {
                     var people = snapshot.blockedPeople ?? [:]
                     people[publisher] = person
@@ -395,6 +408,10 @@ import Foundation
         try files.createDirectory(at: directory, withIntermediateDirectories: true)
         try JSONEncoder().encode(snapshot).write(
             to: index, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        let followersChanged = record?.followers != snapshot.followers
         record = snapshot
+        if followersChanged {
+            NotificationCenter.default.post(name: Self.followersChanged, object: self)
+        }
     }
 }

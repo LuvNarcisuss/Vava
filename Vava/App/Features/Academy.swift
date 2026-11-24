@@ -82,15 +82,16 @@ import UIKit
                 "\(course.category.uppercased())  /  \(course.minutes) MIN", size: 13, color: Theme.lime)
             let title = Theme.label(course.title, size: 25, display: true)
             let priceLabel = Theme.label(price, display: true, color: Theme.lime)
+            let activity = courseActivityLabel(course)
             let details = Theme.stack(
-                [image, header, title, Theme.label(course.detail, color: Theme.secondary), priceLabel],
+                [image, header, title, Theme.label(course.detail, color: Theme.secondary), activity, priceLabel],
                 spacing: 8)
             details.isUserInteractionEnabled = false
             details.accessibilityElementsHidden = true
 
             let open = UIButton(type: .custom)
             open.accessibilityLabel = "\(course.title), \(price)"
-            open.accessibilityValue = "\(course.category), \(course.minutes) min. \(course.detail)"
+            open.accessibilityValue = "\(course.category), \(course.minutes) min. \(course.detail) \(activity.text ?? "")"
             open.addAction(
                 UIAction { [weak self] _ in
                     guard let self else { return }
@@ -178,7 +179,7 @@ import UIKit
         var views: [UIView] = [
             heading, image, courseAuthorButton(course),
             Theme.label("\(course.level)  /  \(course.minutes) min", color: Theme.lime),
-            Theme.label(course.detail, size: 20), save,
+            Theme.label(course.detail, size: 20), courseActivityLabel(course), save,
         ]
         if unlocked {
             let completed = Set(context.state.practice[course.id] ?? [])
@@ -253,6 +254,12 @@ import UIKit
 }
 
 extension Screen {
+    func courseActivityLabel(_ course: Course) -> UILabel {
+        let counts = context.state.engagement(for: course)
+        return Theme.label(
+            "Estimated: \(counts.likes) likes · \(counts.saves) saves", size: 13, color: Theme.secondary)
+    }
+
     fileprivate func courseAuthorButton(_ course: Course) -> UIButton {
         let button = UIButton(type: .custom)
         button.accessibilityLabel = course.author.name

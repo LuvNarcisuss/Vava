@@ -45,6 +45,30 @@ import XCTest
         }
     }
 
+    func testMeCountsOnlyActivityFromOtherPlayers() throws {
+        let context = try makeContext()
+        defer { context.wallet.stop() }
+        let playerID = "player:" + UUID().uuidString
+        try context.library.setFollowing(playerID, enabled: true)
+        XCTAssertTrue(try context.library.state().followers.isEmpty)
+        try context.library.recordIncomingFollow(from: playerID, enabled: true)
+        try context.library.recordIncomingFollow(from: playerID, enabled: true)
+        try context.reload()
+        XCTAssertEqual(context.state.followers, [playerID])
+        try context.library.recordIncomingFollow(from: playerID, enabled: false)
+        XCTAssertTrue(try context.library.state().followers.isEmpty)
+
+        let works = context.ownedClips(from: [Submission(id: UUID(), title: "Practice rally")])
+        let clip = try XCTUnwrap(works.first)
+        try context.change(clip.id, kind: .like, enabled: true)
+        try context.change(clip.id, kind: .save, enabled: true)
+        let totals = context.state.receivedTotals(for: works)
+        XCTAssertEqual(totals.likes, 0)
+        XCTAssertEqual(totals.saves, 0)
+        XCTAssertTrue(context.state.likes.contains(clip.id))
+        XCTAssertTrue(context.state.saves.contains(clip.id))
+    }
+
     func testBlockedChatsDisappearWithoutDeletingHistoryAndRestore() throws {
         let context = try makeContext()
         defer { context.wallet.stop() }

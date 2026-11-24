@@ -183,7 +183,10 @@ for item in art:
             check(image.mode == "RGB" and image.size == (1024, 1024), "Opaque launcher icon")
 catalog = read_json("Assets/Content/catalog.json")
 check([len(catalog[k]) for k in ("shorts", "courses", "replays")] == [4, 6, 6], "Catalog sizes")
-ids = [item["id"] for items in catalog.values() for item in items]
+ids = [item["id"] for kind in ("shorts", "courses", "replays") for item in catalog[kind]]
+publishers = {clip["publisherID"] for clip in catalog["shorts"]} | {course["author"]["id"] for course in catalog["courses"]}
+followers = catalog["estimatedFollowersByPublisherID"]
+check(followers.keys() == publishers and all(type(n) is int and 50 <= n < 100 for n in followers.values()), "Publisher follower counts stay within 50 to 100 including a local follow")
 check(len(ids) == len(set(ids)), "Stable distinct catalog IDs")
 engagement_fields = {"likes", "saves", "shares"}
 editorial_counts = {"ravne": 26, "netherlands-china": 30, "club-rally": 22, "open-rally": 24}

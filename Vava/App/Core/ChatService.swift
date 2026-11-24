@@ -289,6 +289,11 @@ import UIKit
         case .following:
             guard let follows = packet.flag else { return }
             let firstUpdate = remoteFollows.updateValue(follows, forKey: person.id) == nil
+            do {
+                try library.recordIncomingFollow(from: person.id, enabled: follows)
+            } catch {
+                discoveryIssue = "Could not save this player's follow status."
+            }
             if firstUpdate { sendFollowing(to: person) }
             if !follows, call?.person.id == person.id, call?.phase != .ended {
                 finishCall("You must follow each other to call.", notifyPeer: true)

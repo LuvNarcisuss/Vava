@@ -34,7 +34,6 @@ private final class VideoSurface: UIView {
     private let titleLabel = Theme.label("", size: 26, display: true)
     private let byline = Theme.label("", size: 16, color: Theme.lime)
     private let detail = Theme.label("", size: 16)
-    private let position = Theme.label("", size: 14, color: Theme.secondary)
     private let failure = Theme.label("", color: Theme.coral)
     private let estimateLabel = Theme.label("Includes estimated activity", size: 12, color: Theme.secondary)
     private weak var feedControls: UIStackView?
@@ -106,7 +105,7 @@ private final class VideoSurface: UIView {
         }
         top.addArrangedSubview(heading)
         configureSearch(in: top)
-        let caption = Theme.stack([position, byline, titleLabel, detail, estimateLabel, failure], spacing: 3)
+        let caption = Theme.stack([byline, titleLabel, detail, estimateLabel, failure], spacing: 3)
         titleLabel.numberOfLines = 2
         detail.numberOfLines = 2
         failure.isHidden = true
@@ -233,15 +232,12 @@ private final class VideoSurface: UIView {
             titleLabel.text = "No clips available"
             byline.text = nil
             detail.text = "Swipe down to refresh."
-            position.text = nil
             drawRail()
             return
         }
         titleLabel.text = clip.title
         byline.text = clip.publisher
         detail.text = clip.detail
-        let indexText = "\(feedIndex + 1) of \(clips.count)"
-        position.text = clip.duration > 0 ? "\(indexText)  ·  \(clip.duration)s" : indexText
         let expected = clip.id
         if !clip.cover.isEmpty {
             PictureLoader.shared.load(context.asset(clip.cover), into: nil) { [weak self] image in

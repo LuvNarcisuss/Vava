@@ -1,4 +1,13 @@
 {
+  "estimatedFollowersByPublisherID": {
+    "tom-lodziak": 92,
+    "table-tennis-england": 78,
+    "stefan-feth": 56,
+    "televizija-urslja": 89,
+    "netherlands-sound-vision": 73,
+    "anumodu-amarachi": 84,
+    "evworo": 67
+  },
   "shorts": [
     {
       "id": "ravne",
@@ -170,6 +179,7 @@
   "courses": [
     {
       "id": "ready-stance",
+      "engagement": { "likes": 34, "saves": 25 },
       "title": "Find your ready position",
       "category": "Fundamentals",
       "level": "Beginner",
@@ -188,6 +198,7 @@
     },
     {
       "id": "forehand-drive",
+      "engagement": { "likes": 47, "saves": 32 },
       "title": "Build a repeatable forehand",
       "category": "Technique",
       "level": "Beginner",
@@ -207,6 +218,7 @@
     },
     {
       "id": "backhand-push",
+      "engagement": { "likes": 38, "saves": 29 },
       "title": "Keep the backhand push low",
       "category": "Technique",
       "level": "Beginner",
@@ -226,6 +238,7 @@
     },
     {
       "id": "side-step",
+      "engagement": { "likes": 36, "saves": 24 },
       "title": "Move and recover",
       "category": "Footwork",
       "level": "Intermediate",
@@ -245,6 +258,7 @@
     },
     {
       "id": "short-serve",
+      "engagement": { "likes": 42, "saves": 31 },
       "title": "Place the short serve",
       "category": "Fundamentals",
       "level": "Intermediate",
@@ -264,6 +278,7 @@
     },
     {
       "id": "read-the-serve",
+      "engagement": { "likes": 40, "saves": 30 },
       "title": "Read length before spin",
       "category": "Tactics",
       "level": "Intermediate",

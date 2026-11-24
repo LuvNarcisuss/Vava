@@ -10,6 +10,7 @@ extension Bundle {
 }
 
 struct Catalog: Codable {
+    let estimatedFollowersByPublisherID: [String: Int]
     let shorts: [Clip]
     let courses: [Course]
     let replays: [Replay]
@@ -62,6 +63,12 @@ struct Course: Codable, Identifiable {
     let reference: URL
     let referenceName: String
     let author: Publisher
+    let engagement: CourseEngagementEstimates
+}
+
+struct CourseEngagementEstimates: Codable {
+    let likes: Int
+    let saves: Int
 }
 
 struct Publisher: Codable, Identifiable {
@@ -134,6 +141,7 @@ struct PersonalState {
     let hidden: Set<String>
     let practice: [String: Set<Int>]
     let following: Set<String>
+    let followers: Set<String>
     let blocked: Set<String>
     let commentsByClip: [String: [Discussion]]
     let shareCounts: [String: Int]
@@ -150,12 +158,29 @@ struct PersonalState {
             shares: clip.engagement.shares + (shareCounts[clip.id] ?? 0))
     }
 
-    func totals(for clips: [Clip]) -> (likes: Int, saves: Int) {
-        clips.reduce(into: (likes: 0, saves: 0)) { total, clip in
-            let counts = engagement(for: clip)
+    func engagement(for course: Course) -> (likes: Int, saves: Int) {
+        (likes: course.engagement.likes + (likes.contains(course.id) ? 1 : 0),
+         saves: course.engagement.saves + (saves.contains(course.id) ? 1 : 0))
+    }
+
+    func receivedTotals(for clips: [Clip], courses: [Course] = []) -> (likes: Int, saves: Int) {
+        var total = (likes: 0, saves: 0)
+        for clip in clips {
+            if clip.publisherID == me.id.uuidString {
+                total.likes += clip.engagement.likes
+                total.saves += clip.engagement.saves
+            } else {
+                let counts = engagement(for: clip)
+                total.likes += counts.likes
+                total.saves += counts.saves
+            }
+        }
+        for course in courses {
+            let counts = engagement(for: course)
             total.likes += counts.likes
             total.saves += counts.saves
         }
+        return total
     }
 
     func canShow(_ clip: Clip) -> Bool {

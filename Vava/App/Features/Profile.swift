@@ -25,6 +25,8 @@ import UIKit
         super.viewDidLoad()
         heading.text = "Me"
         NotificationCenter.default.addObserver(
+            self, selector: #selector(followersChanged), name: LocalLibrary.followersChanged, object: context.library)
+        NotificationCenter.default.addObserver(
             self, selector: #selector(walletChanged), name: .walletChanged, object: context.wallet)
         toolbar.addArrangedSubview(
             Theme.icon("settings", label: "Settings") { [weak self] in
@@ -58,16 +60,23 @@ import UIKit
 
     @objc private func walletChanged() { draw() }
 
+    @objc private func followersChanged() {
+        perform {
+            try self.context.reloadState()
+            self.draw()
+        }
+    }
+
     private func draw() {
         let profile = context.state.me
         let works = context.ownedClips(from: submissions)
-        let totals = context.state.totals(for: works)
+        let totals = context.state.receivedTotals(for: works)
         let summary = ProfileHeader.card(
             name: profile.name, bio: profile.bio.isEmpty ? "Add a bio in Settings." : profile.bio,
             photo: profile.avatarJPEG.flatMap { UIImage(data: $0) },
             counts: [
                 ("Likes", totals.likes), ("Saves", totals.saves),
-                ("Following", context.state.following.count),
+                ("Followers", context.state.followers.count),
             ])
         let wallet = Theme.button(
             "Wallet  ·  \(context.wallet.ledger.balance.formatted()) coins", primary: true
@@ -457,9 +466,10 @@ import UIKit
         let id = publisher.id
         let blocked = context.state.blocked.contains(id)
         let following = context.state.following.contains(id)
+        let followers = (context.catalog.estimatedFollowersByPublisherID[id] ?? 0) + (following ? 1 : 0)
         let works = context.catalog.shorts.filter { $0.publisherID == id }
-        let total = context.state.totals(for: works)
         let courses = context.catalog.courses.filter { $0.author.id == id }
+        let total = context.state.receivedTotals(for: works, courses: courses)
         configureReportButton()
         blockButton.accessibilityLabel = blocked ? "Unblock" : "Block"
         blockButton.isSelected = blocked
@@ -468,7 +478,7 @@ import UIKit
             bio: courses.isEmpty ? "Recording source" : "Coaching reference",
             cover: context.portrait(for: publisher),
             counts: [
-                ("Likes", total.likes), ("Saves", total.saves), ("Your follows", following ? 1 : 0),
+                ("Likes", total.likes), ("Saves", total.saves), ("Followers", followers),
             ])
         let follow = Theme.button(following ? "Following" : "Follow", primary: !following) { [weak self] in
             guard let self else { return }
@@ -489,7 +499,7 @@ import UIKit
         let actions = Theme.stack([follow, message], spacing: 8, axis: .horizontal)
         actions.distribution = .fillEqually
         var views = [summary]
-        if !works.isEmpty {
+        if !works.isEmpty || !courses.isEmpty {
             views.append(Theme.label("Includes estimated activity", size: 12, color: Theme.secondary))
         }
         views.append(actions)
@@ -518,11 +528,11 @@ import UIKit
                 views.append(Theme.label("No tutorials to show.", color: Theme.secondary))
             }
             for course in visibleCourses.rotated(by: refreshOrder) {
-                views.append(
-                    Theme.button(course.title) { [weak self] in
-                        guard let self else { return }
-                        self.push(CourseScreen(self.context, course: course))
-                    })
+                let lesson = Theme.button(course.title) { [weak self] in
+                    guard let self else { return }
+                    self.push(CourseScreen(self.context, course: course))
+                }
+                views.append(Theme.stack([lesson, courseActivityLabel(course)], spacing: 4))
             }
         }
         if publisher.id == "table-tennis-england" {
