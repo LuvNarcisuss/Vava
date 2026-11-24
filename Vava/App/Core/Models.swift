@@ -82,6 +82,18 @@ enum ReportReason: String, CaseIterable, Codable {
 struct ContentReport: Codable {
     let reason: ReportReason
     let recordedAt: Date
+    var wasHidden: Bool?
+    var title: String?
+}
+
+struct SafetyEvent: Codable {
+    enum Action: String, Codable { case report, cancelReport, block, unblock }
+    let id: UUID
+    let action: Action
+    let target: String
+    let label: String?
+    let reason: ReportReason?
+    let date: Date
 }
 
 struct Replay: Codable, Identifiable {

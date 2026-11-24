@@ -1,6 +1,10 @@
 import UIKit
 
 @MainActor final class DiscussionSheet: Screen {
+    override func contentVisibilityDidChange() {
+        draw()
+        if !context.state.canShow(clip) { close() }
+    }
     private let clip: Clip
     private let onChange: () -> Void
     private let onClose: () -> Void
@@ -29,6 +33,9 @@ import UIKit
     required init?(coder: NSCoder) { nil }
 
     override func viewDidLoad() {
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(contentVisibilityDidChange),
+            name: .contentVisibilityChanged, object: context)
         view.backgroundColor = .clear
         view.accessibilityViewIsModal = true
         let backdrop = UIControl()
@@ -127,6 +134,13 @@ import UIKit
     }
 
     private func draw() {
+        guard context.state.canShow(clip) else {
+            for row in rows.arrangedSubviews { row.removeFromSuperview() }
+            titleLabel.text = "Comments unavailable"
+            composer.isHidden = true
+            return
+        }
+        composer.isHidden = false
         let discussion = context.state.discussion(for: clip)
         let total = discussion.count
         titleLabel.text = total == 1 ? "1 comment" : "\(total.formatted()) comments"
@@ -199,6 +213,11 @@ import UIKit
             return
         }
         do {
+            try context.reload()
+            guard context.state.canShow(clip) else {
+                draw()
+                return
+            }
             try context.library.post(clip: clip.id, id: UUID(), body: body, replyTo: reply?.id)
             try context.reloadState()
             field.text = nil

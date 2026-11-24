@@ -16,27 +16,41 @@ import Foundation
         var blocked: Set<String>?
         var shareCounts: [String: Int]?
         var reports: [String: ContentReport]?
+        var blockedPeople: [String: ChatPerson]?
+        var safetyEvents: [SafetyEvent]?
         var contacts: [String: ChatContact]?
         var drafts: [String: String]?
         var chatIdentity: Data?
         var chatRecords: [String: ChatHistory]?
     }
 
-    private struct PreviousSession: Decodable {
-        struct User: Decodable { let id: UUID }
-        let user: User
+    private struct StoredOwner: Decodable {
+        struct Identity: Decodable { let id: UUID }
+        let profile: Identity
     }
 
     private let files = FileManager.default
     private let support: URL
     private let directory: URL
+    private let account: UUID
     private var record: Snapshot?
 
-    init() throws {
+    init(account: UUID) throws {
+        self.account = account
         support = try files.url(
             for: .applicationSupportDirectory, in: .userDomainMask,
             appropriateFor: nil, create: true)
-        directory = support.appendingPathComponent("LocalLibrary", isDirectory: true)
+        let legacy = support.appendingPathComponent("LocalLibrary", isDirectory: true)
+        let legacyIndex = legacy.appendingPathComponent("library.json")
+        if files.fileExists(atPath: legacyIndex.path),
+            try JSONDecoder().decode(StoredOwner.self, from: Data(contentsOf: legacyIndex)).profile.id
+                == account
+        {
+            directory = legacy
+        } else {
+            directory = support.appendingPathComponent("AccountLibraries", isDirectory: true)
+                .appendingPathComponent(account.uuidString, isDirectory: true)
+        }
     }
 
     private var index: URL { directory.appendingPathComponent("library.json") }
@@ -56,16 +70,6 @@ import Foundation
 
     func open(revision: String, accepted: Bool) throws -> Player {
         try load()
-        // The old session filename identifies the wallet owner during the local cutover.
-        let previous = previousSession
-        let account: UUID
-        if let profile = record?.profile {
-            account = profile.id
-        } else if files.fileExists(atPath: previous.path) {
-            account = try JSONDecoder().decode(PreviousSession.self, from: Data(contentsOf: previous)).user.id
-        } else {
-            account = UUID()
-        }
         var next = record ?? Snapshot(profile: Player(id: account, name: "Table tennis player", bio: ""))
         if accepted { next.agreement = revision }
         guard next.agreement == revision else { throw AppFailure("Accept the agreements to continue.") }
@@ -73,7 +77,6 @@ import Foundation
             next.signedOut = nil
             try save(next)
         }
-        if files.fileExists(atPath: previous.path) { try files.removeItem(at: previous) }
         return next.profile
     }
 
@@ -85,7 +88,7 @@ import Foundation
         let value = try current()
         return PersonalState(
             me: value.profile, likes: value.likes, saves: value.saves,
-            hidden: value.hidden, practice: value.practice,
+            hidden: value.hidden.union((value.reports ?? [:]).keys), practice: value.practice,
             following: value.following ?? [], blocked: value.blocked ?? [],
             commentsByClip: value.comments, shareCounts: value.shareCounts ?? [:])
     }
@@ -102,27 +105,67 @@ import Foundation
         }
     }
 
-    func setBlocked(_ publisher: String, enabled: Bool) throws {
+    func setBlocked(_ publisher: String, enabled: Bool, person: ChatPerson? = nil) throws {
         try update { snapshot in
             var blocked = snapshot.blocked ?? []
+            guard blocked.contains(publisher) != enabled else { return }
             if enabled {
                 blocked.insert(publisher)
                 snapshot.following?.remove(publisher)
+                if let person {
+                    var people = snapshot.blockedPeople ?? [:]
+                    people[publisher] = person
+                    snapshot.blockedPeople = people
+                }
             } else {
                 blocked.remove(publisher)
             }
             snapshot.blocked = blocked
+            var events = snapshot.safetyEvents ?? []
+            events.append(
+                SafetyEvent(
+                    id: UUID(), action: enabled ? .block : .unblock, target: publisher,
+                    label: person?.name ?? snapshot.blockedPeople?[publisher]?.name, reason: nil, date: Date()))
+            snapshot.safetyEvents = events
         }
     }
 
-    func report(_ target: String, reason: ReportReason) throws {
+    func blockedPeople() throws -> [String: ChatPerson] { try current().blockedPeople ?? [:] }
+    func safetyEvents() throws -> [SafetyEvent] { try current().safetyEvents ?? [] }
+
+    func report(_ target: String, reason: ReportReason, title: String? = nil) throws {
         try update { snapshot in
             var reports = snapshot.reports ?? [:]
             if reports[target] == nil {
-                reports[target] = ContentReport(reason: reason, recordedAt: Date())
+                reports[target] = ContentReport(
+                    reason: reason, recordedAt: Date(), wasHidden: snapshot.hidden.contains(target),
+                    title: title)
+                var events = snapshot.safetyEvents ?? []
+                events.append(
+                    SafetyEvent(
+                        id: UUID(), action: .report, target: target, label: title, reason: reason, date: Date())
+                )
+                snapshot.safetyEvents = events
             }
             snapshot.reports = reports
             snapshot.hidden.insert(target)
+        }
+    }
+
+    func reportedContent() throws -> [String: ContentReport] {
+        try current().reports ?? [:]
+    }
+
+    func cancelReport(_ target: String) throws {
+        try update { snapshot in
+            guard let report = snapshot.reports?.removeValue(forKey: target) else { return }
+            if report.wasHidden != true { snapshot.hidden.remove(target) }
+            var events = snapshot.safetyEvents ?? []
+            events.append(
+                SafetyEvent(
+                    id: UUID(), action: .cancelReport, target: target, label: report.title,
+                    reason: report.reason, date: Date()))
+            snapshot.safetyEvents = events
         }
     }
 
@@ -140,7 +183,12 @@ import Foundation
             switch kind {
             case .like: key = \.likes
             case .save: key = \.saves
-            case .hide: key = \.hidden
+            case .hide:
+                key = \.hidden
+                if var report = snapshot.reports?[id] {
+                    report.wasHidden = enabled
+                    snapshot.reports?[id] = report
+                }
             }
             if enabled { snapshot[keyPath: key].insert(id) } else { snapshot[keyPath: key].remove(id) }
         }
@@ -274,25 +322,39 @@ import Foundation
         if files.fileExists(atPath: file.path) { try files.removeItem(at: file) }
     }
 
+    private var deletionMarker: URL {
+        support.appendingPathComponent("PendingAccountDeletions", isDirectory: true)
+            .appendingPathComponent(account.uuidString)
+    }
+
     func beginAccountDeletion() throws {
-        try update { $0.deletionPending = true }
+        try files.createDirectory(
+            at: deletionMarker.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data().write(
+            to: deletionMarker, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+    }
+
+    static func finishPendingDeletions() throws {
+        let files = FileManager.default
+        let support = try files.url(
+            for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let pending = support.appendingPathComponent("PendingAccountDeletions", isDirectory: true)
+        guard files.fileExists(atPath: pending.path) else { return }
+        for name in try files.contentsOfDirectory(atPath: pending.path) {
+            if let id = UUID(uuidString: name) { try LocalLibrary(account: id).finishPendingDeletion() }
+        }
     }
 
     func finishPendingDeletion() throws {
         try load()
-        guard let record, record.deletionPending == true else { return }
-        try Wallet.removeLedgers(for: record.profile.id, in: support)
-        if files.fileExists(atPath: previousSession.path) { try files.removeItem(at: previousSession) }
-
-        // Keep the deletion marker until imported copies and both wallet files are gone.
+        let marked = files.fileExists(atPath: deletionMarker.path)
+        guard marked || record?.deletionPending == true else { return }
+        try Wallet.removeLedgers(for: account, in: support)
         let videos = directory.appendingPathComponent("Videos", isDirectory: true)
         if files.fileExists(atPath: videos.path) { try files.removeItem(at: videos) }
-        try files.removeItem(at: index)
-        self.record = nil
-    }
-
-    private var previousSession: URL {
-        support.appendingPathComponent("AuthSessions/buraihehitvpbbtuktye.supabase.co.json")
+        if files.fileExists(atPath: index.path) { try files.removeItem(at: index) }
+        record = nil
+        if marked { try files.removeItem(at: deletionMarker) }
     }
 
     private func videoURL(_ id: UUID) -> URL {
@@ -307,7 +369,11 @@ import Foundation
 
     private func readSnapshot() throws -> Snapshot? {
         do {
-            return try JSONDecoder().decode(Snapshot.self, from: Data(contentsOf: index))
+            let snapshot = try JSONDecoder().decode(Snapshot.self, from: Data(contentsOf: index))
+            guard snapshot.profile.id == account else {
+                throw AppFailure("This library belongs to another account.")
+            }
+            return snapshot
         } catch let error as CocoaError where error.code == .fileReadNoSuchFile {
             return nil
         }

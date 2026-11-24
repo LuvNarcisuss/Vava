@@ -7,11 +7,12 @@ Open `Vava.xcodeproj` and select the Vava scheme with the `Vava QA` iPhone 17 Pr
 - `App/Core` contains the UIKit application entry, theme and shared Swift services.
 - `App/Features` contains the native screens for Academy, Watch, Shorts, Chats, Me and their detail flows.
 - `Assets` holds the bundled catalog, media, art, fonts, agreements and editable sources.
+- `Backend/account_auth.sql` defines the company Supabase account schema.
 - `supabase` archives the retired backend's migrations and catalog seed.
 - `Docs` records scope, deployment status and static verification.
 
 ## Configure for distribution
 
-Vava is the app display name in `App/Info.plist`. Release uses `com.vava.pingpong`. Debug Run uses `im.seex.sao2`, the Yu Sun team, and the local StoreKit catalog. Signing settings are in `project.yml`. See [StoreKit coin packs](Docs/Integration.md#storekit-coin-packs) for Apple sandbox setup. Regenerate project metadata with `xcodegen generate` after changing project settings.
+Vava is the app display name in `App/Info.plist`. Debug and Release use `com.vava.pinghjsd`. Debug Run uses the local StoreKit catalog. Signing settings are in `project.yml`. See [StoreKit coin packs](Docs/Integration.md#storekit-coin-packs) for Apple sandbox setup. Regenerate project metadata with `xcodegen generate` after changing project settings.
 
-See [Integration status](Docs/Integration.md) for the local data scope and retirement status. See [Media credits](Docs/Media.md) for sources and rights.
+See [Integration status](Docs/Integration.md) for company account configuration, local data ownership, and the retired backend. See [Media credits](Docs/Media.md) for sources and rights.

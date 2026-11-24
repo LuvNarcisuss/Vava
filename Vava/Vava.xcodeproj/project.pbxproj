@@ -32,6 +32,7 @@
 		B3A8F23585BB9271564439A2 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2D9D34561CACFA31E6A8A7 /* Chats.swift */; };
 		B7B115DBBEE163869064034E /* Shorts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB078C03FA7B07053B83C9B /* Shorts.swift */; };
 		CF59C71AC49CAA86C9FA16BF /* LocalLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1146BF7410A7070A16CA0782 /* LocalLibrary.swift */; };
+		5BFB473079C84E6EA1983782 /* SupabaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC86F81845A47DD8945EF47 /* SupabaseAuth.swift */; };
 		EC7C037D6C8EF5BB9985A369 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5935E590997A4C603C9A4B5A /* ChatModels.swift */; };
 		F46CD97973FF2C5F682A410F /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557AF13CD3296B60F9A22F2B /* Profile.swift */; };
 		F6BA88623966A761B4FD1E31 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */; };
@@ -39,10 +40,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		02B767706853D8D37EAF02CC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		0842D7D65A6BD30966C5A6D7 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
 		0A54F31F71A2AD1F8D886FD6 /* table-tennis-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table-tennis-background.png"; sourceTree = "<group>"; };
 		1146BF7410A7070A16CA0782 /* LocalLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLibrary.swift; sourceTree = "<group>"; };
+		9CC86F81845A47DD8945EF47 /* SupabaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseAuth.swift; sourceTree = "<group>"; };
 		1316B8E5BE32A9DA55490C7E /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		1412B10A34B572E93B1E83E0 /* VavaApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VavaApplication.swift; sourceTree = "<group>"; };
 		15BDC8DFC3E25EE4731D9EF4 /* netherlands-china-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "netherlands-china-review.jpg"; sourceTree = "<group>"; };
@@ -51,7 +53,7 @@
 		1BC7EFC3E0DA3654A8742950 /* like-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like-selected.png"; sourceTree = "<group>"; };
 		203BE2C60F73F7F2670D9A89 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		295E6E6A3081BE7BBF63FD46 /* ComicNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ComicNeue-Regular.ttf"; sourceTree = "<group>"; };
-		2CFC401C9F5C9149A2A56A79 /* Vava.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vava.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CFC401C9F5C9149A2A56A79 /* Vava.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vava.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33A85AABDA798C6D2505E903 /* Kalam-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kalam-Bold.ttf"; sourceTree = "<group>"; };
 		35D5FA7588F37D295C342C11 /* terms.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = terms.pdf; sourceTree = "<group>"; };
 		3744B1A1B42B6ABE66535F17 /* ravne-review.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ravne-review.jpg"; sourceTree = "<group>"; };
@@ -84,7 +86,7 @@
 		8F3B43EF58269870951C8DC7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		936F60034675AE39D39942CB /* save-outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-outline.png"; sourceTree = "<group>"; };
 		9741DD58267996F4334870D0 /* report.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = report.png; sourceTree = "<group>"; };
-		9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */ = {isa = PBXFileReference; path = VavaCoins.storekit; sourceTree = "<group>"; };
+		9AC4A415CD227D1CD9F9AFA7 /* VavaCoins.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = VavaCoins.storekit; sourceTree = "<group>"; };
 		A360E8AEE33F388355E93F02 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
 		A66122F570BA93EE04B20125 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		A6BC829B21087D4844916BF0 /* watch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watch.png; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				17457AF0350A0EDD6DB62F2F /* ChatService.swift */,
 				3A3FAB86A0FD29544E20E3D5 /* ChatTransport.swift */,
 				1146BF7410A7070A16CA0782 /* LocalLibrary.swift */,
+				9CC86F81845A47DD8945EF47 /* SupabaseAuth.swift */,
 				1B098906FE34BCF792B197BD /* Models.swift */,
 				5861667AE559D1C86FF592CF /* Theme.swift */,
 				1412B10A34B572E93B1E83E0 /* VavaApplication.swift */,
@@ -351,11 +354,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
-				TargetAttributes = {
-					94589A7DCAC575AF8E4A7A9D = {
-						DevelopmentTeam = JPTS6M4T5B;
-					};
-				};
 			};
 			buildConfigurationList = 32CDE79E9E9FA293BAA579BB /* Build configuration list for PBXProject "Vava" */;
 			developmentRegion = en;
@@ -412,6 +410,7 @@
 				B3A8F23585BB9271564439A2 /* Chats.swift in Sources */,
 				A7C90EC9278112B105F49E6C /* Discussion.swift in Sources */,
 				CF59C71AC49CAA86C9FA16BF /* LocalLibrary.swift in Sources */,
+				5BFB473079C84E6EA1983782 /* SupabaseAuth.swift in Sources */,
 				35C77D3EDDC6F4FD61C3CD8F /* Models.swift in Sources */,
 				F46CD97973FF2C5F682A410F /* Profile.swift in Sources */,
 				B7B115DBBEE163869064034E /* Shorts.swift in Sources */,
@@ -494,14 +493,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JPTS6M4T5B;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = im.seex.sao2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vava.pinghjsd;
 				PRODUCT_NAME = Vava;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -521,7 +520,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.vava.pingpong;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vava.pinghjsd;
 				PRODUCT_NAME = Vava;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

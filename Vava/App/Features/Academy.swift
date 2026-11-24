@@ -1,6 +1,8 @@
 import UIKit
 
 @MainActor final class AcademyScreen: ListScreen {
+    override func contentVisibilityDidChange() { draw() }
+
     private var category = "All topics"
     private var pricing = "All prices"
     private let search = Theme.field("Search lessons")
@@ -117,6 +119,8 @@ import UIKit
 }
 
 @MainActor final class CourseScreen: ListScreen {
+    override func contentVisibilityDidChange() { draw() }
+
     private let course: Course
     private var writing = false
     private var unlocked: Bool { course.price == 0 || context.wallet.ledger.owned.contains(course.id) }
@@ -279,7 +283,7 @@ extension Screen {
                 self?.reportContent(course.id, title: "Report lesson", onChange: onChange)
             },
             UIAction(title: "Block publisher", attributes: .destructive) { [weak self] _ in
-                self?.blockPublisher(course.author, onChange: onChange)
+                self?.blockPublisher(course.author)
             },
         ])
         return more

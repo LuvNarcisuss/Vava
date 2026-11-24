@@ -30,13 +30,16 @@ import UIKit
     func isAwaiting(_ id: UUID) -> Bool { pending.contains(id) }
 
     var players: [ChatPerson] {
-        (transport?.players ?? []).sorted {
+        (transport?.players ?? []).filter { !isBlocked($0) }.sorted {
             $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
         }
     }
 
     func histories() throws -> [ChatHistory] {
-        try library.chatHistories().filter { $0.inbox?.hidden != true }.sorted {
+        let blocked = try library.state().blocked
+        return try library.chatHistories().filter {
+            $0.inbox?.hidden != true && !blocked.contains($0.person.id)
+        }.sorted {
             let pinned = $0.inbox?.pinned == true
             if pinned != ($1.inbox?.pinned == true) { return pinned }
             return ($0.entries.last?.date ?? .distantPast) > ($1.entries.last?.date ?? .distantPast)
@@ -72,7 +75,8 @@ import UIKit
     }
 
     func history(for person: ChatPerson) throws -> [ChatEntry] {
-        try library.chatHistories().first { $0.person.id == person.id }?.entries ?? []
+        guard !isBlocked(person) else { return [] }
+        return try library.chatHistories().first { $0.person.id == person.id }?.entries ?? []
     }
 
     func start() throws {
@@ -146,7 +150,17 @@ import UIKit
     }
 
     func setBlocked(_ person: ChatPerson, enabled: Bool) throws {
-        try library.setBlocked(person.id, enabled: enabled)
+        guard person.id != transport?.localPlayerID,
+            person.id != (try library.state().me.id.uuidString)
+        else { throw AppFailure("You cannot block yourself.") }
+        if enabled && !person.isPublisher {
+            let histories = try library.chatHistories()
+            let known =
+                transport?.players.contains { $0.id == person.id } == true
+                || histories.contains { $0.person.id == person.id }
+            guard known else { throw AppFailure("This player is unavailable.") }
+        }
+        try library.setBlocked(person.id, enabled: enabled, person: person)
         sendFollowing(to: person)
         if enabled, call?.person.id == person.id, call?.phase != .ended {
             finishCall("Call ended", notifyPeer: true)
@@ -155,10 +169,10 @@ import UIKit
     }
 
     func restriction(for person: ChatPerson) -> String? {
+        if isBlocked(person) { return "Unblock this player to chat." }
         if person.isPublisher {
             return "You must follow each other to start a chat. This publisher cannot follow players."
         }
-        if isBlocked(person) { return "Unblock this player to chat." }
         if !isFollowing(person) { return "You must follow each other to start a chat." }
         guard transport?.players.contains(where: { $0.id == person.id }) == true else {
             return "This player isn’t connected. Open Vava on both devices."

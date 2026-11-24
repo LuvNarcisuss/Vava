@@ -1,0 +1,10 @@
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromAcademyProfileCancelAndConfirm]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromAcademyProfileCancelAndConfirm]' passed (25.487 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromChatsReturnsToFilteredInbox]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromChatsReturnsToFilteredInbox]' passed (19.450 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromShortsProfileAndLongPressUnblock]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromShortsProfileAndLongPressUnblock]' passed (32.441 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 77.379 (77.385) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 77.379 (77.386) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 77.379 (77.389) seconds
+** TEST SUCCEEDED **

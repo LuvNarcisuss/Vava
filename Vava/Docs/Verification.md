@@ -1,5 +1,39 @@
 # Verification record
 
+## November 23 safety requirements runtime acceptance
+
+The current `ios-app-bulid` safety requirements were reviewed against the local product. Fixed root navigation/single block confirmation, blocked chat filtering without history deletion, nearby-account management and confirmed long-press undo, independent hiding reasons, durable local audit, hidden direct comment routes, and report retry feedback. A supplemental runtime assertion found replacement playback stalled at 0% after the block alert; the dismissal callback now resumes eligible playback and the regression passes.
+
+On Vava QA (iPhone 17 Pro, iOS 26.3, `96CE1822-AB11-4741-9421-4BEF863DAF77`), the final isolated acceptance covers **8 data tests and 10 distinct UI cases, all passing**. Three profile-origin cases were rerun after the playback correction; final detail/menu/report checks also passed with advancing progress assertions. The original application's Application Support file set and hashes were unchanged. The production app identifier was not reinstalled by this test run.
+
+See [the requirement matrix, screenshots, result paths and limits](Acceptance/2026-11-23-safety/report.md). This supersedes the earlier unexecuted safety checks below. Safety changes and test sources passed targeted Swift lint, Ruby harness syntax and whitespace checks. The full static verifier still fails on the pre-existing Debug signing-team mismatch; simulator builds succeeded. No server moderation/operator inbox, two-physical-device transport, live login or payment acceptance is claimed.
+
+## November 23 company email authentication
+
+- The Vava project in Thingtill Org reported `ACTIVE_HEALTHY` in Singapore. Reading its public Auth settings with the app's publishable key returned HTTP 200 with the email provider enabled.
+- Database metadata confirmed the private account view has `id`, `account`, and `password_hash`. Its email validation trigger is enabled. Anonymous and authenticated roles both lack schema usage and view read access. The security advisor returned no findings. The new project contained zero Auth users.
+- Strict Swift formatting lint for the changed application sources, plist and project syntax validation, target membership, login gate ordering, and whitespace checks passed. The full static verifier stops at the existing empty Debug signing team.
+- No compilation, simulator run or end-to-end password login was performed. A confirmed account is required for a device login check.
+
+## November 23 report visibility follow-up
+
+- Found that report entry points refreshed their own screens through callbacks, but loaded screens had no shared visibility-change notification. Visibility also depended only on the separate hidden set rather than active report records.
+- Added persisted-state visibility notifications and refresh handlers for Academy, lesson details, publisher profiles, Me, Watch and Shorts. Active report IDs now participate directly in filtering.
+- Added isolated runtime test coverage in `ContentVisibilityTests.swift` for loaded-screen updates, player removal, persistence reload and cancellation. The cases are registered in the existing harness but have not been compiled or run.
+- Strict Swift source lint, Ruby harness syntax validation and whitespace checks passed. No application build, simulator installation or runtime test was performed; the full static verifier remains blocked by the pre-existing signing configuration described below.
+
+## November 23 report cancellation and wallet layout
+
+- Added Settings > Reported content with long-press Cancel report and tap confirmation. Report removal and visibility restoration share one atomic library save; state reload follows successful persistence. New records preserve any earlier independent hide state, and existing report records remain decodable.
+- Constrained the wallet coin image to 44 by 44 points, centered it beside a compact title/value stack, and reduced the balance to 36 points with single-line fitting.
+- Strict `swift-format` lint passed for the five changed Swift files. `git diff --check` passed.
+- The full static verifier stopped at its signing-team assertion: the pre-existing Debug project setting has an empty `DEVELOPMENT_TEAM`, while `project.yml` specifies `JPTS6M4T5B`. Signing configuration was left unchanged.
+- No compilation, typechecking, simulator launch, persistence runtime test, or UI gesture/layout test was performed for this change. Runtime acceptance remains pending, including report cancellation after restart, save failure, and large text/balance layouts.
+
+## November 23 Bundle ID update
+
+The owner selected `com.vava.pinghjsd` for Debug and Release. Updated the configuration source, Release target setting, static identity expectations and current documentation. Targeted static checks parsed the Xcode project and Info.plist, confirmed both build configurations and the source settings use the selected identifier, checked iPhone-only destinations and verified the coin catalog against its committed contents. Plist validation and `git diff --check` passed. Build, runtime, signing and Apple storefront validation for this identity remain pending. The acceptance records below describe the identifiers used during those historical runs.
+
 ## November 23 native Swift acceptance
 
 Built the Debug Vava scheme from `Vava.xcodeproj` with Xcode 26.3 (17C529) for the iPhone 17 Pro named **Vava QA**. XCTest reported iOS 26.3.1 (23D8133). The production-source Debug build uses `im.seex.sao2`. All purchases, content changes and callback replays used separate acceptance bundle identifiers on that simulator.

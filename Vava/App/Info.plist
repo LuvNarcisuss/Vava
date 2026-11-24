@@ -43,6 +43,10 @@
 		<string>Kalam-Bold.ttf</string>
 		<string>ComicNeue-Regular.ttf</string>
 	</array>
+	<key>VavaSupabaseProjectRef</key>
+	<string>ougprsgxcxwepjqmxgyc</string>
+	<key>VavaSupabasePublishableKey</key>
+	<string>sb_publishable_25K6l-c0cM8jTEJoLcQr4w_-BDy4PIC</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIRequiresFullScreen</key>

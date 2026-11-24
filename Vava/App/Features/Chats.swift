@@ -1,6 +1,7 @@
 import UIKit
 
 @MainActor final class ChatsScreen: ListScreen, UIScrollViewDelegate {
+    override func contentVisibilityDidChange() { draw() }
     private weak var openRow: ChatInboxRow?
     private var displayedRecords: [ChatHistory]?
 
@@ -367,6 +368,7 @@ import UIKit
         perform {
             try self.context.chat.setBlocked(self.person, enabled: enabled)
             try self.context.reloadState()
+            if enabled { self.returnToRootAfterBlock(self.person.name) }
         }
     }
 }

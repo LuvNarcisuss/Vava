@@ -3,6 +3,8 @@ import PhotosUI
 import UIKit
 
 @MainActor final class ProfileScreen: ListScreen, UIGestureRecognizerDelegate {
+    override func contentVisibilityDidChange() { draw() }
+
     private enum Collection: String, CaseIterable {
         case shorts = "Shorts"
         case tutorials = "Tutorials"
@@ -393,6 +395,8 @@ import UIKit
 }
 
 @MainActor final class PublisherProfileScreen: ListScreen {
+    override func contentVisibilityDidChange() { draw() }
+
     private enum Works: String, CaseIterable {
         case shorts = "Shorts"
         case tutorials = "Tutorials"
@@ -410,6 +414,10 @@ import UIKit
         self?.reportSingleWork()
     }
 
+    private lazy var blockButton = Theme.icon("block", label: "Block") { [weak self] in
+        self?.changeBlock()
+    }
+
     init(_ context: AppContext, publisher: Publisher, openTutorials: Bool = false) {
         self.publisher = publisher
         selection = openTutorials ? .tutorials : .shorts
@@ -422,6 +430,7 @@ import UIKit
         super.viewDidLoad()
         heading.text = "Publisher"
         toolbar.addArrangedSubview(reportButton)
+        toolbar.addArrangedSubview(blockButton)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -452,6 +461,8 @@ import UIKit
         let total = context.state.totals(for: works)
         let courses = context.catalog.courses.filter { $0.author.id == id }
         configureReportButton()
+        blockButton.accessibilityLabel = blocked ? "Unblock" : "Block"
+        blockButton.isSelected = blocked
         let summary = ProfileHeader.card(
             name: publisher.name,
             bio: courses.isEmpty ? "Recording source" : "Coaching reference",
@@ -475,9 +486,8 @@ import UIKit
         }
         message.isEnabled = !blocked
         outline(message, color: Theme.line)
-        let actions = Theme.profileActions(follow: follow, message: message, blocked: blocked) { [weak self] in
-            self?.changeBlock()
-        }
+        let actions = Theme.stack([follow, message], spacing: 8, axis: .horizontal)
+        actions.distribution = .fillEqually
         var views = [summary]
         if !works.isEmpty {
             views.append(Theme.label("Includes estimated activity", size: 12, color: Theme.secondary))
@@ -576,7 +586,7 @@ import UIKit
         if context.state.blocked.contains(publisher.id) {
             update { try self.context.setBlocked(self.publisher, enabled: false) }
         } else {
-            blockPublisher(publisher) { [weak self] in self?.draw() }
+            blockPublisher(publisher)
         }
     }
 
@@ -589,9 +599,11 @@ import UIKit
 }
 
 @MainActor final class BlockedPublishersScreen: ListScreen {
+    override func contentVisibilityDidChange() { draw() }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        heading.text = "Blocked publishers"
+        heading.text = "Blocked accounts"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -605,18 +617,110 @@ import UIKit
     }
 
     private func draw() {
-        let publishers = context.publishers.filter { context.state.blocked.contains($0.id) }
-        if publishers.isEmpty {
-            render([Theme.label("No publishers are blocked.", color: Theme.secondary)])
+        do {
+            let stored = try context.library.blockedPeople()
+            let histories = try context.library.chatHistories()
+            let people: [ChatPerson] = context.state.blocked.map { id in
+                if let person = stored[id] { return person }
+                if let publisher = context.publishers.first(where: { $0.id == id }) {
+                    return ChatPerson(publisher)
+                }
+                if let history = histories.first(where: { $0.person.id == id }) { return history.person }
+                return ChatPerson(id: id, name: "Unavailable account")
+            }.sorted { $0.name == $1.name ? $0.id < $1.id : $0.name < $1.name }
+            guard !people.isEmpty else {
+                render([Theme.label("No blocked accounts.", color: Theme.secondary)])
+                return
+            }
+            var rows: [UIView] = [
+                Theme.label("Touch and hold an account to unblock it.", color: Theme.secondary)
+            ]
+            for person in people {
+                let row = Theme.button(person.name) { [weak self] in self?.unblock(person) }
+                row.accessibilityHint = "Opens unblock confirmation"
+                row.menu = UIMenu(children: [
+                    UIAction(title: "Unblock") { [weak self] _ in self?.unblock(person) }
+                ])
+                row.showsMenuAsPrimaryAction = false
+                rows.append(row)
+            }
+            render(rows)
+        } catch {
+            render([Theme.label("Blocked accounts could not be loaded. Pull down to try again.")])
+        }
+    }
+
+    private func unblock(_ person: ChatPerson) {
+        confirm("Unblock \(person.name)?", message: "Reported content will stay hidden.", action: "Unblock") {
+            [weak self] in
+            guard let self else { return }
+            self.perform {
+                try self.context.chat.setBlocked(person, enabled: false)
+                try self.context.reloadState()
+                self.draw()
+            }
+        }
+    }
+}
+
+@MainActor final class ReportedContentScreen: ListScreen {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        heading.text = "Reported content"
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        perform { try await self.refreshContent() }
+    }
+
+    override func refreshContent() async throws {
+        try context.reload()
+        let reports = try context.library.reportedContent().sorted {
+            if $0.value.recordedAt == $1.value.recordedAt { return $0.key < $1.key }
+            return $0.value.recordedAt > $1.value.recordedAt
+        }
+        guard !reports.isEmpty else {
+            render([Theme.label("No reported content.", color: Theme.secondary)])
             return
         }
-        render(
-            publishers.rotated(by: refreshOrder).map { publisher in
-                Theme.button(publisher.name) { [weak self] in
-                    guard let self else { return }
-                    self.push(PublisherProfileScreen(self.context, publisher: publisher))
+        var rows: [UIView] = [
+            Theme.label("Touch and hold an item to cancel its report.", color: Theme.secondary)
+        ]
+        for (id, report) in reports {
+            let title =
+                context.catalog.shorts.first { $0.id == id }?.title
+                ?? context.catalog.courses.first { $0.id == id }?.title
+                ?? report.title
+                ?? "Unavailable content"
+            let row = Theme.button("\(title)\n\(report.reason.rawValue)") { [weak self] in
+                self?.confirmCancellation(id, title: title)
+            }
+            row.accessibilityHint = "Opens report cancellation options"
+            row.menu = UIMenu(children: [
+                UIAction(title: "Cancel report") { [weak self] _ in
+                    self?.confirmCancellation(id, title: title)
                 }
-            })
+            ])
+            row.showsMenuAsPrimaryAction = false
+            rows.append(row)
+        }
+        render(rows)
+    }
+
+    private func confirmCancellation(_ id: String, title: String) {
+        confirm(
+            "Cancel report?",
+            message:
+                "Remove your report for \"\(title)\". Content hidden only by this report can appear again.",
+            action: "Cancel report"
+        ) { [weak self] in
+            guard let self else { return }
+            self.perform {
+                try self.context.cancelReport(id)
+                try await self.refreshContent()
+            }
+        }
     }
 }
 
@@ -639,18 +743,22 @@ import UIKit
             guard let self else { return }
             self.push(CreditsScreen(self.context))
         }
-        let blocked = Theme.button("Blocked publishers") { [weak self] in
+        let blocked = Theme.button("Blocked accounts") { [weak self] in
             guard let self else { return }
             self.push(BlockedPublishersScreen(self.context))
         }
+        let reported = Theme.button("Reported content") { [weak self] in
+            guard let self else { return }
+            self.push(ReportedContentScreen(self.context))
+        }
         let signOut = Theme.button("Log out") { [weak self] in self?.signOut() }
-        let delete = Theme.button("Delete account") { [weak self] in self?.deleteAccount() }
+        let delete = Theme.button("Clear local profile") { [weak self] in self?.clearLocalProfile() }
         delete.setTitleColor(Theme.coral, for: .normal)
         let preview = Theme.button("Call preview") { [weak self] in
             guard let self else { return }
             self.push(CallPreviewScreen(self.context))
         }
-        render([edit, credits, blocked, preview] + agreementButtons + [signOut, delete])
+        render([edit, credits, blocked, reported, preview] + agreementButtons + [signOut, delete])
     }
 
     private func signOut() {
@@ -663,15 +771,15 @@ import UIKit
         }
     }
 
-    private func deleteAccount() {
+    private func clearLocalProfile() {
         confirm(
-            "Delete account?",
+            "Clear local profile?",
             message:
-                "This permanently deletes your profile, saved activity, imported copies, coins, and course access in Vava. Your original videos stay in Photos.",
-            action: "Delete account", destructive: true
+                "This permanently clears your profile, activity, imported copies, coins, and course access on this iPhone and logs you out. Your online account and original Photos videos stay available.",
+            action: "Clear local profile", destructive: true
         ) { [weak self] in
             guard let self else { return }
-            self.perform { try self.context.deleteAccount() }
+            self.perform { try self.context.deleteLocalProfile() }
         }
     }
 

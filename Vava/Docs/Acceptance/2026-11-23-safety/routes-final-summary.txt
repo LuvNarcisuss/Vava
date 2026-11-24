@@ -1,0 +1,10 @@
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromLessonDetailReturnsToAcademy]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromLessonDetailReturnsToAcademy]' passed (19.194 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromShortsMenuResumesPlayback]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromShortsMenuResumesPlayback]' passed (21.238 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testVideoReportRefreshSearchSavedAndUndo]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testVideoReportRefreshSearchSavedAndUndo]' passed (50.792 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 91.224 (91.228) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 91.224 (91.229) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 91.224 (91.231) seconds
+** TEST SUCCEEDED **

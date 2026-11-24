@@ -1,0 +1,20 @@
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFailureKeepsProfileAndShowsError]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFailureKeepsProfileAndShowsError]' passed (22.952 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromAcademyProfileCancelAndConfirm]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromAcademyProfileCancelAndConfirm]' passed (26.350 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromChatsReturnsToFilteredInbox]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromChatsReturnsToFilteredInbox]' passed (21.103 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromShortsProfileAndLongPressUnblock]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testBlockFromShortsProfileAndLongPressUnblock]' passed (32.490 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testLessonReportRefreshRestartAndLongPressUndo]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testLessonReportRefreshRestartAndLongPressUndo]' passed (48.505 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testReportFailureKeepsReasonForRetryWithoutHidingLesson]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testReportFailureKeepsReasonForRetryWithoutHidingLesson]' passed (38.649 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testVideoReportRefreshSearchSavedAndUndo]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testVideoReportRefreshSearchSavedAndUndo]' passed (51.144 seconds).
+Test Case '-[VavaSafetyUITests.SafetyUITests testWalletSummaryHasCompactLayout]' started.
+Test Case '-[VavaSafetyUITests.SafetyUITests testWalletSummaryHasCompactLayout]' passed (12.651 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 253.844 (253.859) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 253.844 (253.861) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 253.844 (253.864) seconds
+** TEST SUCCEEDED **

@@ -12,6 +12,9 @@ private final class VideoSurface: UIView {
 }
 
 @MainActor final class ShortsScreen: Screen, UIGestureRecognizerDelegate {
+    override func contentVisibilityDidChange() { syncClips() }
+    override func blockConfirmationDidDismiss() { active() }
+
     private let fixedClips: [Clip]?
     private var selectedID: String?
     private var queue: AVQueuePlayer?
@@ -351,7 +354,7 @@ private final class VideoSurface: UIView {
             actions.append(
                 UIAction(title: "Block publisher", attributes: .destructive) { [weak self] _ in
                     guard let self else { return }
-                    self.blockPublisher(clip.author) { [weak self] in self?.syncClips() }
+                    self.blockPublisher(clip.author)
                 })
             actions.append(
                 UIAction(title: "Hide clip", attributes: .destructive) { [weak self] _ in

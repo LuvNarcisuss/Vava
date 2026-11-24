@@ -39,7 +39,7 @@ check(plist["CFBundleName"] == "$(PRODUCT_NAME)" and "PRODUCT_NAME = Vava;" in p
 check(plist["CFBundleIdentifier"] == "$(PRODUCT_BUNDLE_IDENTIFIER)", "Bundle ID follows build configuration")
 identities = re.findall(r"PRODUCT_BUNDLE_IDENTIFIER = ([^;]+);[^}]*}\s*;\s*name = (Debug|Release);", project)
 check(dict((name, bundle_id) for bundle_id, name in identities) == {
-    "Debug": "im.seex.sao2", "Release": "com.vava.pingpong",
+    "Debug": "com.vava.pinghjsd", "Release": "com.vava.pinghjsd",
 } and len(identities) == 2, "Debug and Release Bundle IDs")
 check(project.count("DEVELOPMENT_TEAM = JPTS6M4T5B;") == 2, "Yu Sun signing team")
 check(not re.search(r"SecItem|kSecAttr|TableTennis\.Auth", app), "No Keychain access")
@@ -151,12 +151,17 @@ check('localStoreKit ? localFile : appleFile' in wallet and '"LocalStoreKitWalle
 check(re.search(r"localStoreKit\s*\? environment == \.xcode\s*: environment == \.sandbox \|\| environment == \.productionSandbox \|\| environment == \.production", wallet),
       "Purchase delivery requires the wallet's StoreKit environment")
 check(not (root / "Configuration/backend.json").exists(), "Retired backend configuration removed")
-check("backend.json" not in project and "storage/v1" not in app and "rest/v1" not in app, "No active backend routes")
+auth = (root / "App/Core/SupabaseAuth.swift").read_text()
+check("backend.json" not in project and "storage/v1" not in app and "rest/v1" not in app,
+      "Retired business data routes are absent")
+check(plist["VavaSupabaseProjectRef"] == "ougprsgxcxwepjqmxgyc"
+      and plist["VavaSupabasePublishableKey"].startswith("sb_publishable_")
+      and '"auth/v1/token"' in auth and 'grant: "password"' in auth, "Company password authentication")
 check('url(forResource: path, withExtension: nil, subdirectory: "Media")' in app, "Bundle media lookup")
 check("lastKnownFileType = folder; name = Media; path = Assets/Content/Media;" in project, "Media folder reference")
-check('Bundle.main.decode("catalog")' in app and "URLSession" not in app, "On-device catalog and media")
+check('Bundle.main.decode("catalog")' in app and all("URLSession" not in path.read_text() for path in native_sources if path.name != "SupabaseAuth.swift"), "On-device catalog and media")
 art = read_json("Assets/Design/Artwork.json")
-check(len(art) == 33, "33 artwork entries with generated and owner-provided provenance")
+check(len(art) == 34, "34 artwork entries with generated and owner-provided provenance")
 reaction_states = {
     "icon-like-outline": False, "icon-save-outline": False,
     "icon-like-selected": True, "icon-save-selected": True,

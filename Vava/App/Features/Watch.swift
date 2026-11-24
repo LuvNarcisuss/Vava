@@ -1,6 +1,8 @@
 import UIKit
 
 @MainActor final class WatchScreen: ListScreen {
+    override func contentVisibilityDidChange() { draw() }
+
     private let search = Theme.field("Search matches")
     private var searching = false
     private var event = "All events"

@@ -169,10 +169,18 @@ extension WalletStoreKitTests {
             }
         }
 
-        let consent = try await button("Accept the agreements")
-        consent.sendActions(for: .touchUpInside)
-        let login = try await button("Log in")
-        login.sendActions(for: .touchUpInside)
+        // Keep StoreKit acceptance independent of company credentials and network availability.
+        let owner = UUID()
+        let library = try LocalLibrary(account: owner)
+        _ = try library.open(revision: Agreement.revision, accepted: true)
+        let catalog: Catalog = try XCTUnwrap(Bundle.main.decode("catalog"))
+        let context = try AppContext(library: library, wallet: Wallet(account: owner), catalog: catalog)
+        let previousRoot = window.rootViewController
+        defer {
+            context.wallet.stop()
+            window.rootViewController = previousRoot
+        }
+        window.rootViewController = Dock(context)
         let profile = try await button("Me")
         profile.sendActions(for: .touchUpInside)
         let tabs = try XCTUnwrap(window.rootViewController as? Dock)

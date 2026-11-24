@@ -66,13 +66,25 @@ import UIKit
 
     private func draw() {
         let wallet = context.wallet
-        let value = Theme.label(wallet.ledger.balance.formatted(), size: 44, display: true, color: Theme.lime)
+        let value = Theme.label(wallet.ledger.balance.formatted(), size: 36, display: true, color: Theme.lime)
+        value.numberOfLines = 1
+        value.adjustsFontSizeToFitWidth = true
+        value.minimumScaleFactor = 0.5
         let icon = UIImageView(image: UIImage(named: "icon-coin"))
         icon.contentMode = .scaleAspectFit
-        icon.widthAnchor.constraint(equalToConstant: 52).isActive = true
+        icon.isAccessibilityElement = false
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 44),
+            icon.heightAnchor.constraint(equalToConstant: 44),
+        ])
+        let details = Theme.stack(
+            [Theme.label("Coin balance", size: 15, color: Theme.secondary), value], spacing: 2)
         let summary = Theme.stack(
-            [icon, Theme.stack([Theme.label("COIN BALANCE", size: 13, color: Theme.secondary), value])],
-            axis: .horizontal)
+            [icon, details], spacing: 12, axis: .horizontal)
+        summary.alignment = .center
+        summary.isAccessibilityElement = true
+        summary.accessibilityLabel = "Coin balance"
+        summary.accessibilityValue = "\(wallet.ledger.balance.formatted()) coins"
         var sections: [UIView] = [Theme.card([summary])]
         if wallet.hasPurchaseIssue {
             let retry = Theme.button(wallet.retryingPurchases ? "Checking purchases…" : "Retry purchases") {

@@ -35,6 +35,7 @@ tests.add_dependency(app)
 tests.source_build_phase.add_file_reference(project.main_group.new_file(File.join(root, 'Tests/StoreKitTransactionRecorder.swift')))
 source = project.main_group.new_file(File.join(root, 'Tests/WalletStoreKitTests.swift'))
 tests.source_build_phase.add_file_reference(source)
+tests.source_build_phase.add_file_reference(project.main_group.new_file(File.join(root, 'Tests/ContentVisibilityTests.swift')))
 fixture = project.main_group.new_file(File.join(root, 'Configuration/VavaCoins.storekit'))
 tests.resources_build_phase.add_file_reference(fixture)
 tests.build_configurations.each do |config|

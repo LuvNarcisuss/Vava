@@ -1,0 +1,58 @@
+{
+  "baseCommit": "0985b1273c626786b766e8179ed91766895cc614",
+  "workingTree": true,
+  "sources": {
+    "Core/Models.swift": {
+      "sha256": "e3d0ecb36cc09ecc3dfa76faf4f0134f615baea6972b7ebe6d73e23aecd863ec",
+      "matchesTestSnapshot": true
+    },
+    "Core/LocalLibrary.swift": {
+      "sha256": "9440d590966799eea4895e2bf1c757ad196c271ca4919d4c54bd3385c4988833",
+      "matchesTestSnapshot": true
+    },
+    "Core/VavaApplication.swift": {
+      "sha256": "2acdf4061ede633d8199014f0618e6e782edd6c61dea977c3db0a905e2ada62d",
+      "matchesTestSnapshot": true
+    },
+    "Core/Theme.swift": {
+      "sha256": "30debf92df123caf90aa8036035e58e27da4585d4350a7431d211f037810994c",
+      "matchesTestSnapshot": true
+    },
+    "Core/ChatService.swift": {
+      "sha256": "038931cadd1731a8798d1c3b5eacc042f6eb2fe8efd431a0a4bc8a887f053337",
+      "matchesTestSnapshot": true
+    },
+    "Core/ChatTransport.swift": {
+      "sha256": "c69146a54b2349bea0c8e56420e929575a58feb877384f1b496cdb9e19603266",
+      "matchesTestSnapshot": true
+    },
+    "Features/Academy.swift": {
+      "sha256": "b93be0c2f9c8e21a4a3d7f98d5669101bac14df18f7c18d1182153a85ce0da00",
+      "matchesTestSnapshot": true
+    },
+    "Features/Profile.swift": {
+      "sha256": "e271f2462f9aeb5e32f9d6373e4ca603474e3ce956b26a579c4a8852c8c9ea47",
+      "matchesTestSnapshot": true
+    },
+    "Features/Shorts.swift": {
+      "sha256": "17513073bd37401ae6ee3bdacb2caa99a215a845d172651b260063b5f67fe8f0",
+      "matchesTestSnapshot": true
+    },
+    "Features/Watch.swift": {
+      "sha256": "5d8f41051e137d8388c23a17f9e9e65e407a3c07f536235fcdb2d67a4e4ee2c7",
+      "matchesTestSnapshot": true
+    },
+    "Features/Chats.swift": {
+      "sha256": "46dc56d70af29e0acfa5f3229c6db7736ad430261a1e0a8284a898e880627a13",
+      "matchesTestSnapshot": true
+    },
+    "Features/Discussion.swift": {
+      "sha256": "7b6f1eaaddfe9e45c1530ad96d3980f2c6d58a98c15253a59c09c4ce6fd49764",
+      "matchesTestSnapshot": true
+    },
+    "Features/WalletScreen.swift": {
+      "sha256": "aabf94a0356c930235d9d61b1c9332b08792567416712ae3c96d3c00d4f59f54",
+      "matchesTestSnapshot": true
+    }
+  }
+}

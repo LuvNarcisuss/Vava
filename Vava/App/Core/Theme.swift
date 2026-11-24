@@ -69,7 +69,9 @@ import UIKit
         return button
     }
 
-    static func profileActions(follow: UIButton, message: UIButton, blocked: Bool, onBlock: @escaping () -> Void) -> UIStackView {
+    static func profileActions(
+        follow: UIButton, message: UIButton, blocked: Bool, onBlock: @escaping () -> Void
+    ) -> UIStackView {
         let block = button("🚫", action: onBlock)
         block.accessibilityLabel = blocked ? "Unblock" : "Block"
         block.backgroundColor = blocked ? panel : .clear
@@ -203,6 +205,7 @@ extension UIView {
 @MainActor class Screen: UIViewController {
     let context: AppContext
     let refreshFeedback = RefreshFeedback()
+    private var pendingBlockName: String?
 
     init(_ context: AppContext) {
         self.context = context
@@ -215,7 +218,52 @@ extension UIView {
         super.viewDidLoad()
         Theme.fill(view)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(contentVisibilityDidChange),
+            name: .contentVisibilityChanged, object: context)
     }
+
+    @objc func contentVisibilityDidChange() {}
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentBlockConfirmationIfReady()
+    }
+
+    func returnToRootAfterBlock(_ name: String) {
+        guard let navigationController,
+            let root = navigationController.viewControllers.first as? Screen
+        else { return }
+        root.contentVisibilityDidChange()
+        root.pendingBlockName = name
+        if navigationController.topViewController !== root {
+            navigationController.popToRootViewController(animated: true)
+        } else {
+            root.presentBlockConfirmationIfReady()
+        }
+    }
+
+    private func presentBlockConfirmationIfReady() {
+        guard let name = pendingBlockName, viewIfLoaded?.window != nil,
+            navigationController?.topViewController === self
+        else { return }
+        if let presentedViewController {
+            presentedViewController.dismiss(animated: true) { [weak self] in
+                self?.presentBlockConfirmationIfReady()
+            }
+            return
+        }
+        pendingBlockName = nil
+        let alert = UIAlertController(
+            title: "Blocked", message: "\(name) has been blocked.", preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(title: "OK", style: .default) { [weak self, weak alert] _ in
+                alert?.dismiss(animated: true) { self?.blockConfirmationDidDismiss() }
+            })
+        present(alert, animated: true)
+    }
+
+    func blockConfirmationDidDismiss() {}
 
     func push(_ screen: UIViewController) { navigationController?.pushViewController(screen, animated: true) }
 
@@ -247,11 +295,10 @@ extension UIView {
             preferredStyle: .actionSheet)
         for reason in ReportReason.allCases {
             reasons.addAction(
-                UIAlertAction(title: reason.rawValue, style: .default) { [weak self] _ in
+                UIAlertAction(title: reason.rawValue, style: .default) { [weak self, weak reasons] _ in
                     guard let self else { return }
-                    self.perform {
-                        try self.context.report(id, reason: reason)
-                        onChange()
+                    reasons?.dismiss(animated: true) {
+                        self.submitReport(id, reason: reason, onChange: onChange)
                     }
                 })
         }
@@ -259,7 +306,26 @@ extension UIView {
         present(reasons, animated: true)
     }
 
-    func blockPublisher(_ publisher: Publisher, onChange: @escaping () -> Void) {
+    private func submitReport(_ id: String, reason: ReportReason, onChange: @escaping () -> Void) {
+        do {
+            try context.report(id, reason: reason)
+            onChange()
+        } catch {
+            let alert = UIAlertController(
+                title: "Report not saved",
+                message: "Your selection was kept. Try saving the report again.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            alert.addAction(
+                UIAlertAction(title: "Retry", style: .default) { [weak self, weak alert] _ in
+                    alert?.dismiss(animated: true) {
+                        self?.submitReport(id, reason: reason, onChange: onChange)
+                    }
+                })
+            present(alert, animated: true)
+        }
+    }
+
+    func blockPublisher(_ publisher: Publisher) {
         confirm(
             "Block \(publisher.name)?", message: "Their works will be hidden from your feed and lists.",
             action: "Block", destructive: true
@@ -267,7 +333,7 @@ extension UIView {
             guard let self else { return }
             self.perform {
                 try self.context.setBlocked(publisher, enabled: true)
-                onChange()
+                self.returnToRootAfterBlock(publisher.name)
             }
         }
     }

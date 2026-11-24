@@ -304,5 +304,14 @@
     "asset": "Assets/Assets.xcassets/brand-logo.imageset/image.png",
     "assetSHA256": "d73d7438e5d4b93c834cebe50e7c28934b03216eb04868e963ca667765596163",
     "usage": "Authorized by the owner for Vava branding"
+  },
+  {
+    "name": "icon-block",
+    "prompt": "Single isolated flat 2D mobile toolbar icon on a fully transparent square canvas for a dark evergreen sports app. A bold, instantly recognizable universal prohibition symbol: one coral-red (#FF705E) circular ring and one matching thick diagonal slash from upper left to lower right. Narrow warm ivory keyline along the shape boundaries for visibility on dark green backgrounds. Open areas inside the circle are fully transparent. Clean circular geometry, uniform bold strokes, straight-on, centered with minimal even padding. Icon only, no button plate, no shadow, no lettering, no other objects, no gradients or texture. Must read clearly at 30 points.",
+    "tool": "built-in ImageGen",
+    "source": "Assets/Design/Sources/block.png",
+    "sourceSHA256": "09b202304774097c9f202835f861b9fb76741ca2e9025a0441ce7c12853f3ae8",
+    "asset": "Assets/Assets.xcassets/icon-block.imageset/image.png",
+    "assetSHA256": "2f4ed54a5ee908157ff74f5f6a00622b949b6d92b0235ddb018ac4b640d197a5"
   }
 ]

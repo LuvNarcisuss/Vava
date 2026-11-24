@@ -21,6 +21,7 @@ import MultipeerConnectivity
     var failed: (() -> Void)?
 
     var players: [ChatPerson] { Array(verified.values) }
+    var localPlayerID: String { Self.playerID(for: identity.publicKey.rawRepresentation) }
     var playerCode: String {
         ChatPerson.code(for: Self.playerID(for: identity.publicKey.rawRepresentation))
     }
