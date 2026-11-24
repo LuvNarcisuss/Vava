@@ -55,7 +55,7 @@ targets:
       base:
         PRODUCT_NAME: Vava
         PRODUCT_BUNDLE_IDENTIFIER: com.vava.pinghjsd
-        DEVELOPMENT_TEAM: JPTS6M4T5B
+        DEVELOPMENT_TEAM: ""
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
         TARGETED_DEVICE_FAMILY: "1"
         INFOPLIST_FILE: App/Info.plist

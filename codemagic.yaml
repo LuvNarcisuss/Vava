@@ -1,0 +1,103 @@
+workflows:
+  vava-ios-app-store: &vava_app_store
+    name: Vava iOS App Store
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    integrations:
+      app_store_connect: Vava
+
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.vava.pinghjsd
+
+      vars:
+        BUNDLE_ID: "com.vava.pinghjsd"
+        XCODE_PROJECT: "Vava/Vava.xcodeproj"
+        XCODE_SCHEME: "Vava"
+        APP_STORE_APPLE_ID: "6838241299"
+
+      xcode: "26.5"
+
+    scripts:
+      - name: Verify native iOS project configuration
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          if [[ ! -f "$XCODE_PROJECT/project.pbxproj" ]]; then
+            echo "ERROR: Missing $XCODE_PROJECT/project.pbxproj in $CM_BUILD_DIR." >&2
+            exit 1
+          fi
+          SCHEME_PATH="$XCODE_PROJECT/xcshareddata/xcschemes/$XCODE_SCHEME.xcscheme"
+          if [[ ! -f "$SCHEME_PATH" ]]; then
+            echo "ERROR: Missing shared scheme: $SCHEME_PATH. Commit this file to Git." >&2
+            exit 1
+          fi
+          if ! grep -Fq \
+            -e "PRODUCT_BUNDLE_IDENTIFIER = \"$BUNDLE_ID\";" \
+            -e "PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID;" \
+            "$XCODE_PROJECT/project.pbxproj"; then
+            echo "ERROR: Bundle ID $BUNDLE_ID was not found in $XCODE_PROJECT/project.pbxproj." >&2
+            exit 1
+          fi
+          echo "Verified $XCODE_PROJECT, shared scheme $XCODE_SCHEME and bundle ID $BUNDLE_ID."
+
+      - name: Set up App Store signing
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR/Vava"
+          xcode-project use-profiles \
+            --archive-method app-store \
+            --custom-export-options '{"manageAppVersionAndBuildNumber":false}'
+
+      - name: Set next App Store build number
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+
+          LATEST_BUILD_NUMBER="$(
+            app-store-connect get-latest-testflight-build-number \
+              "$APP_STORE_APPLE_ID" --all-versions
+          )"
+
+          LATEST_BUILD_NUMBER="${LATEST_BUILD_NUMBER:-0}"
+          [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]] || { echo "Invalid App Store build number."; exit 1; }
+          NEXT_BUILD_NUMBER=$((10#$LATEST_BUILD_NUMBER + 1))
+          CI_BUILD_NUMBER="${BUILD_NUMBER:-1}"
+          [[ "$CI_BUILD_NUMBER" =~ ^[0-9]+$ ]] || { echo "Invalid CI build number."; exit 1; }
+          if (( 10#$CI_BUILD_NUMBER > NEXT_BUILD_NUMBER )); then
+            NEXT_BUILD_NUMBER=$((10#$CI_BUILD_NUMBER))
+          fi
+
+          echo "Using build number: $NEXT_BUILD_NUMBER"
+          echo "VAVA_BUILD_NUMBER=$NEXT_BUILD_NUMBER" >> "$CM_ENV"
+
+      - name: Build signed IPA
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --config Release \
+            --archive-xcargs "CURRENT_PROJECT_VERSION=$VAVA_BUILD_NUMBER" \
+            --ipa-directory "$CM_BUILD_DIR/build/ios/ipa"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
+    publishing:
+      app_store_connect:
+        # Upload the IPA using the Vava integration; review submission is separate.
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false
+
+  vava-ios-signing-validation:
+    <<: *vava_app_store
+    name: Vava signing validation
+    publishing: {}

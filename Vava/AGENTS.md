@@ -2,7 +2,7 @@
 
 - Read Docs/Product.md and Docs/Integration.md before editing behavior or configuration.
 - Implement the iPhone application in Swift and UIKit, targeting iOS 16 or later. Keep protected persistence, AVFoundation, StoreKit 1 and nearby communication in the existing Swift services. Open Vava.xcodeproj for the configured StoreKit Run scheme.
-- Use Vava for the app display name, project, app target, and shared scheme. Use `com.vava.pinghjsd` for Debug and Release. The configured signing team is Yu Sun (`JPTS6M4T5B`). Keep personal activity in the protected app container and app resources under Assets.
+- Use Vava for the app display name, project, app target, and shared scheme. Use `com.vava.pinghjsd` for Debug and Release. Leave the signing team empty in the project and let Codemagic apply the matching App Store profile. Keep personal activity in the protected app container and app resources under Assets.
 - Keep five independent navigation roots in order: Academy, Watch, Shorts, Chats, Me. Open the first tab by default.
 - Use English for project artifacts and app-owned text. Use original image-model raster glyphs and backgrounds and bundled OFL typefaces.
 - Use the dedicated company Supabase project for email and password authentication. Keep the runtime independent of the retired backend. Preserve publisher links and their original attribution.

@@ -2,7 +2,7 @@
 
 Vava uses native Swift and UIKit for login, navigation and product screens.
 
-Vava follows Toli's five independent navigation stacks and its compact editorial layout. The main navigation opens on its first tab, Academy. Debug and Release use Bundle ID `com.vava.pinghjsd`. The configured signing team is Yu Sun.
+Vava follows Toli's five independent navigation stacks and its compact editorial layout. The main navigation opens on its first tab, Academy. Debug and Release use Bundle ID `com.vava.pinghjsd`.
 
 | Screen | Behavior |
 | --- | --- |

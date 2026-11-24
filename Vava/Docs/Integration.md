@@ -4,9 +4,15 @@
 
 The Swift application delegate displays the UIKit login screen and opens a tab controller with five navigation stacks. The controllers call the existing library, wallet, media and nearby services directly.
 
+## App Store Connect builds
+
+Run `Vava iOS App Store` from the repository's [Codemagic configuration](../../codemagic.yaml) to archive the shared `Vava` scheme with Xcode 26.5. The workflow uses the project's Release marketing version and queries Apple app ID `6838241299` for the next build number. Codemagic needs the `Vava` App Store Connect integration and matching App Store signing files for `com.vava.pinghjsd`. The project leaves the signing team empty. Codemagic applies the team from the matching provisioning profile.
+
+The publishing step uploads the IPA for processing in App Store Connect. Beta review and App Store review are manual. The separate `Vava signing validation` workflow builds the IPA with publishing disabled.
+
 ## On-device library
 
-Vava uses the bundled Assets catalog and local profile, consent, activity, notes, course progress, imported videos, and wallet. First launch records acceptance under revision `2026-11-13.2`. The owner changed the reading links. The consent revision is retained. Debug and Release use Bundle ID `com.vava.pinghjsd`, selected by the owner on November 23, 2026. The configured signing team is Yu Sun (`JPTS6M4T5B`). Each Bundle ID has its own app container. Data under the previous app identifiers remains in those containers. The authenticated Supabase user ID selects the protected local library and wallet.
+Vava uses the bundled Assets catalog and local profile, consent, activity, notes, course progress, imported videos, and wallet. First launch records acceptance under revision `2026-11-13.2`. The owner changed the reading links. The consent revision is retained. Debug and Release use Bundle ID `com.vava.pinghjsd`, selected by the owner on November 23, 2026. Each Bundle ID has its own app container. Data under the previous app identifiers remains in those containers. The authenticated Supabase user ID selects the protected local library and wallet.
 
 Short clips, photos, replay covers, and fonts are included in the app. Publisher replay, coaching, source, license, and agreement links need internet access. Supabase handles email and password authentication. Chat has no internet relay and reports stay on the device. Imported Photos originals remain outside the app's copy and removal workflow.
 

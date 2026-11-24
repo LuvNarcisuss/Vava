@@ -41,7 +41,7 @@ identities = re.findall(r"PRODUCT_BUNDLE_IDENTIFIER = ([^;]+);[^}]*}\s*;\s*name 
 check(dict((name, bundle_id) for bundle_id, name in identities) == {
     "Debug": "com.vava.pinghjsd", "Release": "com.vava.pinghjsd",
 } and len(identities) == 2, "Debug and Release Bundle IDs")
-check(project.count("DEVELOPMENT_TEAM = JPTS6M4T5B;") == 2, "Yu Sun signing team")
+check(project.count('DEVELOPMENT_TEAM = "";') == 2, "Debug and Release signing teams are empty")
 check(not re.search(r"SecItem|kSecAttr|TableTennis\.Auth", app), "No Keychain access")
 check(".atomic, .completeFileProtectionUntilFirstUserAuthentication" in app, "Protected local library persistence")
 check("2026-11-13.2" in app, "Preserved consent revision")
